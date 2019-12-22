@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">Ixirus</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_development_plan">My Development Plan</string>
+    <string name="menu_my_tasks">My Tasks</string>
+    <string name="menu_feedbacks">FeedBacks</string>
+    <string name="menu_my_assignments">My Assignments</string>
+    <string name="menu_messages">Messages</string>
+    <string name="menu_xperince_sharing">Xperience Sharing</string>
+    <string name="menu_dev_sources">DevSources</string>
+    <string name="menu_create_dev_plan">Create Dev Plan</string>
+    <string name="choose_programm">CHOOSE PROGRAMME</string>
+    <string name="write_new_programm_hint">Write New Programme</string>
+    <string name="dev_plan_name">DEV PlAN NAME</string>
+    <string name="dev_plan_name_hint">Please Type Dev Plan Name</string>
+    <string name="new_perfection_hint">Add New Perfection </string>
+    <string name="choose_perfection">CHOOSE PERFECTION</string>
+
+    <string name="menu_my_peers">My Peers</string>
+    <string name="menu_quizes">My Quizes</string>
+    <string name="menu_coaching">Coaching/Mentoring</string>
+    <string name="menu_ixirus_big">IXIRUS</string>
+    <string name="button_text">Next</string>
+    <string name="user_name_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="welcome">Welcome to Ixirus</string>
+    <string name="or_login_with">OR "\n" login with </string>
+    <string name="choose_behaviour">CHOOSE BEHAVIOUR</string>
+    <string name="add_new_behaviour">Add New Behaviour</string>
+
+    <string name="type_expect">Type the benefits what you expect from this program</string>
+
+
+    <string name="login_error_toast">Invalid Email or Password</string>
+
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>

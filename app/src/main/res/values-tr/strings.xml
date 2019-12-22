@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Ixirus</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Ayarlar</string>
+
+    <string name="menu_development_plan">Gelişim Planım</string>
+    <string name="menu_my_tasks">Görevlerim</string>
+    <string name="menu_feedbacks">Geri Bildirimler</string>
+    <string name="menu_my_peers">Benzerler</string>
+    <string name="menu_my_assignments">Atananlar</string>
+    <string name="menu_messages">Mesajlar</string>
+    <string name="menu_xperince_sharing">Deneyim Paylaşımı</string>
+    <string name="menu_dev_sources">DevSources</string>
+    <string name="menu_create_dev_plan">Gelişim Planı Oluştur</string>
+    <string name="choose_programm">PROGRAM SEÇ</string>
+    <string name="write_new_programm_hint">Yeni Program Yaz</string>
+    <string name="dev_plan_name">DEV PLAN İSMİ</string>
+    <string name="dev_plan_name_hint">Dev Plan İsmini Giriniz</string>
+    <string name="button_text">İleri</string>
+    <string name="new_perfection_hint">Yeni Yetkinlik Ekle</string>
+    <string name="choose_perfection">YETKiNLiK SEÇ</string>
+    <string name="user_name_hint">Email</string>
+    <string name="password_hint">Şifre</string>
+    <string name="sign_in">GİRİŞ</string>
+    <string name="sign_up">KAYIT OL</string>
+
+    <string name="login_error_toast">Email veya Şifre Hatalı</string>
+    <string name="welcome">Welcome to Ixirus</string>
+
+    <string name="or_login_with">ya da</string>
+
+    <string name="menu_quizes">My Quizes</string>
+    <string name="menu_coaching">Koçluk/Mentörlük</string>
+    <string name="menu_ixirus_big">IXIRUS</string>
+    <string name="choose_behaviour">DAVRANIŞ SEÇ</string>
+    <string name="add_new_behaviour">Yeni Davranış Ekle</string>
+    <string name="type_expect">Bu programdan beklediğiniz faydaları yazınız</string>
+
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+</resources>

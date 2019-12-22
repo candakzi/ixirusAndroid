@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FA5752</color>
+    <color name="colorPrimaryDark">#FA5752</color>
+    <color name="colorAccent">#FA5752</color>
+    <color name="transparent">#07000000</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="dev_plan_button">#EBEBEB</color>
+    <color name="sign_in_button_color">#2F2063</color>
+    <color name="sign_up_button_color">#C6205E</color>
+    <color name="color_question">#5C5C5C</color>
+</resources>

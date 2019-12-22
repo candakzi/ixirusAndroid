@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_development_plan">
+
+    <fragment
+        android:id="@+id/nav_development_plan"
+        android:name="com.example.ixirus.ui.developmentplan.DevelopmentPlanFragment"
+        android:label="@string/menu_development_plan"
+        tools:layout="@layout/fragment_development_plan" />
+
+    <fragment
+        android:id="@+id/nav_my_tasks"
+        android:name="com.example.ixirus.ui.mytasks.MyTasksFragment"
+        android:label="@string/menu_my_tasks"
+        tools:layout="@layout/fragment_my_tasks" />
+
+    <fragment
+        android:id="@+id/nav_feedbacks"
+        android:name="com.example.ixirus.ui.feedbacks.FeedbacksFragment"
+        android:label="@string/menu_feedbacks"
+        tools:layout="@layout/fragment_feedbacks" />
+
+    <fragment
+        android:id="@+id/nav_my_peers"
+        android:name="com.example.ixirus.ui.myPeers.MyPeersFragment"
+        android:label="@string/menu_my_peers"
+        tools:layout="@layout/fragment_my_peers" />
+
+    <fragment
+        android:id="@+id/nav_quizes"
+        android:name="com.example.ixirus.ui.quizes.QuizesFragment"
+        android:label="@string/menu_quizes"
+        tools:layout="@layout/fragment_quizes" />
+
+    <fragment
+        android:id="@+id/nav_coaching"
+        android:name="com.example.ixirus.ui.coachingmentoring.CoachingMentoringFragment"
+        android:label="@string/menu_coaching"
+        tools:layout="@layout/fragment_coaching" />
+</navigation>
