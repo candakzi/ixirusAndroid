@@ -24,7 +24,9 @@
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="@drawable/list_textcolor_selector"
+            />
 
 
     </LinearLayout>

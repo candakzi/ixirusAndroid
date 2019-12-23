@@ -84,7 +84,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:divider="@drawable/divider_black"
-                    android:dividerHeight="1dp">
+                    android:dividerHeight="1dp"
+
+                    >
 
 
                 </ListView>
@@ -109,6 +111,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:alpha="0.8"
+                android:imeOptions="actionDone"
                 android:background="@color/dev_plan_button"
                 android:ems="10"
                 android:hint="@string/write_new_programm_hint"

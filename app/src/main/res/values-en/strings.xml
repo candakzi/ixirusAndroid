@@ -38,6 +38,8 @@
     <string name="menu_coaching">Coaching/Mentoring</string>
     <string name="menu_ixirus_big">IXIRUS</string>
     <string name="button_text">Next</string>
+    <string name="successfully_added">Successfully Added!</string>
+    <string name="retry_add">Plase Try Again!</string>
 
     <string name="type_expect">Type the benefits what you expect from this program</string>
 

@@ -55,4 +55,9 @@ public class MyProgramListAdapter extends BaseAdapter {
         text.setText(data.get(position).Name);
         return vi;
     }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+    }
 }

@@ -35,6 +35,8 @@
     <string name="or_login_with">OR "\n" login with </string>
     <string name="choose_behaviour">CHOOSE BEHAVIOUR</string>
     <string name="add_new_behaviour">Add New Behaviour</string>
+    <string name="successfully_added">Successfully Added!</string>
+    <string name="retry_add">Plase Try Again!</string>
 
     <string name="type_expect">Type the benefits what you expect from this program</string>
 

@@ -53,9 +53,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
 
-                StringRequest jsonObjRequest = new StringRequest(Request.Method.POST,
-                        "https://ixirus.azurewebsites.net/api/auth/login",
-                        new Response.Listener<String>() {
+                StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/auth/login", new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 String authToken = null;
