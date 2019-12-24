@@ -21,21 +21,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.DevPlan.CreateDevPlanActivity5" />
+        <activity android:name=".ui.DevPlan.CreateDevPlanActivity5"
+
+
+            />
         <activity
             android:name=".ui.DevPlan.CreateDevPlanActivity4"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.DevPlan.CreateDevPlanActivity3"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustNothing"  />
         <activity
             android:name=".ui.DevPlan.CreateDevPlanActivity2"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustNothing"  />
         <activity android:name=".ui.DevPlan.MyDevPlanListActivity" />
         <activity
             android:name=".ui.DevPlan.CreateDevPlanActivity1"
             android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustNothing"  />
         <activity android:name=".ui.MainActivityWithoutFragment" />
         <activity
             android:name=".ui.LoginActivity"

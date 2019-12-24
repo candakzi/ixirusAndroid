@@ -42,6 +42,7 @@
     <string name="retry_add">Plase Try Again!</string>
 
     <string name="type_expect">Type the benefits what you expect from this program</string>
+    <string name="click_list_ico">Data Feed Error! Click to Refresh</string>
 
     <string name="title_activity_login">LoginActivity</string>
     <string name="dummy_button">Dummy Button</string>

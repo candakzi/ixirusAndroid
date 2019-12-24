@@ -39,6 +39,7 @@
     <string name="retry_add">Plase Try Again!</string>
 
     <string name="type_expect">Type the benefits what you expect from this program</string>
+    <string name="click_list_ico">Data Feed Error! Click to Refresh</string>
 
 
     <string name="login_error_toast">Invalid Email or Password</string>

@@ -69,7 +69,8 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewList"
                 android:layout_width="match_parent"
-                android:layout_height="270dp"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.4"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@android:color/transparent"
@@ -84,9 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:divider="@drawable/divider_black"
-                    android:dividerHeight="1dp"
-
-                    >
+                    android:dividerHeight="1dp">
 
 
                 </ListView>
@@ -100,6 +99,14 @@
                     android:elevation="100dp"
 
                     />
+
+                <ImageView
+                    android:id="@+id/refreshIco"
+                    android:layout_width="64dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/refresh_ico" />
 
             </androidx.cardview.widget.CardView>
 
@@ -161,13 +168,14 @@
                 android:id="@+id/button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="270dp"
+                android:layout_marginBottom="32dp"
                 android:background="@drawable/red_button"
                 android:text="@string/button_text"
                 android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardViewList" />
+                app:layout_constraintRight_toRightOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

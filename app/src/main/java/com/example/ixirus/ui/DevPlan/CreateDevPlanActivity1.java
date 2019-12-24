@@ -3,6 +3,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -59,6 +60,10 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         });
 
         final EditText editText = findViewById(R.id.editTextNewProgramme);
+        final TextView tv = (TextView)findViewById(R.id.textView2) ;
+        final ImageView refreshImage = (ImageView)findViewById(R.id.refreshIco) ;
+        final Button nextButton = (Button) findViewById(R.id.button);
+
 
         getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan) ;
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -77,10 +82,8 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
         final String savedToken = sp.getString("Token",null);
 
-        TextView tv = (TextView)findViewById(R.id.textView2) ;
         tv.setTextSize(9 * density);
-        loadListItem(savedToken);
-        Button nextButton = (Button) findViewById(R.id.button);
+        loadListItem(savedToken,null,false);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,18 +93,31 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
             }
         });
 
+        refreshImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refreshImage.setVisibility(View.GONE);
+                findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
+                loadListItem(savedToken,null,false);
+
+            }
+        });
+
         editText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId  == EditorInfo.IME_ACTION_DONE) {
-                    final String currentText = editText.getText().toString().trim();
+                   final String currentText = editText.getText().toString().trim();
                     if (currentText.matches(""))
                         return false;
                     else {
                         StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/program", new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                               addProgramm(savedToken);
+                               addProgramm(savedToken,currentText);
+                               editText.getText().clear();
+                                findViewById(R.id.refreshIco).setVisibility(View.GONE);
+                                findViewById(R.id.progressBar2).setVisibility(View.GONE);
                             }
                         }, new Response.ErrorListener() {
 
@@ -158,7 +174,7 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         }
     }
 
-    public void loadListItem(final String savedToken)
+    public void loadListItem(final String savedToken,final String addedText, final boolean fromAddItem)
     {
         lv.setAdapter(null);
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/program", null,new Response.Listener<JSONObject>() {
@@ -174,16 +190,29 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                         item.Name =  obj.getString("name");
                         arr.add(item);
                     }
-                    lv.setAdapter(new MyProgramListAdapter(getBaseContext(),arr));
+                    final MyProgramListAdapter adapter = new MyProgramListAdapter(getBaseContext(),arr);
+                    lv.setAdapter(adapter);
+                    if(fromAddItem)
+                    {
+                        for (int position=0; position<adapter.getCount(); position++)
+                            if (((MyProgram)adapter.getItem(position)).Name.equals(addedText)) {
+                                lv.setItemChecked(position, true);
+                                lv.setSelection(position);
+                            }
+                    }
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 } catch (JSONException e) {
-                    Toast.makeText(getBaseContext(), "cant load programmes", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(),getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                    findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(), "failure", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                findViewById(R.id.progressBar2).setVisibility(View.GONE);
             }
         }) {
             @Override
@@ -198,11 +227,12 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         queue.add(request);
     }
 
-    public void addProgramm(final String savedToken)
+    public void addProgramm(final String savedToken,String addedText)
     {
         findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
         Toast.makeText(getBaseContext(), getResources().getString(R.string.successfully_added), Toast.LENGTH_SHORT).show();
-        loadListItem(savedToken);
+        loadListItem(savedToken,addedText,true);
+        lv.setItemChecked(0,true);
         findViewById(R.id.progressBar2).setVisibility(View.GONE);
     }
 }
