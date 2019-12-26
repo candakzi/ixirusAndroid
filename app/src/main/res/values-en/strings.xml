@@ -40,6 +40,11 @@
     <string name="button_text">Next</string>
     <string name="successfully_added">Successfully Added!</string>
     <string name="retry_add">Plase Try Again!</string>
+    <string name="question_1">I have all kinds of information.</string>
+    <string name="question_2">I can apply very well.</string>
+    <string name="answer_1">I totally agree</string>
+    <string name="answer_2">I agree</string>
+    <string name="answer_3">I do not agree</string>
 
     <string name="type_expect">Type the benefits what you expect from this program</string>
     <string name="click_list_ico">Data Feed Error! Click to Refresh</string>

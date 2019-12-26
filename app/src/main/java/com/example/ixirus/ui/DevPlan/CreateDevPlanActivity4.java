@@ -51,8 +51,8 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity5.class);
                 startActivity(intent);
-                SharedPreferences settings = getBaseContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
-                settings.edit().clear().commit();
+//                SharedPreferences settings = getBaseContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
+//                settings.edit().clear().commit();
             }
         });
 

@@ -4,22 +4,21 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.ixirus.MyProgram;
+import com.example.ixirus.ListItem;
 import com.example.ixirus.R;
 
 import java.util.ArrayList;
 
-public class MyProgramListAdapter extends BaseAdapter {
+public class GenericListAdapter extends BaseAdapter {
     Context context;
-    ArrayList<MyProgram>  data ;
+    ArrayList<ListItem>  data ;
 
     private static LayoutInflater inflater = null;
 
-    public MyProgramListAdapter(Context context, ArrayList<MyProgram>  data) {
+    public GenericListAdapter(Context context, ArrayList<ListItem>  data) {
         // TODO Auto-generated constructor stub
         this.context = context;
         this.data = data;

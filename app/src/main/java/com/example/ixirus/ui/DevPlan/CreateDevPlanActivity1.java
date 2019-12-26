@@ -3,10 +3,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
@@ -31,9 +29,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ixirus.ListAdapters.MainListAdapter;
-import com.example.ixirus.ListAdapters.MyProgramListAdapter;
-import com.example.ixirus.MyProgram;
+import com.example.ixirus.ListAdapters.GenericListAdapter;
+import com.example.ixirus.ListItem;
 import com.example.ixirus.R;
 
 import org.json.JSONArray;
@@ -180,22 +177,22 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/program", null,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                ArrayList<MyProgram> arr = new ArrayList<MyProgram>();
+                ArrayList<ListItem> arr = new ArrayList<ListItem>();
                 try {
                     JSONArray programArray = response.getJSONArray("data");
                     for (int i=0; i < programArray.length(); i++) {
                         JSONObject obj =  programArray.getJSONObject(i);
-                        MyProgram item =  new MyProgram();
+                        ListItem item =  new ListItem();
                         item.Id =  Integer.parseInt(obj.getString("id"));
                         item.Name =  obj.getString("name");
                         arr.add(item);
                     }
-                    final MyProgramListAdapter adapter = new MyProgramListAdapter(getBaseContext(),arr);
+                    final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(),arr);
                     lv.setAdapter(adapter);
                     if(fromAddItem)
                     {
                         for (int position=0; position<adapter.getCount(); position++)
-                            if (((MyProgram)adapter.getItem(position)).Name.equals(addedText)) {
+                            if (((ListItem)adapter.getItem(position)).Name.equals(addedText)) {
                                 lv.setItemChecked(position, true);
                                 lv.setSelection(position);
                             }

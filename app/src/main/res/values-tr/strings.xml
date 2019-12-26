@@ -32,6 +32,11 @@
     <string name="welcome">Welcome to Ixirus</string>
 
     <string name="or_login_with">ya da</string>
+    <string name="question_1">Her türlü bilgiye sahibim.</string>
+    <string name="question_2">Çok iyi derecede uygulayabilecek durumudayım.</string>
+    <string name="answer_1">Tamamen katılıyorum</string>
+    <string name="answer_2">Katılıyorum</string>
+    <string name="answer_3">Katılmıyorum</string>
 
     <string name="menu_quizes">My Quizes</string>
     <string name="menu_coaching">Koçluk/Mentörlük</string>
