@@ -44,11 +44,13 @@
     <string name="question_2">I can apply very well.</string>
     <string name="question_3">Bana gerekli olduğunu, fayda sağlayacağını, geliştirmem gerektiğine inanıyorum</string>
     <string name="question_4">Sergileyebilme konusunda kendime güveniyorum</string>
-    <string name="question_5">Geliştrmek ve sergilemek istiyorum</string>
+    <string name="question_5">Geliştirmek ve sergilemek istiyorum</string>
     <string name="answer_1">I totally agree</string>
     <string name="answer_2">I agree</string>
     <string name="answer_3">I do not agree</string>
-
+    <string name="action_steps">Action Steps</string>
+    <string name="add_new_action">Add New Action</string>
+    <string name="date_define">Set Date</string>
 
     <string name="login_error_toast">Invalid Email or Password</string>
 

@@ -36,7 +36,10 @@
     <string name="question_2">Çok iyi derecede uygulayabilecek durumdayım</string>
     <string name="question_3">Bana gerekli olduğunu, fayda sağlayacağını, geliştirmem gerektiğine inanıyorum</string>
     <string name="question_4">Sergileyebilme konusunda kendime güveniyorum</string>
-    <string name="question_5">Geliştrmek ve sergilemek istiyorum</string>
+    <string name="question_5">Geliştirmek ve sergilemek istiyorum</string>
+    <string name="action_steps">Aksiyon Adımları</string>
+    <string name="add_new_action">Yeni Aksiyon Ekle</string>
+    <string name="date_define">Tarih Belirle</string>
 
     <string name="answer_1">Tamamen katılıyorum</string>
     <string name="answer_2">Katılıyorum</string>

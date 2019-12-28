@@ -2,20 +2,21 @@ package com.example.ixirus.ui.DevPlan;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,16 +40,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-public class CreateDevPlanActivity3 extends AppCompatActivity {
+public class CreateDevPlanActivity6 extends AppCompatActivity {
     private ListView lv;
+    private Calendar myCalendar;
+    private TextView dateTextView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_dev_plan3);
+        setContentView(R.layout.activity_create_dev_plan6);
         ImageView imageView = findViewById(R.id.buttonBack);
         getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan) ;
 
@@ -66,6 +73,32 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
         final TextView tv = (TextView)findViewById(R.id.textView2) ;
         final ImageView refreshImage = (ImageView)findViewById(R.id.refreshIco) ;
         final Button nextButton = (Button) findViewById(R.id.button);
+        dateTextView = (TextView)findViewById(R.id.editTextDate) ;
+        myCalendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+        };
+
+        dateTextView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(CreateDevPlanActivity6.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -82,10 +115,6 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
         final String savedToken = sp.getString("Token",null);
         loadListItem(savedToken,null,false);
-
-        float density  = getResources().getDisplayMetrics().density;
-
-        tv.setTextSize(9 * density);
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +186,13 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
                 return false;
             }
         });
+    }
 
+    private void updateLabel() {
+        String myFormat = "dd/MM/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        dateTextView.setText(sdf.format(myCalendar.getTime()));
     }
 
     public void loadListItem(final String savedToken,final String addedText, final boolean fromAddItem)
