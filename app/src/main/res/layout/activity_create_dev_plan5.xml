@@ -47,92 +47,83 @@
 
     </androidx.cardview.widget.CardView>
 
+
+    <TextView
+        android:id="@+id/textViewQuestions"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="17dp"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"
+        android:text="SORULAR"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardView" />
+
+    <TextView
+        android:id="@+id/textViewQuestion1"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="17dp"
+        android:alpha="0.8"
+        android:background="@drawable/rounded_corner_question"
+        android:gravity="top|start"
+        android:inputType="textMultiLine"
+        android:paddingStart="15dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="10dp"
+        app:autoSizeTextType="uniform"
+        android:text="Geliştirmeyi hedeflediğiniz davranış için hangi performans engelini aşmanız gerekiyor?"
+        android:textColor="@color/color_question"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewQuestions" />
+
+    <TextView
+        android:id="@+id/textViewDownQuestions"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="17dp"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"
+        android:paddingStart="15dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="10dp"
+        android:text="Lütfen aşağıdaki 5 soruyu cevaplayınız."
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewQuestion1" />
+
+
     <ScrollView
         android:id="@+id/firstScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="50dp"
         android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/textViewDownQuestions">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/red_button"
-                android:text="@string/button_text"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <TextView
-                android:id="@+id/textViewQuestions"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="17dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="17dp"
-                android:background="@android:color/transparent"
-                android:gravity="center_vertical"
-                android:text="SORULAR"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textViewQuestion1"
-                android:layout_width="fill_parent"
-                android:layout_height="100dp"
-                android:layout_marginStart="17dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="17dp"
-                android:alpha="0.8"
-                android:background="@drawable/rounded_corner_question"
-                android:gravity="top|start"
-                android:inputType="textMultiLine"
-                android:paddingStart="15dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="15dp"
-                android:paddingBottom="10dp"
-                android:text="Geliştirmeyi hedeflediğiniz davranış için hangi performans engelini aşmanız gerekiyor?"
-                android:textColor="@color/color_question"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewQuestions" />
-
-            <TextView
-                android:id="@+id/textViewDownQuestions"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="17dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="17dp"
-                android:background="@android:color/transparent"
-                android:gravity="center_vertical"
-                android:paddingStart="15dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="15dp"
-                android:paddingBottom="10dp"
-                android:text="Lütfen aşağıdaki 5 soruyu cevaplayınız."
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewQuestion1" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -140,18 +131,19 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="17dp"
                 android:layout_marginEnd="17dp"
+                android:background="@android:color/white"
                 android:paddingStart="15dp"
                 android:paddingTop="10dp"
                 android:paddingEnd="15dp"
                 android:paddingBottom="10dp"
-                android:textColor="@android:color/black"
-                android:background="@android:color/white"
-                android:textSize="18sp"
+
                 android:text="@string/question_1"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDownQuestions"
-                tools:text="@string/question_1" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewList"
@@ -170,10 +162,10 @@
                     android:id="@+id/listView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scrollbars="none"
-                    android:overScrollMode="never"
                     android:divider="@null"
-                    android:dividerHeight="0dp">
+                    android:dividerHeight="0dp"
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
 
 
                 </ListView>
@@ -181,7 +173,198 @@
             </androidx.cardview.widget.CardView>
 
 
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginEnd="17dp"
+                android:background="@android:color/white"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:text="@string/question_2"
+
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewList" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewList2"
+                android:layout_width="match_parent"
+                android:layout_height="181dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:background="@android:color/transparent"
+                app:cardElevation="10dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+                <ListView
+                    android:id="@+id/listView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:overScrollMode="never"
+                    android:scrollbars="none" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginEnd="17dp"
+                android:background="@android:color/white"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="15dp"
+
+                android:paddingBottom="10dp"
+                android:text="@string/question_3"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewList2" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewList3"
+                android:layout_width="match_parent"
+                android:layout_height="181dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:background="@android:color/transparent"
+                app:cardElevation="10dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView7">
+
+                <ListView
+                    android:id="@+id/listView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:overScrollMode="never"
+                    android:scrollbars="none" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginEnd="17dp"
+                android:background="@android:color/white"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+
+                android:text="@string/question_4"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewList3" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewList4"
+                android:layout_width="match_parent"
+                android:layout_height="181dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:background="@android:color/transparent"
+                app:cardElevation="10dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView8">
+
+                <ListView
+                    android:id="@+id/listView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:overScrollMode="never"
+                    android:scrollbars="none" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginEnd="17dp"
+                android:background="@android:color/white"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+
+                android:text="@string/question_5"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewList4" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewList5"
+                android:layout_width="match_parent"
+                android:layout_height="181dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:background="@android:color/transparent"
+                app:cardElevation="10dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView9">
+
+                <ListView
+                    android:id="@+id/listView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:overScrollMode="never"
+                    android:scrollbars="none" />
+
+            </androidx.cardview.widget.CardView>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/red_button"
+        android:text="@string/button_text"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstScrollView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

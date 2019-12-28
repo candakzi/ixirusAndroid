@@ -23,6 +23,11 @@ import java.util.ArrayList;
 
 public class CreateDevPlanActivity5 extends AppCompatActivity {
     private ListView lv1;
+    private ListView lv2;
+    private ListView lv3;
+    private ListView lv4;
+    private ListView lv5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +41,47 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
 
             }
         });
+
+        lv2 = findViewById(R.id.listView2);
+        lv2.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        lv2.setClickable(true);
+        lv2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+            }
+        });
+
+        lv3 = findViewById(R.id.listView3);
+        lv3.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        lv3.setClickable(true);
+        lv3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+            }
+        });
+
+        lv4 = findViewById(R.id.listView4);
+        lv4.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        lv4.setClickable(true);
+        lv4.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+            }
+        });
+
+        lv5 = findViewById(R.id.listView5);
+        lv5.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        lv5.setClickable(true);
+        lv5.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+            }
+        });
+
         ImageView imageView = findViewById(R.id.buttonBack);
         getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan) ;
 
@@ -76,6 +122,11 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
         }
         AnswersListAdapter adapter = new AnswersListAdapter(getBaseContext(),arr);
         lv1.setAdapter(adapter);
+        lv2.setAdapter(adapter);
+        lv3.setAdapter(adapter);
+        lv4.setAdapter(adapter);
+        lv5.setAdapter(adapter);
+
     }
 }
 
