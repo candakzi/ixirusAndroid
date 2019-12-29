@@ -51,7 +51,17 @@
     <string name="action_steps">Action Steps</string>
     <string name="add_new_action">Add New Action</string>
     <string name="date_define">Set Date</string>
-
+    <string name="selected_sources">Selected Sources</string>
+    <string name="add_new_source">Add New Resource</string>
+    <string name="add">Add</string>
+    <string name="pdf_document_title">Resource 1 - Pdf Document</string>
+    <string name="pdf_document_text">It is recommended that you read carefully the information we will give you in the pdf document.</string>
+    <string name="video_document_title">Resource 2 - Video Document</string>
+    <string name="video_document_text">You can add video document here.</string>
+    <string name="image_document_title">Resource 3 - Image Document</string>
+    <string name="image_document_text">You can add image document here.</string>
+    <string name="music_document_title">Resource 4 - Audio document</string>
+    <string name="music_document_text">You can add audio document here</string>
     <string name="type_expect">Type the benefits what you expect from this program</string>
     <string name="click_list_ico">Data Feed Error! Click to Refresh</string>
 

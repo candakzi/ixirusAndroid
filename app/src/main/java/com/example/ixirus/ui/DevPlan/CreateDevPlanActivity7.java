@@ -2,18 +2,21 @@ package com.example.ixirus.ui.DevPlan;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -30,16 +33,17 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ixirus.ListAdapters.GenericListAdapter;
 import com.example.ixirus.ListItem;
 import com.example.ixirus.R;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,15 +51,16 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class CreateDevPlanActivity6 extends AppCompatActivity {
+public class CreateDevPlanActivity7 extends AppCompatActivity {
     private ListView lv;
     private Calendar myCalendar;
     private TextView dateTextView;
+    private static final int PERMISSION_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_dev_plan6);
+        setContentView(R.layout.activity_create_dev_plan7);
         ImageView imageView = findViewById(R.id.buttonBack);
         getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan) ;
 
@@ -69,14 +74,20 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
             }
         });
 
-        final EditText editText = findViewById(R.id.editTextNewBehaviour);
-        final TextView tv = (TextView)findViewById(R.id.textView2) ;
+        final TextView tv = (TextView)findViewById(R.id.textView2);
         final ImageView refreshImage = (ImageView)findViewById(R.id.refreshIco) ;
         final Button nextButton = (Button) findViewById(R.id.button);
-        dateTextView = (TextView)findViewById(R.id.editTextDate) ;
-        myCalendar = Calendar.getInstance();
-        final Button addButton = findViewById(R.id.buttonAdd);
+        final TextView resourceText = (TextView)findViewById(R.id.resourceText) ;
 
+        final BottomSheetDialog dialog = new BottomSheetDialog(CreateDevPlanActivity7.this);
+        dialog.setContentView(R.layout.dialog_resources);
+        TextView pdfText =  dialog.findViewById(R.id.text);
+        TextView videoText =  dialog.findViewById(R.id.text2);
+        TextView imageText =  dialog.findViewById(R.id.text3);
+        TextView voiceText =  dialog.findViewById(R.id.text4);
+
+        dateTextView = (TextView)findViewById(R.id.editTextDate);
+        myCalendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -96,9 +107,90 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                new DatePickerDialog(CreateDevPlanActivity6.this, date, myCalendar
+                new DatePickerDialog(CreateDevPlanActivity7.this, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        resourceText.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+            }
+        });
+
+        pdfText.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= 23)
+                {
+                    if (checkPermission())
+                    {
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.setType("application/pdf");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        startActivityForResult(intent, 7);
+                    } else {
+                        requestPermission();
+                    }
+                }
+            }
+        });
+
+        videoText.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= 23)
+                {
+                    if (checkPermission())
+                    {
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.setType("video/*");
+                        startActivityForResult(intent, 7);
+                    } else {
+                        requestPermission();
+                    }
+                }
+            }
+        });
+
+        imageText.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= 23)
+                {
+                    if (checkPermission())
+                    {
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.setType("image/*");
+                        startActivityForResult(intent, 7);
+                    } else {
+                        requestPermission();
+                    }
+                }
+            }
+        });
+
+        voiceText.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (Build.VERSION.SDK_INT >= 23)
+                {
+                    if (checkPermission())
+                    {
+                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                        intent.setType("audio/*");
+                        startActivityForResult(intent, 7);
+                    } else {
+                        requestPermission();
+                    }
+                }
             }
         });
 
@@ -144,75 +236,12 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String currentText = editText.getText().toString().trim();
-                String myFormat = "MM/dd/yy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                final String endDate = sdf.format(myCalendar.getTime());
-                if (currentText.matches("")) {
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else if(endDate.matches("")) {
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/task", new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            addProgramm(savedToken,currentText);
-                            editText.getText().clear();
-                            findViewById(R.id.refreshIco).setVisibility(View.GONE);
-                            findViewById(R.id.progressBar2).setVisibility(View.GONE);
-                        }
-                    }, new Response.ErrorListener() {
-
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
-                        }
-                    }) {
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            Map<String, String> params = new HashMap<String, String>();
-
-
-                            params.put("Name", currentText);
-                            params.put("SourceId", "0");
-                            params.put("EndDate", endDate);
-
-                            return params;
-                        }
-
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String, String> headers = new HashMap<>();
-                            headers.put("Authorization", "Bearer " + savedToken);
-                            return headers;
-                        }
-                    };
-
-                    RequestQueue queue = Volley.newRequestQueue(getBaseContext());
-                    queue.add(jsonObjRequest);
-                }
-            }
-        });
-
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity7.class);
-                startActivity(intent);
-            }
-        });
     }
 
     private void updateLabel() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
+        String myFormat = "dd/MM/yy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
         dateTextView.setText(sdf.format(myCalendar.getTime()));
     }
 
@@ -276,5 +305,37 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
         loadListItem(savedToken,addedText,true);
         lv.setItemChecked(0,true);
         findViewById(R.id.progressBar2).setVisibility(View.GONE);
+    }
+
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(CreateDevPlanActivity7.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void requestPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(CreateDevPlanActivity7.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            Toast.makeText(CreateDevPlanActivity7.this, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
+        } else {
+            ActivityCompat.requestPermissions(CreateDevPlanActivity7.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                    intent.setType("*/*");
+                    startActivityForResult(intent, 7);
+                } else {
+                    Log.e("value", "Permission Denied, You cannot use local drive .");
+                }
+                break;
+        }
     }
 }

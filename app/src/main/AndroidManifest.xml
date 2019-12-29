@@ -3,6 +3,7 @@
     package="com.example.ixirus">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -11,9 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.DevPlan.CreateDevPlanActivity6"
-            android:windowSoftInputMode="adjustNothing"
-            ></activity>
+        <activity android:name=".ui.DevPlan.CreateDevPlanActivity7"></activity>
+        <activity
+            android:name=".ui.DevPlan.CreateDevPlanActivity6"
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".ui.SignUpActivity" />
         <activity
             android:name=".ui.BaseScreenActivity"
