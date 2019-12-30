@@ -55,6 +55,10 @@
     <string name="image_document_text">You can add image document here.</string>
     <string name="music_document_title">Resource 4 - Audio document</string>
     <string name="music_document_text">You can add audio document here</string>
+    <string name="save">Kaydet</string>
+
+    <string name="let_educator">Eğitmenim gelişim planımı takip etsin</string>
+    <string name="let_manager">Yöneticim gelişim planımı takip etsin</string>
 
     <string name="menu_quizes">My Quizes</string>
     <string name="menu_coaching">Koçluk/Mentörlük</string>

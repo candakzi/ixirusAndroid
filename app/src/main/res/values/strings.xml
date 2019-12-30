@@ -63,7 +63,9 @@
     <string name="music_document_title">Resource 4 - Voice document</string>
     <string name="music_document_text">You can add voice document here</string>
     <string name="login_error_toast">Invalid Email or Password</string>
-
+    <string name="save">Save</string>
+    <string name="let_educator"> Let my trainer follow my development plan</string>
+    <string name="let_manager"> Let my manager follow my development plan</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>

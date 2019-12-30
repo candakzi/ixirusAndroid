@@ -215,7 +215,7 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
+                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity8.class);
                 startActivity(intent);
             }
         });
