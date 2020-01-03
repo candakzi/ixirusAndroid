@@ -13,6 +13,7 @@ import com.example.ixirus.CustomListItem;
 import com.example.ixirus.ListAdapters.MainListAdapter;
 import com.example.ixirus.R;
 import com.example.ixirus.ui.DevPlan.MyDevPlanListActivity;
+import com.example.ixirus.ui.DevSource.DevSourceListActivity;
 
 public class MainActivityWithoutFragment extends AppCompatActivity  {
     private ListView lv;
@@ -47,7 +48,7 @@ public class MainActivityWithoutFragment extends AppCompatActivity  {
         CustomListItem item6 =  new CustomListItem();
         item6.Name =  getString(R.string.menu_dev_sources);
         item6.Drawable = ContextCompat.getDrawable(getApplicationContext(),R.mipmap.dev_sources);
-        item6.Activity = new MyDevPlanListActivity();
+        item6.Activity = new DevSourceListActivity();
 
         CustomListItem[] cListItems  = new CustomListItem[]{item1,item3,item4,item5,item6};
 

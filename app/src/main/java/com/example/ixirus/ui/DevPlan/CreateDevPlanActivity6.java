@@ -40,9 +40,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -120,14 +123,6 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
         final String savedToken = sp.getString("Token",null);
         loadListItem(savedToken,null,false);
 
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
-                startActivity(intent);
-            }
-        });
-
         refreshImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,21 +144,27 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String currentText = editText.getText().toString().trim();
-                String myFormat = "MM/dd/yy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                final String endDate = sdf.format(myCalendar.getTime());
+                String myFormatAdded = "dd.MM.yyyy";
+                String myFormatPosted = "MM/dd/yy";
+
+                SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
+                SimpleDateFormat sdfAdded = new SimpleDateFormat(myFormatAdded, Locale.US);
+
+                final String endDatePosted = sdfPosted.format(myCalendar.getTime());
+                final String endDateAdded = sdfAdded.format(myCalendar.getTime());
+
                 if (currentText.matches("")) {
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                else if(endDate.matches("")) {
+                else if(endDateAdded.matches("")) {
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
                 }
                 else{
                     StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/task", new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            addProgramm(savedToken,currentText);
+                            addProgramm(savedToken,currentText+" - "+endDateAdded);
                             editText.getText().clear();
                             findViewById(R.id.refreshIco).setVisibility(View.GONE);
                             findViewById(R.id.progressBar2).setVisibility(View.GONE);
@@ -182,7 +183,7 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
 
                             params.put("Name", currentText);
                             params.put("SourceId", "0");
-                            params.put("EndDate", endDate);
+                            params.put("EndDate", endDatePosted);
 
                             return params;
                         }
@@ -211,7 +212,7 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
     }
 
     private void updateLabel() {
-        String myFormat = "MM/dd/yy"; //In which you need put here
+        String myFormat = "dd.MM.yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         dateTextView.setText(sdf.format(myCalendar.getTime()));
     }
@@ -229,8 +230,22 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                         JSONObject obj =  programArray.getJSONObject(i);
                         ListItem item =  new ListItem();
                         item.Id =  Integer.parseInt(obj.getString("id"));
-                        item.Name =  obj.getString("name");
-                        arr.add(item);
+
+                        String name =  obj.getString("name");
+                        String date = obj.getString("endDate");
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        try {
+                            String myFormat = "dd.MM.yyyy"; //In which you need put here
+                            SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+                            Date d = sdf.parse(date);
+                            item.Name =  name+" - "+dateFormat.format(d);
+                            arr.add(item);
+                        } catch (ParseException ex) {
+                            Toast.makeText(getBaseContext(),getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                            findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                            findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                        }
+
                     }
                     final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(),arr);
                     lv.setAdapter(adapter);
@@ -262,6 +277,13 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + savedToken);
                 return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("onlySources", "true");
+                return params;
             }
         };
 

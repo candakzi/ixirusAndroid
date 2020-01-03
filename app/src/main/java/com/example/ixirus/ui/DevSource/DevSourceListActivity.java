@@ -1,4 +1,4 @@
-package com.example.ixirus.ui.DevPlan;
+package com.example.ixirus.ui.DevSource;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,12 +13,12 @@ import android.widget.TextView;
 
 import com.example.ixirus.R;
 
-public class CreateDevPlanActivity8 extends AppCompatActivity {
+public class DevSourceListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_dev_plan8);
+        setContentView(R.layout.activity_dev_source_list);
         ImageView imageView = findViewById(R.id.buttonBack);
         getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan) ;
         getSupportActionBar().setHomeButtonEnabled(true);

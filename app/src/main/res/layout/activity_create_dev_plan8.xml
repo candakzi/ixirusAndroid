@@ -90,19 +90,23 @@
                          android:textColor="@color/black_overlay"
                          android:textSize="20sp"
                          android:textStyle="bold"
+                         app:layout_constraintBottom_toBottomOf="parent"
                          app:layout_constraintStart_toStartOf="parent"
-                         app:layout_constraintWidth_percent="0.90"
-                         tools:layout_editor_absoluteY="0dp" />
+                         app:layout_constraintTop_toTopOf="parent"
+                         app:layout_constraintWidth_percent="0.85" />
 
                      <CheckBox
                          android:id="@+id/managerCheck"
                          android:layout_width="0dp"
                          android:layout_height="match_parent"
-                         app:layout_constraintEnd_toEndOf="parent"
-                         app:layout_constraintWidth_percent="0.10"
                          android:buttonTint="@color/colorPrimary"
                          android:scaleX="1.5"
-                         android:scaleY="1.5" />
+                         android:scaleY="1.5"
+                         app:layout_constraintBottom_toBottomOf="parent"
+                         app:layout_constraintEnd_toEndOf="parent"
+                         app:layout_constraintStart_toEndOf="@+id/managerText"
+                         app:layout_constraintTop_toTopOf="parent"
+                         app:layout_constraintWidth_percent="0.15" />
                  </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
@@ -136,20 +140,23 @@
                         android:textColor="@color/black_overlay"
                         android:textSize="20sp"
                         android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintWidth_percent="0.90"
-                        tools:layout_editor_absoluteY="0dp" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.85" />
 
                     <CheckBox
                         android:id="@+id/educatorCheck"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintWidth_percent="0.10"
+                        android:buttonTint="@color/colorPrimary"
                         android:scaleX="1.5"
                         android:scaleY="1.5"
-                        android:buttonTint="@color/colorPrimary"
-                        />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/educatorText"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.15" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>

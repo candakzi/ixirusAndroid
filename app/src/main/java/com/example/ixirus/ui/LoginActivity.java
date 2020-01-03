@@ -70,7 +70,11 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                                 SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sp.edit();
+
                                 editor.putString("Token", (String) authToken);
+                                editor.putString("Email", usernameEditText.getText().toString().trim());
+                                editor.putString("Password", passwordEditText.getText().toString().trim());
+
                                 editor.apply();
                                 findViewById(R.id.progressBar).setVisibility(View.GONE);
 
