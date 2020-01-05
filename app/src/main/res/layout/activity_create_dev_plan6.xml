@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.DevPlan.CreateDevPlanActivity1">
+    tools:context=".ui.DevPlan.CreateDevPlanActivity6">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -107,6 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:visibility="gone"
                     android:elevation="100dp"
 
                     />
@@ -166,7 +167,7 @@
             <Button
                 android:id="@+id/buttonAdd"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="45dp"
                 android:layout_marginTop="32dp"
                 android:background="@drawable/white_button"
                 android:text="@string/add"

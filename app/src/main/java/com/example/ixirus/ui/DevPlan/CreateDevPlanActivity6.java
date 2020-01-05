@@ -60,10 +60,10 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_dev_plan6);
         ImageView imageView = findViewById(R.id.buttonBack);
-        getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan) ;
+        getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan);
 
         lv = findViewById(R.id.listView);
-        lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        lv.setChoiceMode(ListView.CHOICE_MODE_NONE);
         lv.setClickable(true);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -73,10 +73,10 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
         });
 
         final EditText editText = findViewById(R.id.editTextNewBehaviour);
-        final TextView tv = (TextView)findViewById(R.id.textView2) ;
-        final ImageView refreshImage = (ImageView)findViewById(R.id.refreshIco) ;
+        final TextView tv = (TextView) findViewById(R.id.textView2);
+        final ImageView refreshImage = (ImageView) findViewById(R.id.refreshIco);
         final Button nextButton = (Button) findViewById(R.id.button);
-        dateTextView = (TextView)findViewById(R.id.editTextDate) ;
+        dateTextView = (TextView) findViewById(R.id.editTextDate);
         myCalendar = Calendar.getInstance();
         final Button addButton = findViewById(R.id.buttonAdd);
 
@@ -114,24 +114,24 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
         getSupportActionBar().setCustomView(imgView);
 
         Display display = getWindowManager().getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics ();
+        DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
-        float density  = getResources().getDisplayMetrics().density;
+        float density = getResources().getDisplayMetrics().density;
         tv.setTextSize(9 * density);
 
         SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
-        final String savedToken = sp.getString("Token",null);
-        loadListItem(savedToken,null,false);
+        final String savedToken = sp.getString("Token", null);
+        //loadListItem(savedToken,null,false);
 
-        refreshImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refreshImage.setVisibility(View.GONE);
-                findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
-                loadListItem(savedToken,null,false);
-
-            }
-        });
+//        refreshImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                refreshImage.setVisibility(View.GONE);
+//                findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
+//                loadListItem(savedToken,null,false);
+//
+//            }
+//        });
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,9 +140,13 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
             }
         });
 
+        final ArrayList<ListItem> arr = new ArrayList<ListItem>();
+
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
                 final String currentText = editText.getText().toString().trim();
                 String myFormatAdded = "dd.MM.yyyy";
                 String myFormatPosted = "MM/dd/yy";
@@ -154,18 +158,41 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                 final String endDateAdded = sdfAdded.format(myCalendar.getTime());
 
                 if (currentText.matches("")) {
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.type_name), Toast.LENGTH_SHORT).show();
+                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+
                     return;
-                }
-                else if(endDateAdded.matches("")) {
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
-                }
-                else{
+                } else if (dateTextView.getText() == "") {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.select_date), Toast.LENGTH_SHORT).show();
+                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+
+                } else {
                     StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/task", new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            addProgramm(savedToken,currentText+" - "+endDateAdded);
+                            try {
+                                JSONObject addedObject = new JSONObject(response);
+                                int addedId = Integer.parseInt(addedObject.getString("data"));
+
+                                ListItem item = new ListItem();
+                                item.Id = addedId;
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                String myFormat = "dd.MM.yyyy"; //In which you need put here
+                                SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+                                item.Name = currentText + " - " + endDateAdded;
+                                arr.add(item);
+
+                                final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(), arr);
+                                lv.setAdapter(adapter);
+                                findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                            } catch (JSONException e) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                                findViewById(R.id.progressBar2).setVisibility(View.GONE);
+
+                            }
+                            dateTextView.setText(null);
                             editText.getText().clear();
+
                             findViewById(R.id.refreshIco).setVisibility(View.GONE);
                             findViewById(R.id.progressBar2).setVisibility(View.GONE);
                         }
@@ -217,49 +244,47 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
         dateTextView.setText(sdf.format(myCalendar.getTime()));
     }
 
-    public void loadListItem(final String savedToken,final String addedText, final boolean fromAddItem)
-    {
+    public void loadListItem(final String savedToken, final String addedText, final boolean fromAddItem) {
         lv.setAdapter(null);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/task", null,new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/task", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 ArrayList<ListItem> arr = new ArrayList<ListItem>();
                 try {
                     JSONArray programArray = response.getJSONArray("data");
-                    for (int i=0; i < programArray.length(); i++) {
-                        JSONObject obj =  programArray.getJSONObject(i);
-                        ListItem item =  new ListItem();
-                        item.Id =  Integer.parseInt(obj.getString("id"));
+                    for (int i = 0; i < programArray.length(); i++) {
+                        JSONObject obj = programArray.getJSONObject(i);
+                        ListItem item = new ListItem();
+                        item.Id = Integer.parseInt(obj.getString("id"));
 
-                        String name =  obj.getString("name");
+                        String name = obj.getString("name");
                         String date = obj.getString("endDate");
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         try {
                             String myFormat = "dd.MM.yyyy"; //In which you need put here
                             SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
                             Date d = sdf.parse(date);
-                            item.Name =  name+" - "+dateFormat.format(d);
+                            item.Name = name + " - " + dateFormat.format(d);
                             arr.add(item);
                         } catch (ParseException ex) {
-                            Toast.makeText(getBaseContext(),getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
                             findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
                             findViewById(R.id.progressBar2).setVisibility(View.GONE);
                         }
 
                     }
-                    final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(),arr);
+                    final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(), arr);
                     lv.setAdapter(adapter);
-                    if(fromAddItem)
-                    {
-                        for (int position=0; position<adapter.getCount(); position++)
-                            if (((ListItem)adapter.getItem(position)).Name.equals(addedText)) {
+                    if (fromAddItem) {
+                        for (int position = 0; position < adapter.getCount(); position++)
+                            if (((ListItem) adapter.getItem(position)).Name.equals(addedText)) {
                                 lv.setItemChecked(position, true);
                                 lv.setSelection(position);
                             }
                     }
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 } catch (JSONException e) {
-                    Toast.makeText(getBaseContext(),getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
                     findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 }
@@ -267,7 +292,7 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(),getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
                 findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
                 findViewById(R.id.progressBar2).setVisibility(View.GONE);
             }
@@ -291,12 +316,11 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
         queue.add(request);
     }
 
-    public void addProgramm(final String savedToken,String addedText)
-    {
+    public void addProgramm(final String savedToken, String addedText) {
         findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
         Toast.makeText(getBaseContext(), getResources().getString(R.string.successfully_added), Toast.LENGTH_SHORT).show();
-        loadListItem(savedToken,addedText,true);
-        lv.setItemChecked(0,true);
+        loadListItem(savedToken, addedText, true);
+        lv.setItemChecked(0, true);
         findViewById(R.id.progressBar2).setVisibility(View.GONE);
     }
 }

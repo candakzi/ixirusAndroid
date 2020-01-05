@@ -38,6 +38,9 @@
     <string name="add_new_behaviour">Add New Behaviour</string>
     <string name="successfully_added">Successfully Added!</string>
     <string name="retry_add">Plase Try Again!</string>
+    <string name="select_source">Please Select Source!</string>
+    <string name="select_date">Please Select Date!</string>
+    <string name="type_name">Please Type Name!</string>
 
     <string name="type_expect">Type the benefits what you expect from this program</string>
     <string name="click_list_ico">Data Feed Error! Click to Refresh</string>

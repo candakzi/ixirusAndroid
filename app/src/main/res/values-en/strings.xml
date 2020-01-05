@@ -13,6 +13,9 @@
     <string name="menu_messages">Messages</string>
     <string name="menu_xperince_sharing">Xperience Sharing</string>
     <string name="menu_dev_sources">DevSource</string>
+    <string name="select_source">Please Select Source!</string>
+    <string name="select_date">Please Select Date!</string>
+    <string name="type_name">Please Type Name!</string>
 
     <string name="menu_create_dev_plan">Create Dev Plan</string>
     <string name="choose_programm">CHOOSE PROGRAMME</string>
