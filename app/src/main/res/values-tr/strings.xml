@@ -30,6 +30,9 @@
     <string name="select_source">Kaynak Seçiniz!</string>
     <string name="select_date">Tarih Seçiniz!</string>
     <string name="type_name">İsim Giriniz!</string>
+    <string name="select_item">Lütfen Seçim Yapınız!</string>
+    <string name="answer_the_questions">Lütfen Tüm Soruları Cevaplayınız</string>
+    <string name="add_action_step">Lütfen Aksiyon Adımı Ekleyiniz</string>
 
 
     <string name="login_error_toast">Email veya Şifre Hatalı</string>

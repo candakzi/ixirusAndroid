@@ -38,8 +38,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ixirus.ListAdapters.GenericListAdapter;
 import com.example.ixirus.ListAdapters.SourceListAdapter;
+import com.example.ixirus.ListAdapters.TaskListAdapter;
 import com.example.ixirus.ListItem;
 import com.example.ixirus.ListItemSources;
+import com.example.ixirus.ListItemTasks;
 import com.example.ixirus.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -52,6 +54,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -104,7 +107,7 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         display.getMetrics(outMetrics);
         float density = getResources().getDisplayMetrics().density;
         tv.setTextSize(9 * density);
-        final ArrayList<ListItem> arr = new ArrayList<ListItem>();
+        final ArrayList<ListItemTasks> arr = new ArrayList<ListItemTasks>();
 
         SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
         final String savedToken = sp.getString("Token", null);
@@ -163,8 +166,74 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity8.class);
-                startActivity(intent);
+                TaskListAdapter finalAdapter = (TaskListAdapter) lv.getAdapter();
+                if (finalAdapter.getCount() == 0) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.add_action_step), Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    Bundle extras = getIntent().getExtras();
+                    int programId;
+                    int perfectionId;
+                    int behaviourId;
+                    String benefit;
+                    int question1;
+                    int question2;
+                    int question3;
+                    int question4;
+                    int question5;
+                    String actionTasks;
+
+                    if (extras != null) {
+                        programId = extras.getInt("programId");
+                        perfectionId = extras.getInt("perfectionId");
+                        behaviourId = extras.getInt("behaviourId");
+                        benefit = extras.getString("benefit");
+                        question1 = extras.getInt("question1");
+                        question2 = extras.getInt("question2");
+                        question3 = extras.getInt("question3");
+                        question4 = extras.getInt("question4");
+                        question5 = extras.getInt("question5");
+                        actionTasks = extras.getString("actionTasks");
+
+                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity8.class);
+
+                        intent.putExtra("behaviourId", behaviourId);
+                        intent.putExtra("perfectionId", perfectionId);
+                        intent.putExtra("programId", programId);
+                        intent.putExtra("benefit", benefit);
+                        intent.putExtra("question1", question1);
+                        intent.putExtra("question2", question2);
+                        intent.putExtra("question3", question3);
+                        intent.putExtra("question4", question4);
+                        intent.putExtra("question5", question5);
+                        intent.putExtra("actionTasks", actionTasks);
+
+                        JSONArray array = new JSONArray();
+                        for (int position = 0; position < finalAdapter.getCount(); position++) {
+                            ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
+                            String name = item.Name.split("-")[0].trim();
+                            String myFormatPosted = "MM/dd/yy";
+                            SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
+                            final String endDatePosted = sdfPosted.format(item.Date);
+                            int sourceId = item.SourceId;
+                            int id = item.Id;
+                            JSONObject obj = new JSONObject();
+                            try {
+                                obj.put("id",id);
+                                obj.put("name",name);
+                                obj.put("sourceId",sourceId);
+                                obj.put("endDate",endDatePosted);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            array.put(obj);
+                        }
+                        intent.putExtra("sourceTasks", array.toString());
+                        startActivity(intent);
+                    }
+                }
             }
         });
 
@@ -206,15 +275,18 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                                 JSONObject addedObject = new JSONObject(response);
                                 int addedId = Integer.parseInt(addedObject.getString("data"));
 
-                                ListItem item = new ListItem();
+                                ListItemTasks item = new ListItemTasks();
                                 item.Id = addedId;
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                                 String myFormat = "dd.MM.yyyy"; //In which you need put here
                                 SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+                                item.Id = addedId;
                                 item.Name = currentText + " - " + endDateAdded;
+                                item.Date = myCalendar.getTime();
+                                item.SourceId = ((ListItemSources) selectedSourceObject).Id;
                                 arr.add(item);
 
-                                final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(), arr);
+                                final TaskListAdapter adapter = new TaskListAdapter(getBaseContext(), arr);
                                 lv.setAdapter(adapter);
                                 findViewById(R.id.progressBar2).setVisibility(View.GONE);
                             } catch (JSONException e) {
@@ -224,7 +296,7 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                             }
                             dateTextView.setText(null);
                             resourceText.setText(null);
-                            selectedSourceObject=null;
+                            selectedSourceObject= null;
 
                             findViewById(R.id.refreshIco).setVisibility(View.GONE);
                             findViewById(R.id.progressBar2).setVisibility(View.GONE);

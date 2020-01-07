@@ -45,6 +45,7 @@ import java.util.Map;
 
 public class CreateDevPlanActivity3 extends AppCompatActivity {
     private ListView lv;
+    private Object selectedItem = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +59,7 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
+                selectedItem = lv.getItemAtPosition(position);
             }
         });
 
@@ -90,8 +91,29 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
-                startActivity(intent);
+                Bundle extras = getIntent().getExtras();
+                int programId;
+                int perfectionId;
+
+                if (extras != null) {
+                    programId = extras.getInt("programId");
+                    perfectionId = extras.getInt("perfectionId");
+
+                    JSONObject devPlanObject = new JSONObject();
+                    Object selectedObj = selectedItem;
+                    if (selectedObj == null) {
+                        Toast.makeText(getBaseContext(), getResources().getString(R.string.select_item), Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+                        ListItem selectedListItem = (ListItem) selectedObj;
+                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
+                        intent.putExtra("behaviourId", selectedListItem.Id);
+                        intent.putExtra("perfectionId", perfectionId);
+                        intent.putExtra("programId", programId);
+
+                        startActivity(intent);
+                    }
+                }
             }
         });
 
@@ -184,6 +206,7 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
                             if (((ListItem)adapter.getItem(position)).Name.equals(addedText)) {
                                 lv.setItemChecked(position, true);
                                 lv.setSelection(position);
+                                selectedItem = lv.getItemAtPosition(position);
                             }
                     }
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);

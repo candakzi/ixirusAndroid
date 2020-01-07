@@ -32,14 +32,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ixirus.ListAdapters.GenericListAdapter;
-import com.example.ixirus.ListItem;
+import com.example.ixirus.ListAdapters.TaskListAdapter;
+import com.example.ixirus.ListItemTasks;
 import com.example.ixirus.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -121,17 +122,6 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
 
         SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
         final String savedToken = sp.getString("Token", null);
-        //loadListItem(savedToken,null,false);
-
-//        refreshImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                refreshImage.setVisibility(View.GONE);
-//                findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
-//                loadListItem(savedToken,null,false);
-//
-//            }
-//        });
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +130,7 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
             }
         });
 
-        final ArrayList<ListItem> arr = new ArrayList<ListItem>();
+        final ArrayList<ListItemTasks> arr = new ArrayList<ListItemTasks>();
 
 
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -174,15 +164,17 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                                 JSONObject addedObject = new JSONObject(response);
                                 int addedId = Integer.parseInt(addedObject.getString("data"));
 
-                                ListItem item = new ListItem();
-                                item.Id = addedId;
+                                ListItemTasks item = new ListItemTasks();
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                                 String myFormat = "dd.MM.yyyy"; //In which you need put here
                                 SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+                                item.Id = addedId;
                                 item.Name = currentText + " - " + endDateAdded;
+                                item.Date =myCalendar.getTime();
+                                item.SourceId =0;
                                 arr.add(item);
 
-                                final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(), arr);
+                                final TaskListAdapter adapter = new TaskListAdapter(getBaseContext(), arr);
                                 lv.setAdapter(adapter);
                                 findViewById(R.id.progressBar2).setVisibility(View.GONE);
                             } catch (JSONException e) {
@@ -232,8 +224,70 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity7.class);
-                startActivity(intent);
+                TaskListAdapter finalAdapter = (TaskListAdapter) lv.getAdapter();
+                if (finalAdapter.getCount() == 0) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.add_action_step), Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    Bundle extras = getIntent().getExtras();
+                    int programId;
+                    int perfectionId;
+                    int behaviourId;
+                    String benefit;
+                    int question1;
+                    int question2;
+                    int question3;
+                    int question4;
+                    int question5;
+
+                    if (extras != null) {
+                        programId = extras.getInt("programId");
+                        perfectionId = extras.getInt("perfectionId");
+                        behaviourId = extras.getInt("behaviourId");
+                        benefit = extras.getString("benefit");
+                        question1 = extras.getInt("question1");
+                        question2 = extras.getInt("question2");
+                        question3 = extras.getInt("question3");
+                        question4 = extras.getInt("question4");
+                        question5 = extras.getInt("question5");
+                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity7.class);
+
+                        intent.putExtra("behaviourId", behaviourId);
+                        intent.putExtra("perfectionId", perfectionId);
+                        intent.putExtra("programId", programId);
+                        intent.putExtra("benefit", benefit);
+                        intent.putExtra("question1", question1);
+                        intent.putExtra("question2", question2);
+                        intent.putExtra("question3", question3);
+                        intent.putExtra("question4", question4);
+                        intent.putExtra("question5", question5);
+
+                        JSONArray array = new JSONArray();
+                        for (int position = 0; position < finalAdapter.getCount(); position++) {
+                            ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
+                            String name = item.Name.split("-")[0].trim();
+                            String myFormatPosted = "MM/dd/yy";
+                            SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
+                            final String endDatePosted = sdfPosted.format(item.Date);
+                            int sourceId = item.SourceId;
+                            int id = item.Id;
+                            JSONObject obj = new JSONObject();
+                            try {
+                                obj.put("id",id);
+                                obj.put("name",name);
+                                obj.put("sourceId",sourceId);
+                                obj.put("endDate",endDatePosted);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            array.put(obj);
+                        }
+                        intent.putExtra("actionTasks", array.toString());
+                        startActivity(intent);
+                    }
+                }
             }
         });
     }
@@ -242,85 +296,5 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
         String myFormat = "dd.MM.yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         dateTextView.setText(sdf.format(myCalendar.getTime()));
-    }
-
-    public void loadListItem(final String savedToken, final String addedText, final boolean fromAddItem) {
-        lv.setAdapter(null);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/task", null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                ArrayList<ListItem> arr = new ArrayList<ListItem>();
-                try {
-                    JSONArray programArray = response.getJSONArray("data");
-                    for (int i = 0; i < programArray.length(); i++) {
-                        JSONObject obj = programArray.getJSONObject(i);
-                        ListItem item = new ListItem();
-                        item.Id = Integer.parseInt(obj.getString("id"));
-
-                        String name = obj.getString("name");
-                        String date = obj.getString("endDate");
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        try {
-                            String myFormat = "dd.MM.yyyy"; //In which you need put here
-                            SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
-                            Date d = sdf.parse(date);
-                            item.Name = name + " - " + dateFormat.format(d);
-                            arr.add(item);
-                        } catch (ParseException ex) {
-                            Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
-                            findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
-                            findViewById(R.id.progressBar2).setVisibility(View.GONE);
-                        }
-
-                    }
-                    final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(), arr);
-                    lv.setAdapter(adapter);
-                    if (fromAddItem) {
-                        for (int position = 0; position < adapter.getCount(); position++)
-                            if (((ListItem) adapter.getItem(position)).Name.equals(addedText)) {
-                                lv.setItemChecked(position, true);
-                                lv.setSelection(position);
-                            }
-                    }
-                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
-                } catch (JSONException e) {
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
-                    findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
-                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
-                findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
-                findViewById(R.id.progressBar2).setVisibility(View.GONE);
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Bearer " + savedToken);
-                return headers;
-            }
-
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("onlySources", "true");
-                return params;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
-        queue.add(request);
-    }
-
-    public void addProgramm(final String savedToken, String addedText) {
-        findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
-        Toast.makeText(getBaseContext(), getResources().getString(R.string.successfully_added), Toast.LENGTH_SHORT).show();
-        loadListItem(savedToken, addedText, true);
-        lv.setItemChecked(0, true);
-        findViewById(R.id.progressBar2).setVisibility(View.GONE);
     }
 }

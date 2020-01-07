@@ -18,9 +18,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.ixirus.ListAdapters.GenericListAdapter;
 import com.example.ixirus.ListItem;
 import com.example.ixirus.R;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class CreateDevPlanActivity5 extends AppCompatActivity {
@@ -30,17 +35,25 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
     private ListView lv4;
     private ListView lv5;
 
+    private Object selectedItem1 = null;
+    private Object selectedItem2 = null;
+    private Object selectedItem3 = null;
+    private Object selectedItem4 = null;
+    private Object selectedItem5 = null;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_dev_plan5);
         lv1 = findViewById(R.id.listView);
+
         lv1.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         lv1.setClickable(true);
         lv1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
+                selectedItem1 = lv1.getItemAtPosition(position);
             }
         });
 
@@ -50,7 +63,7 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
         lv2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
+                selectedItem2 = lv2.getItemAtPosition(position);
             }
         });
 
@@ -60,7 +73,7 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
         lv3.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
+                selectedItem3 = lv3.getItemAtPosition(position);
             }
         });
 
@@ -70,7 +83,7 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
         lv4.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
+                selectedItem4 = lv4.getItemAtPosition(position);
             }
         });
 
@@ -80,7 +93,7 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
         lv5.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
+                selectedItem5 = lv5.getItemAtPosition(position);
             }
         });
 
@@ -115,10 +128,36 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity6.class);
-                startActivity(intent);
-//                SharedPreferences settings = getBaseContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
-//                settings.edit().clear().commit();
+                Bundle extras = getIntent().getExtras();
+                int programId;
+                int perfectionId;
+                int behaviourId;
+                String benefit;
+
+                if (extras != null) {
+                    programId = extras.getInt("programId");
+                    perfectionId = extras.getInt("perfectionId");
+                    behaviourId = extras.getInt("behaviourId");
+                    benefit = extras.getString("benefit");
+
+                    if (selectedItem1 == null|| selectedItem2 == null|| selectedItem3 == null || selectedItem4 == null || selectedItem5 == null ) {
+                        Toast.makeText(getBaseContext(), getResources().getString(R.string.answer_the_questions), Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity6.class);
+                        intent.putExtra("behaviourId", behaviourId);
+                        intent.putExtra("perfectionId", perfectionId);
+                        intent.putExtra("programId", programId);
+                        intent.putExtra("benefit", benefit);
+                        intent.putExtra("question1", ((ListItem)selectedItem1).Id);
+                        intent.putExtra("question2", ((ListItem)selectedItem2).Id);
+                        intent.putExtra("question3", ((ListItem)selectedItem3).Id);
+                        intent.putExtra("question4", ((ListItem)selectedItem4).Id);
+                        intent.putExtra("question5", ((ListItem)selectedItem5).Id);
+
+                        startActivity(intent);
+                    }
+                }
             }
         });
 

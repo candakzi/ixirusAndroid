@@ -41,6 +41,9 @@
     <string name="select_source">Please Select Source!</string>
     <string name="select_date">Please Select Date!</string>
     <string name="type_name">Please Type Name!</string>
+    <string name="select_item">Please Select Item!</string>
+    <string name="answer_the_questions">Please Answer All Questions</string>
+    <string name="add_action_step">Please Add Action Step</string>
 
     <string name="type_expect">Type the benefits what you expect from this program</string>
     <string name="click_list_ico">Data Feed Error! Click to Refresh</string>

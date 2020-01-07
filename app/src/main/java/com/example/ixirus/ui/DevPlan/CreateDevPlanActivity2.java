@@ -45,6 +45,8 @@ import java.util.Map;
 
 public class CreateDevPlanActivity2 extends AppCompatActivity {
     private ListView lv;
+    private Object selectedItem = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,13 +60,13 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
+                selectedItem = lv.getItemAtPosition(position);
             }
         });
 
         final EditText editText = findViewById(R.id.editTextNewPerfection);
-        final TextView tv = (TextView)findViewById(R.id.textView2) ;
-        final ImageView refreshImage = (ImageView)findViewById(R.id.refreshIco) ;
+        final TextView tv = (TextView) findViewById(R.id.textView2);
+        final ImageView refreshImage = (ImageView) findViewById(R.id.refreshIco);
         final Button nextButton = (Button) findViewById(R.id.button);
 
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -76,19 +78,36 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
         getSupportActionBar().setCustomView(imgView);
 
         Display display = getWindowManager().getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics ();
+        DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
         SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
-        final String savedToken = sp.getString("Token",null);
+        final String savedToken = sp.getString("Token", null);
 
-        float density  = getResources().getDisplayMetrics().density;
+        float density = getResources().getDisplayMetrics().density;
         tv.setTextSize(9 * density);
-        loadListItem(savedToken,null,false);
+        loadListItem(savedToken, null, false);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
-                startActivity(intent);
+                Bundle extras = getIntent().getExtras();
+                int programId;
+                if (extras != null) {
+                    programId = extras.getInt("programId");
+
+                    JSONObject devPlanObject = new JSONObject();
+                    Object selectedObj = selectedItem;
+                    if (selectedObj == null) {
+                        Toast.makeText(getBaseContext(), getResources().getString(R.string.select_item), Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+                        ListItem selectedListItem = (ListItem) selectedObj;
+                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
+                        intent.putExtra("perfectionId", selectedListItem.Id);
+                        intent.putExtra("programId", programId);
+
+                        startActivity(intent);
+                    }
+                }
             }
         });
 
@@ -97,7 +116,7 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
             public void onClick(View v) {
                 refreshImage.setVisibility(View.GONE);
                 findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
-                loadListItem(savedToken,null,false);
+                loadListItem(savedToken, null, false);
 
             }
         });
@@ -112,7 +131,7 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
         editText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId  == EditorInfo.IME_ACTION_DONE) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
                     final String currentText = editText.getText().toString().trim();
                     if (currentText.matches(""))
                         return false;
@@ -120,7 +139,7 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
                         StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/perfection", new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                addProgramm(savedToken,currentText);
+                                addProgramm(savedToken, currentText);
                                 editText.getText().clear();
                                 findViewById(R.id.refreshIco).setVisibility(View.GONE);
                                 findViewById(R.id.progressBar2).setVisibility(View.GONE);
@@ -156,59 +175,56 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
         });
     }
 
-    public void setItemSelected(View view){
+    public void setItemSelected(View view) {
         View rowView = view;
-        View v2 =  ((ViewGroup)view).getChildAt(0);
-        View v3 =  ((ViewGroup)v2).getChildAt(0);
-        TextView txtview = (TextView)v3;
+        View v2 = ((ViewGroup) view).getChildAt(0);
+        View v3 = ((ViewGroup) v2).getChildAt(0);
+        TextView txtview = (TextView) v3;
 
-        TextView tv = (TextView)v3;
+        TextView tv = (TextView) v3;
         txtview.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimary));
     }
 
-    public void setItemNormal()
-    {
-        for (int i=0; i< lv.getChildCount(); i++)
-        {
+    public void setItemNormal() {
+        for (int i = 0; i < lv.getChildCount(); i++) {
             View v = lv.getChildAt(i);
 
-            View v2 =  ((ViewGroup)v).getChildAt(0);
-            View v3 =  ((ViewGroup)v2).getChildAt(0);
+            View v2 = ((ViewGroup) v).getChildAt(0);
+            View v3 = ((ViewGroup) v2).getChildAt(0);
 
-            TextView txtview = (TextView)v3;
+            TextView txtview = (TextView) v3;
             txtview.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.black_overlay));
         }
     }
 
-    public void loadListItem(final String savedToken,final String addedText, final boolean fromAddItem)
-    {
+    public void loadListItem(final String savedToken, final String addedText, final boolean fromAddItem) {
         lv.setAdapter(null);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/perfection", null,new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/perfection", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 ArrayList<ListItem> arr = new ArrayList<ListItem>();
                 try {
                     JSONArray programArray = response.getJSONArray("data");
-                    for (int i=0; i < programArray.length(); i++) {
-                        JSONObject obj =  programArray.getJSONObject(i);
-                        ListItem item =  new ListItem();
-                        item.Id =  Integer.parseInt(obj.getString("id"));
-                        item.Name =  obj.getString("name");
+                    for (int i = 0; i < programArray.length(); i++) {
+                        JSONObject obj = programArray.getJSONObject(i);
+                        ListItem item = new ListItem();
+                        item.Id = Integer.parseInt(obj.getString("id"));
+                        item.Name = obj.getString("name");
                         arr.add(item);
                     }
-                    final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(),arr);
+                    final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(), arr);
                     lv.setAdapter(adapter);
-                    if(fromAddItem)
-                    {
-                        for (int position=0; position<adapter.getCount(); position++)
-                            if (((ListItem)adapter.getItem(position)).Name.equals(addedText)) {
+                    if (fromAddItem) {
+                        for (int position = 0; position < adapter.getCount(); position++)
+                            if (((ListItem) adapter.getItem(position)).Name.equals(addedText)) {
                                 lv.setItemChecked(position, true);
                                 lv.setSelection(position);
+                                selectedItem = lv.getItemAtPosition(position);
                             }
                     }
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 } catch (JSONException e) {
-                    Toast.makeText(getBaseContext(),getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
                     findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 }
@@ -216,7 +232,7 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(),getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
                 findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
                 findViewById(R.id.progressBar2).setVisibility(View.GONE);
             }
@@ -233,12 +249,11 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
         queue.add(request);
     }
 
-    public void addProgramm(final String savedToken,String addedText)
-    {
+    public void addProgramm(final String savedToken, String addedText) {
         findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
         Toast.makeText(getBaseContext(), getResources().getString(R.string.successfully_added), Toast.LENGTH_SHORT).show();
-        loadListItem(savedToken,addedText,true);
-        lv.setItemChecked(0,true);
+        loadListItem(savedToken, addedText, true);
+        lv.setItemChecked(0, true);
         findViewById(R.id.progressBar2).setVisibility(View.GONE);
     }
 }

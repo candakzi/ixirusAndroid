@@ -42,6 +42,7 @@ import java.util.HashMap;
 import java.util.Map;
 public class CreateDevPlanActivity1 extends AppCompatActivity {
     private ListView lv;
+    private Object selectedItem = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,7 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
+                selectedItem = lv.getItemAtPosition(position);
             }
         });
 
@@ -85,8 +86,18 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity2.class);
-                startActivity(intent);
+                JSONObject devPlanObject = new JSONObject();
+                Object selectedObj =  selectedItem;
+                if(selectedObj==null) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.select_item), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else {
+                    ListItem selectedListItem = (ListItem)selectedObj;
+                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity2.class);
+                    intent.putExtra("programId",selectedListItem.Id);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -195,6 +206,7 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                             if (((ListItem)adapter.getItem(position)).Name.equals(addedText)) {
                                 lv.setItemChecked(position, true);
                                 lv.setSelection(position);
+                                selectedItem = lv.getItemAtPosition(position);
                             }
                     }
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);

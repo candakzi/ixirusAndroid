@@ -12,12 +12,17 @@ import android.view.Display;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.ixirus.ListItem;
 import com.example.ixirus.R;
+
+import org.json.JSONObject;
 
 public class CreateDevPlanActivity4 extends AppCompatActivity {
 
@@ -26,7 +31,7 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_dev_plan4);
         ImageView imageView = findViewById(R.id.buttonBack);
-        getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan) ;
+        getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan);
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -37,25 +42,37 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
         getSupportActionBar().setCustomView(imgView);
 
         Display display = getWindowManager().getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics ();
+        DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
 
-        float density  = getResources().getDisplayMetrics().density;
+        float density = getResources().getDisplayMetrics().density;
 
-        TextView tv = (TextView)findViewById(R.id.textView2) ;
+        TextView tv = (TextView) findViewById(R.id.textView2);
         tv.setTextSize(9 * density);
 
         Button nextButton = (Button) findViewById(R.id.button);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity5.class);
-                startActivity(intent);
-//                SharedPreferences settings = getBaseContext().getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
-//                settings.edit().clear().commit();
+                Bundle extras = getIntent().getExtras();
+                int programId;
+                int perfectionId;
+                int behaviourId;
+                if (extras != null) {
+                    programId = extras.getInt("programId");
+                    perfectionId = extras.getInt("perfectionId");
+                    behaviourId = extras.getInt("behaviourId");
+
+                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity5.class);
+                    intent.putExtra("behaviourId", behaviourId);
+                    intent.putExtra("perfectionId", perfectionId);
+                    intent.putExtra("programId", programId);
+                    intent.putExtra("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
+
+                    startActivity(intent);
+                }
             }
         });
-
 
 
         imageView.setOnClickListener(new View.OnClickListener() {
