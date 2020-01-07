@@ -58,17 +58,19 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
                 int programId;
                 int perfectionId;
                 int behaviourId;
+                String planName;
                 if (extras != null) {
                     programId = extras.getInt("programId");
                     perfectionId = extras.getInt("perfectionId");
                     behaviourId = extras.getInt("behaviourId");
+                    planName = extras.getString("planName");
 
                     Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity5.class);
                     intent.putExtra("behaviourId", behaviourId);
                     intent.putExtra("perfectionId", perfectionId);
                     intent.putExtra("programId", programId);
                     intent.putExtra("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
-
+                    intent.putExtra("planName", planName);
                     startActivity(intent);
                 }
             }

@@ -33,7 +33,9 @@
     <string name="select_item">Lütfen Seçim Yapınız!</string>
     <string name="answer_the_questions">Lütfen Tüm Soruları Cevaplayınız</string>
     <string name="add_action_step">Lütfen Aksiyon Adımı Ekleyiniz</string>
+    <string name="plan_saved_successfully">Gelişim Planlarınıza Başarılı Bir Şekilde Eklendi</string>
 
+    <string name="type_plan_name">Lütfen Bir Plan İsmi Giriniz</string>
 
     <string name="login_error_toast">Email veya Şifre Hatalı</string>
     <string name="welcome">Welcome to Ixirus</string>

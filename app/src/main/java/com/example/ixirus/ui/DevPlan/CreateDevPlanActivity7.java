@@ -181,7 +181,8 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                     int question3;
                     int question4;
                     int question5;
-                    String actionTasks;
+                    String planName;
+                    final ArrayList<Integer> actionTasks;
 
                     if (extras != null) {
                         programId = extras.getInt("programId");
@@ -193,7 +194,8 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                         question3 = extras.getInt("question3");
                         question4 = extras.getInt("question4");
                         question5 = extras.getInt("question5");
-                        actionTasks = extras.getString("actionTasks");
+                        planName = extras.getString("planName");
+                        actionTasks = extras.getIntegerArrayList("actionTasks");
 
                         Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity8.class);
 
@@ -207,8 +209,10 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                         intent.putExtra("question4", question4);
                         intent.putExtra("question5", question5);
                         intent.putExtra("actionTasks", actionTasks);
+                        intent.putExtra("planName", planName);
 
                         JSONArray array = new JSONArray();
+                        ArrayList<Integer> list = new ArrayList<Integer>();
                         for (int position = 0; position < finalAdapter.getCount(); position++) {
                             ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
                             String name = item.Name.split("-")[0].trim();
@@ -218,19 +222,9 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                             int sourceId = item.SourceId;
                             int id = item.Id;
                             JSONObject obj = new JSONObject();
-                            try {
-                                obj.put("id",id);
-                                obj.put("name",name);
-                                obj.put("sourceId",sourceId);
-                                obj.put("endDate",endDatePosted);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            array.put(obj);
+                            list.add(id);;
                         }
-                        intent.putExtra("sourceTasks", array.toString());
+                        intent.putExtra("sourceTasks", list);
                         startActivity(intent);
                     }
                 }
@@ -261,9 +255,8 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                 if (selectedSourceObject == null) {
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.select_source), Toast.LENGTH_SHORT).show();
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);
-
                     return;
-                } else if (dateTextView.getText()==("")) {
+                } else if (dateTextView.getText() == ("")) {
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.select_date), Toast.LENGTH_SHORT).show();
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);
 
@@ -296,7 +289,7 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                             }
                             dateTextView.setText(null);
                             resourceText.setText(null);
-                            selectedSourceObject= null;
+                            selectedSourceObject = null;
 
                             findViewById(R.id.refreshIco).setVisibility(View.GONE);
                             findViewById(R.id.progressBar2).setVisibility(View.GONE);
@@ -311,8 +304,6 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> params = new HashMap<String, String>();
-
-
                             params.put("Name", "");
                             params.put("SourceId", Integer.toString(((ListItemSources) selectedSourceObject).Id));
                             params.put("EndDate", endDatePosted);

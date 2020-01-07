@@ -91,8 +91,10 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
             public void onClick(View v) {
                 Bundle extras = getIntent().getExtras();
                 int programId;
+                String planName;
                 if (extras != null) {
                     programId = extras.getInt("programId");
+                    planName = extras.getString("planName");
 
                     JSONObject devPlanObject = new JSONObject();
                     Object selectedObj = selectedItem;
@@ -104,6 +106,7 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
                         Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
                         intent.putExtra("perfectionId", selectedListItem.Id);
                         intent.putExtra("programId", programId);
+                        intent.putExtra("planName", planName);
 
                         startActivity(intent);
                     }

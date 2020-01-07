@@ -133,12 +133,14 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
                 int perfectionId;
                 int behaviourId;
                 String benefit;
+                String planName;
 
                 if (extras != null) {
                     programId = extras.getInt("programId");
                     perfectionId = extras.getInt("perfectionId");
                     behaviourId = extras.getInt("behaviourId");
                     benefit = extras.getString("benefit");
+                    planName = extras.getString("planName");
 
                     if (selectedItem1 == null|| selectedItem2 == null|| selectedItem3 == null || selectedItem4 == null || selectedItem5 == null ) {
                         Toast.makeText(getBaseContext(), getResources().getString(R.string.answer_the_questions), Toast.LENGTH_SHORT).show();
@@ -154,6 +156,7 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
                         intent.putExtra("question3", ((ListItem)selectedItem3).Id);
                         intent.putExtra("question4", ((ListItem)selectedItem4).Id);
                         intent.putExtra("question5", ((ListItem)selectedItem5).Id);
+                        intent.putExtra("planName", planName);
 
                         startActivity(intent);
                     }

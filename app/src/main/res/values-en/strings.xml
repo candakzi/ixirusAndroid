@@ -19,6 +19,8 @@
     <string name="select_item">Please Select Item!</string>
     <string name="answer_the_questions">Please Answer All Questions</string>
     <string name="add_action_step">Please Add Action Step</string>
+    <string name="type_plan_name">Please Type a Plan Name</string>
+    <string name="plan_saved_successfully">Successfully Added to Your Development Plans</string>
 
     <string name="menu_create_dev_plan">Create Dev Plan</string>
     <string name="choose_programm">CHOOSE PROGRAMME</string>

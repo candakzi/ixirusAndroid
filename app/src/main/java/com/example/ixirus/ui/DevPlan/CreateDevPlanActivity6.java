@@ -239,6 +239,7 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                     int question3;
                     int question4;
                     int question5;
+                    String planName;
 
                     if (extras != null) {
                         programId = extras.getInt("programId");
@@ -250,6 +251,8 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                         question3 = extras.getInt("question3");
                         question4 = extras.getInt("question4");
                         question5 = extras.getInt("question5");
+                        planName = extras.getString("planName");
+
                         Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity7.class);
 
                         intent.putExtra("behaviourId", behaviourId);
@@ -261,8 +264,11 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                         intent.putExtra("question3", question3);
                         intent.putExtra("question4", question4);
                         intent.putExtra("question5", question5);
+                        intent.putExtra("planName", planName);
 
                         JSONArray array = new JSONArray();
+                        ArrayList<Integer> list = new ArrayList<Integer>();
+
                         for (int position = 0; position < finalAdapter.getCount(); position++) {
                             ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
                             String name = item.Name.split("-")[0].trim();
@@ -272,19 +278,9 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                             int sourceId = item.SourceId;
                             int id = item.Id;
                             JSONObject obj = new JSONObject();
-                            try {
-                                obj.put("id",id);
-                                obj.put("name",name);
-                                obj.put("sourceId",sourceId);
-                                obj.put("endDate",endDatePosted);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            array.put(obj);
+                            list.add(id);
                         }
-                        intent.putExtra("actionTasks", array.toString());
+                        intent.putExtra("actionTasks", list);
                         startActivity(intent);
                     }
                 }

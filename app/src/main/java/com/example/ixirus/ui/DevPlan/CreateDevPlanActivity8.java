@@ -1,5 +1,7 @@
 package com.example.ixirus.ui.DevPlan;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,10 +37,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public class CreateDevPlanActivity8 extends AppCompatActivity {
 
@@ -89,8 +97,9 @@ public class CreateDevPlanActivity8 extends AppCompatActivity {
                 final int question3;
                 final int question4;
                 final int question5;
-                final String actionTasks;
-                String sourceTasks;
+                final String planName;
+                final ArrayList<Integer> actionTasks;
+                final ArrayList<Integer> sourceTasks;
 
                 if (extras != null) {
                     programId = extras.getInt("programId");
@@ -102,72 +111,28 @@ public class CreateDevPlanActivity8 extends AppCompatActivity {
                     question3 = extras.getInt("question3");
                     question4 = extras.getInt("question4");
                     question5 = extras.getInt("question5");
-                    actionTasks = extras.getString("actionTasks");
-                    sourceTasks = extras.getString("sourceTasks");
+                    planName = extras.getString("planName");
+
+                    actionTasks = extras.getIntegerArrayList("actionTasks");
+                    sourceTasks = extras.getIntegerArrayList("sourceTasks");
                     final Boolean managerCheck = ((CheckBox) findViewById(R.id.managerCheck)).isChecked();
                     final Boolean educatorCheck = ((CheckBox) findViewById(R.id.educatorCheck)).isChecked();
-
-
-//                    JsonObjectRequest jsonObjRequest = new JsonObjectRequest (Request.Method.POST, "https://ixirus.azurewebsites.net/api/developmentplan", new Response.Listener<String>() {
-//                        @Override
-//                        public void onResponse(String response) {
-//                            try {
-//                                JSONObject addedObject = new JSONObject(response);
-//                            } catch (JSONException e) {
-//                                Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
-//                                findViewById(R.id.progressBar2).setVisibility(View.GONE);
-//
-//                            }
-//
-//                            findViewById(R.id.refreshIco).setVisibility(View.GONE);
-//                            findViewById(R.id.progressBar2).setVisibility(View.GONE);
-//                        }
-//                    }, new Response.ErrorListener() {
-//
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//                            Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
-//                        }
-//                    }) {
-//                        @Override
-//                        protected Map<String, Object> getParams() throws AuthFailureError {
-//                            Map<String, Object> params = new HashMap<String, Object>();
-//                            params.put("Name", "Cagdas Test DevPlan");
-//                            params.put("ProgramId", programId);
-//                            params.put("BehaviorId", behaviourId);
-//                            params.put("PerfectionId", perfectionId);
-//                            params.put("Tasks", actionTasks);
-//                            params.put("Benefit", benefit);
-//                            params.put("Question1", question1);
-//                            params.put("Question2", question2);
-//                            params.put("Question3", question3);
-//                            params.put("Question4", question4);
-//                            params.put("Question5", question5);
-//                            params.put("ManagerCanFollow", managerCheck);
-//                            params.put("LecturerCanFollow", educatorCheck);
-//
-//                            return params;
-//                        }
-//
-//                        @Override
-//                        public Map<String, String> getHeaders() throws AuthFailureError {
-//                            Map<String, String> headers = new HashMap<>();
-//                            headers.put("Authorization", "Bearer " + savedToken);
-//                            return headers;
-//                        }
-//                    };
-//
-//                    RequestQueue queue = Volley.newRequestQueue(getBaseContext());
-//                    queue.add(jsonObjRequest);
-
-
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("Name", "Cagdas Test DevPlan");
+                        ArrayList<Integer> joinedList = new ArrayList<Integer>();
+                        joinedList.addAll(actionTasks);
+                        joinedList.addAll(sourceTasks);
+                        JSONArray arr = new JSONArray();
+                        for (int i = 0; i < joinedList.toArray().length; i++) {
+                            arr.put(joinedList.toArray()[i]);
+                        }
+
+
+                        jsonObject.put("Name", planName);
                         jsonObject.put("ProgramId", programId);
                         jsonObject.put("BehaviorId", behaviourId);
                         jsonObject.put("PerfectionId", perfectionId);
-                        jsonObject.put("Tasks", actionTasks);
+                        jsonObject.put("Tasks", arr);
                         jsonObject.put("Benefit", benefit);
                         jsonObject.put("Question1", question1);
                         jsonObject.put("Question2", question2);
@@ -183,50 +148,38 @@ public class CreateDevPlanActivity8 extends AppCompatActivity {
 
                     RequestQueue queue = Volley.newRequestQueue(getBaseContext());
                     JsonObjectRequest jsonForPutRequest = new JsonObjectRequest(
-                            Request.Method.POST,"https://ixirus.azurewebsites.net/api/developmentplan",jsonObject,
+                            Request.Method.POST, "https://ixirus.azurewebsites.net/api/developmentplan", jsonObject,
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
-                                    try {
-                                        Toast.makeText(getApplicationContext(),""+response.getString("mesaj"),Toast.LENGTH_LONG).show();
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
+                                    Toast.makeText(getBaseContext(), getResources().getString(R.string.plan_saved_successfully) + "\n" + planName, Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getBaseContext(), MyDevPlanListActivity.class);
+                                    startActivity(intent);
                                 }
-
-
                             }, new Response.ErrorListener() {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             NetworkResponse response = error.networkResponse;
-                            if(response != null && response.data != null){
+                            if (response != null && response.data != null) {
                                 JSONObject jsonObject = null;
                                 String errorMessage = null;
 
-                                switch(response.statusCode){
+                                switch (response.statusCode) {
                                     case 400:
                                         errorMessage = new String(response.data);
-
                                         try {
 
                                             jsonObject = new JSONObject(errorMessage);
-                                            String serverResponseMessage =  (String)jsonObject.get("hataMesaj");
-                                            Toast.makeText(getApplicationContext(),""+serverResponseMessage,Toast.LENGTH_LONG).show();
-
-
+                                            String serverResponseMessage = (String) jsonObject.get("hataMesaj");
+                                            Toast.makeText(getApplicationContext(), "" + serverResponseMessage, Toast.LENGTH_LONG).show();
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
                                 }
                             }
                         }
-
-
                     }) {
-
-
                         @Override
                         public Map<String, String> getHeaders() throws AuthFailureError {
                             Map<String, String> headers = new HashMap<>();
@@ -234,8 +187,12 @@ public class CreateDevPlanActivity8 extends AppCompatActivity {
                             return headers;
                         }
 
+                        @Override
+                        public String getBodyContentType() {
+                            // TODO Auto-generated method stub
+                            return "application/json";
+                        }
                     };
-
                     queue.add(jsonForPutRequest);
 
                 }

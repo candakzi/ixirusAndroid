@@ -88,7 +88,13 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
             public void onClick(View v) {
                 JSONObject devPlanObject = new JSONObject();
                 Object selectedObj =  selectedItem;
-                if(selectedObj==null) {
+                EditText planEditText =  (EditText)findViewById(R.id.editTextPlanName);
+
+                if(planEditText.getText().toString().trim().matches("")) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.type_plan_name), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+               else if(selectedObj==null) {
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.select_item), Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -96,6 +102,8 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                     ListItem selectedListItem = (ListItem)selectedObj;
                     Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity2.class);
                     intent.putExtra("programId",selectedListItem.Id);
+                    intent.putExtra("planName",planEditText.getText().toString().trim());
+
                     startActivity(intent);
                 }
             }
