@@ -2,112 +2,78 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="280dp"
+    android:layout_width="wrap_content"
+    android:layout_height="420dp"
     android:orientation="horizontal"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/text8"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:fontFamily="sans-serif"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-
-        android:text="@string/music_document_text"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/imageView6"
-        app:layout_constraintTop_toBottomOf="@+id/text4"
-        app:layout_constraintWidth_percent="0.8" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="0dp"
+    <CheckBox
+        android:id="@+id/allCheck"
+        android:layout_width="40dp"
         android:layout_height="70dp"
-        android:layout_gravity="center"
-        android:paddingStart="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/text"
+        android:layout_marginStart="32dp"
+        android:buttonTint="@color/colorPrimary"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:layout_constraintEnd_toStartOf="@id/text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.2"
-        app:srcCompat="@drawable/pdf_icon" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/text"
         android:layout_width="0dp"
-        android:layout_height="35dp"
+        android:layout_height="70dp"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
+
         android:paddingLeft="10dp"
         android:text="@string/pdf_document_title"
-
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/imageView3"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintStart_toEndOf="@+id/allCheck"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView3"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/allCheck"
+        tools:layout_editor_absoluteY="70dp" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="0dp"
+    <CheckBox
+        android:id="@+id/pdfCheck"
+        android:layout_width="40dp"
         android:layout_height="70dp"
-        android:layout_gravity="center"
-        android:paddingStart="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/text2"
+        android:layout_marginStart="32dp"
+        android:buttonTint="@color/colorPrimary"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:layout_constraintEnd_toStartOf="@id/text2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView3"
-        app:layout_constraintWidth_percent="0.2"
-        app:srcCompat="@drawable/video_icon" />
+        app:layout_constraintTop_toBottomOf="@id/allCheck" />
 
     <TextView
         android:id="@+id/text2"
         android:layout_width="0dp"
-        android:layout_height="35dp"
+        android:layout_height="70dp"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
+
         android:paddingLeft="10dp"
         android:text="@string/video_document_title"
-
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/imageView4"
-        app:layout_constraintTop_toBottomOf="@+id/text5"
-        app:layout_constraintWidth_percent="0.8" />
-
-    <TextView
-        android:id="@+id/text5"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:fontFamily="sans-serif"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-
-        android:text="@string/pdf_document_text"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/imageView3"
-        app:layout_constraintTop_toBottomOf="@id/text"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintStart_toEndOf="@+id/pdfCheck"
+        app:layout_constraintTop_toBottomOf="@id/text" />
 
     <View
         android:layout_width="match_parent"
@@ -115,107 +81,69 @@
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView4"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/pdfCheck"
+        tools:layout_editor_absoluteY="140dp" />
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="0dp"
+    <CheckBox
+        android:id="@+id/videoCheck"
+        android:layout_width="40dp"
         android:layout_height="70dp"
-        android:layout_gravity="center"
-        android:paddingStart="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/text2"
+        android:layout_marginStart="32dp"
+        android:buttonTint="@color/colorPrimary"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:layout_constraintEnd_toStartOf="@id/text3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView4"
-        app:layout_constraintWidth_percent="0.2"
-        app:srcCompat="@drawable/image_icon" />
+        app:layout_constraintTop_toBottomOf="@id/pdfCheck" />
 
     <TextView
         android:id="@+id/text3"
         android:layout_width="0dp"
-        android:layout_height="35dp"
+        android:layout_height="70dp"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
-
         android:text="@string/image_document_title"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/imageView5"
-        app:layout_constraintTop_toBottomOf="@+id/text6"
-        app:layout_constraintWidth_percent="0.8" />
-
-    <TextView
-        android:id="@+id/text6"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:fontFamily="sans-serif"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:text="@string/video_document_text"
-
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/imageView4"
-        app:layout_constraintTop_toBottomOf="@+id/text2"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintStart_toEndOf="@+id/videoCheck"
+        app:layout_constraintTop_toBottomOf="@+id/text2" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView5"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/videoCheck" />
 
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="0dp"
+    <CheckBox
+        android:id="@+id/imageCheck"
+        android:layout_width="40dp"
         android:layout_height="70dp"
-        android:layout_gravity="center"
-        android:paddingStart="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/text2"
+        android:layout_marginStart="32dp"
+        android:buttonTint="@color/colorPrimary"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:layout_constraintEnd_toStartOf="@id/text4"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView5"
-        app:layout_constraintWidth_percent="0.2"
-        app:srcCompat="@drawable/music_icon" />
+        app:layout_constraintTop_toBottomOf="@id/videoCheck" />
 
     <TextView
         android:id="@+id/text4"
         android:layout_width="0dp"
-        android:layout_height="35dp"
+        android:layout_height="70dp"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
+
         android:paddingLeft="10dp"
         android:text="@string/music_document_title"
-
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/imageView6"
-        app:layout_constraintTop_toBottomOf="@+id/text7"
-        app:layout_constraintWidth_percent="0.8" />
 
-    <TextView
-        android:id="@+id/text7"
-        android:layout_width="0dp"
-        android:layout_height="35dp"
-        android:fontFamily="sans-serif"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-
-        android:text="@string/image_document_text"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/imageView5"
-        app:layout_constraintTop_toBottomOf="@+id/text3"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintStart_toEndOf="@+id/imageCheck"
+        app:layout_constraintTop_toBottomOf="@+id/text3" />
 
     <View
         android:layout_width="match_parent"
@@ -223,8 +151,57 @@
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView6"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/imageCheck"
+        tools:layout_editor_absoluteY="210dp" />
+
+    <CheckBox
+        android:id="@+id/audioCheck"
+        android:layout_width="40dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="32dp"
+        android:buttonTint="@color/colorPrimary"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:layout_constraintEnd_toStartOf="@id/text5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageCheck" />
+
+    <TextView
+        android:id="@+id/text5"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center_vertical"
+
+        android:paddingLeft="10dp"
+        android:text="@string/music_document_title"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/audioCheck"
+        app:layout_constraintTop_toBottomOf="@+id/text4" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/audioCheck"
+        tools:layout_editor_absoluteY="210dp" />
+
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="160dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/red_button"
+        android:text="@string/button_text"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

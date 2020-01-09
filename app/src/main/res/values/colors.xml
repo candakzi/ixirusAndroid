@@ -9,6 +9,7 @@
     <color name="dev_plan_button">#EBEBEB</color>
     <color name="sign_in_button_color">#2F2063</color>
     <color name="sign_up_button_color">#C6205E</color>
+    <color name="list_color">#DFE5ED</color>
     <color name="color_question">#5C5C5C</color>
     <color name ="purple_color">#565799</color>
 </resources>

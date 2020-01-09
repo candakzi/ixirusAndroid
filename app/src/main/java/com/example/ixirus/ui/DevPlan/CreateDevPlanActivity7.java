@@ -154,7 +154,6 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
             }
         });
 
-
         resourceText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

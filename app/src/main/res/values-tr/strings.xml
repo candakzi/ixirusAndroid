@@ -34,6 +34,7 @@
     <string name="answer_the_questions">Lütfen Tüm Soruları Cevaplayınız</string>
     <string name="add_action_step">Lütfen Aksiyon Adımı Ekleyiniz</string>
     <string name="plan_saved_successfully">Gelişim Planlarınıza Başarılı Bir Şekilde Eklendi</string>
+    <string name="source_list">Kaynak Listesi</string>
 
     <string name="type_plan_name">Lütfen Bir Plan İsmi Giriniz</string>
 

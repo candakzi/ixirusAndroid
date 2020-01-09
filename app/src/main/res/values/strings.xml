@@ -46,6 +46,7 @@
     <string name="add_action_step">Please Add Action Step</string>
     <string name="type_plan_name">Please Type a Plan Name</string>
     <string name="plan_saved_successfully">Successfully Added to Your Development Plans</string>
+    <string name="source_list">Source List</string>
 
     <string name="type_expect">Type the benefits what you expect from this program</string>
     <string name="click_list_ico">Data Feed Error! Click to Refresh</string>

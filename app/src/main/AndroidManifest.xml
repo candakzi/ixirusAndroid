@@ -12,7 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.DevSource.DevSourceListActivity"></activity>
+        <activity android:name=".ui.DevSource.DevSourceListActivity"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="stateHidden|adjustResize|adjustPan"
+            ></activity>
         <activity android:name=".ui.DevPlan.CreateDevPlanActivity8" />
         <activity android:name=".ui.DevPlan.CreateDevPlanActivity7" />
         <activity
