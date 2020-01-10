@@ -34,6 +34,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.ixirus.ListAdapters.GenericListAdapter;
 import com.example.ixirus.ListItem;
 import com.example.ixirus.R;
+import com.example.ixirus.ui.BaseScreenActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -157,7 +158,11 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
 
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                                if (error.networkResponse.statusCode == 401) {
+                                    Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                    startActivity(intent);
+                                } else
+                                    Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
                             }
                         }) {
                             @Override
@@ -220,9 +225,16 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
-                findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
-                findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                if (error.networkResponse.statusCode == 401) {
+                    Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                    findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                }
+
+
             }
         }) {
             @Override

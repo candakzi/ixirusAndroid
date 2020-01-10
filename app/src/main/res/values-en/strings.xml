@@ -80,4 +80,12 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="audio_document">Audio Document</string>
+    <string name="video_document">Video Document</string>
+    <string name="image_document">Image Document</string>
+    <string name="pdf_document">Pdf Document</string>
+    <string name="all_document">All Resources</string>
+    <string name="my_devplans">My DevPlans</string>
+    <string name="add_new">Add New</string>
+
 </resources>

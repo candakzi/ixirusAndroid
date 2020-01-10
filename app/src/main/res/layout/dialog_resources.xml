@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="420dp"
+    android:layout_height="370dp"
     android:orientation="horizontal"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
@@ -13,7 +13,7 @@
     <CheckBox
         android:id="@+id/allCheck"
         android:layout_width="40dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_marginStart="32dp"
         android:buttonTint="@color/colorPrimary"
         android:scaleX="1.5"
@@ -26,12 +26,12 @@
     <TextView
         android:id="@+id/text"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
 
         android:paddingLeft="10dp"
-        android:text="@string/pdf_document_title"
+        android:text="@string/all_document"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -46,12 +46,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/allCheck"
-        tools:layout_editor_absoluteY="70dp" />
+        tools:layout_editor_absoluteY="60dp" />
 
     <CheckBox
         android:id="@+id/pdfCheck"
         android:layout_width="40dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_marginStart="32dp"
         android:buttonTint="@color/colorPrimary"
         android:scaleX="1.5"
@@ -63,12 +63,12 @@
     <TextView
         android:id="@+id/text2"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
 
         android:paddingLeft="10dp"
-        android:text="@string/video_document_title"
+        android:text="@string/pdf_document"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -87,7 +87,7 @@
     <CheckBox
         android:id="@+id/videoCheck"
         android:layout_width="40dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_marginStart="32dp"
         android:buttonTint="@color/colorPrimary"
         android:scaleX="1.5"
@@ -99,11 +99,11 @@
     <TextView
         android:id="@+id/text3"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
-        android:text="@string/image_document_title"
+        android:text="@string/video_document"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -120,7 +120,7 @@
     <CheckBox
         android:id="@+id/imageCheck"
         android:layout_width="40dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_marginStart="32dp"
         android:buttonTint="@color/colorPrimary"
         android:scaleX="1.5"
@@ -132,12 +132,12 @@
     <TextView
         android:id="@+id/text4"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
 
         android:paddingLeft="10dp"
-        android:text="@string/music_document_title"
+        android:text="@string/image_document"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -157,7 +157,7 @@
     <CheckBox
         android:id="@+id/audioCheck"
         android:layout_width="40dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_marginStart="32dp"
         android:buttonTint="@color/colorPrimary"
         android:scaleX="1.5"
@@ -169,12 +169,12 @@
     <TextView
         android:id="@+id/text5"
         android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:fontFamily="sans-serif"
         android:gravity="center_vertical"
 
         android:paddingLeft="10dp"
-        android:text="@string/music_document_title"
+        android:text="@string/audio_document"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"

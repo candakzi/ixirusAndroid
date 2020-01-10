@@ -32,6 +32,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.ixirus.ListAdapters.GenericListAdapter;
 import com.example.ixirus.ListItem;
 import com.example.ixirus.R;
+import com.example.ixirus.ui.BaseScreenActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -61,6 +62,7 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         final TextView tv = (TextView)findViewById(R.id.textView2) ;
         final ImageView refreshImage = (ImageView)findViewById(R.id.refreshIco) ;
         final Button nextButton = (Button) findViewById(R.id.button);
+        ImageView imageView = findViewById(R.id.buttonBack);
 
 
         getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan) ;
@@ -82,6 +84,13 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
 
         tv.setTextSize(9 * density);
         loadListItem(savedToken,null,false);
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +148,14 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
 
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                                if(error.networkResponse.statusCode==401){
+                                    Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                                }
+
                             }
                         }) {
                             @Override
@@ -227,9 +243,16 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(),getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
-                findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
-                findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                if(error.networkResponse.statusCode==401){
+                    Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                    startActivity(intent);
+                }
+                else {
+
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                    findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                }
             }
         }) {
             @Override

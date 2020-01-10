@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -26,7 +27,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.ixirus.ListAdapters.SourceListAdapter;
 import com.example.ixirus.ListItemSources;
 import com.example.ixirus.R;
+import com.example.ixirus.ui.BaseScreenActivity;
 import com.example.ixirus.ui.DevPlan.CreateDevPlanActivity7;
+import com.example.ixirus.ui.MainActivityWithoutFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
@@ -71,7 +74,9 @@ public class DevSourceListActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                Intent intent = new Intent(getBaseContext(), MainActivityWithoutFragment.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
             }
         });
 
@@ -130,9 +135,15 @@ public class DevSourceListActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
-                findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
-                findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                if (error.networkResponse.statusCode == 401) {
+                    Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                    findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                }
             }
         }) {
             @Override

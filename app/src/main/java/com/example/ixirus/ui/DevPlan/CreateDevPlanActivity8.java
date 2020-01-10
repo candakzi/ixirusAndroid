@@ -32,6 +32,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.ixirus.ListAdapters.TaskListAdapter;
 import com.example.ixirus.ListItemTasks;
 import com.example.ixirus.R;
+import com.example.ixirus.ui.BaseScreenActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -160,24 +161,12 @@ public class CreateDevPlanActivity8 extends AppCompatActivity {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            NetworkResponse response = error.networkResponse;
-                            if (response != null && response.data != null) {
-                                JSONObject jsonObject = null;
-                                String errorMessage = null;
-
-                                switch (response.statusCode) {
-                                    case 400:
-                                        errorMessage = new String(response.data);
-                                        try {
-
-                                            jsonObject = new JSONObject(errorMessage);
-                                            String serverResponseMessage = (String) jsonObject.get("hataMesaj");
-                                            Toast.makeText(getApplicationContext(), "" + serverResponseMessage, Toast.LENGTH_LONG).show();
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                }
+                            if (error.networkResponse.statusCode == 401) {
+                                Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                startActivity(intent);
                             }
+                            else
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
                         }
                     }) {
                         @Override

@@ -43,6 +43,7 @@ import com.example.ixirus.ListItem;
 import com.example.ixirus.ListItemSources;
 import com.example.ixirus.ListItemTasks;
 import com.example.ixirus.R;
+import com.example.ixirus.ui.BaseScreenActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
@@ -221,7 +222,8 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                             int sourceId = item.SourceId;
                             int id = item.Id;
                             JSONObject obj = new JSONObject();
-                            list.add(id);;
+                            list.add(id);
+                            ;
                         }
                         intent.putExtra("sourceTasks", list);
                         startActivity(intent);
@@ -297,7 +299,11 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                            if (error.networkResponse.statusCode == 401) {
+                                Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                startActivity(intent);
+                            } else
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
                         }
                     }) {
                         @Override
@@ -375,9 +381,15 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
-                findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
-                findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                if (error.networkResponse.statusCode == 401) {
+                    Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                    findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                }
             }
         }) {
             @Override

@@ -70,8 +70,8 @@
     <string name="video_document_text">You can add video document here.</string>
     <string name="image_document_title">Resource 3 - Image Document</string>
     <string name="image_document_text">You can add image document here.</string>
-    <string name="music_document_title">Resource 4 - Voice document</string>
-    <string name="music_document_text">You can add voice document here</string>
+    <string name="music_document_title">Resource 4 - audio document</string>
+    <string name="music_document_text">You can add audio document here</string>
     <string name="login_error_toast">Invalid Email or Password</string>
     <string name="save">Save</string>
     <string name="let_educator"> Let my trainer follow my development plan</string>
@@ -79,4 +79,11 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="audio_document">Audio Document</string>
+    <string name="video_document">Video Document</string>
+    <string name="image_document">Image Document</string>
+    <string name="pdf_document">Pdf Document</string>
+    <string name="all_document">All Resources</string>
+    <string name="my_devplans">My DevPlans</string>
+    <string name="add_new">Add New</string>
 </resources>

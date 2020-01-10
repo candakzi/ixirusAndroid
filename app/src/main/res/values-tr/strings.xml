@@ -78,8 +78,18 @@
     <string name="type_expect">Bu programdan beklediğiniz faydaları yazınız</string>
     <string name="successfully_added">Başarıyla Eklendi!</string>
     <string name="retry_add">Lütfen Tekrar Deneyin!</string>
-    <string name="click_list_ico">Lütfen Yenileye tıklayınız!</string>
+    <string name="click_list_ico">Lütfen Yenileyiniz!</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="audio_document">Ses Dökümanları</string>
+    <string name="video_document">Video Dökümanları</string>
+    <string name="image_document">Görsel Dökümanlar</string>
+    <string name="pdf_document">Pdf Dökümanları</string>
+    <string name="all_document">Tüm Kaynaklar</string>
+    <string name="my_devplans">Gelişim Planlarım</string>
+    <string name="add_new">Yeni Ekle</string>
+
+
 </resources>

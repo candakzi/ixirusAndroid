@@ -35,6 +35,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.ixirus.ListAdapters.TaskListAdapter;
 import com.example.ixirus.ListItemTasks;
 import com.example.ixirus.R;
+import com.example.ixirus.ui.BaseScreenActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -170,8 +171,8 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                                 SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
                                 item.Id = addedId;
                                 item.Name = currentText + " - " + endDateAdded;
-                                item.Date =myCalendar.getTime();
-                                item.SourceId =0;
+                                item.Date = myCalendar.getTime();
+                                item.SourceId = 0;
                                 arr.add(item);
 
                                 final TaskListAdapter adapter = new TaskListAdapter(getBaseContext(), arr);
@@ -192,7 +193,11 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                            if (error.networkResponse.statusCode == 401) {
+                                Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                startActivity(intent);
+                            } else
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
                         }
                     }) {
                         @Override
