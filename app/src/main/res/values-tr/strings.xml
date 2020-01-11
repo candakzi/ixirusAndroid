@@ -66,7 +66,9 @@
     <string name="music_document_title">Resource 4 - Audio document</string>
     <string name="music_document_text">You can add audio document here</string>
     <string name="save">Kaydet</string>
-
+    <string name="name_hint">Adınız</string>
+    <string name="surname_hint">Soyadınız</string>
+    <string name="company_code_hint">Kurum Kodu</string>
     <string name="let_educator">Eğitmenim gelişim planımı takip etsin</string>
     <string name="let_manager">Yöneticim gelişim planımı takip etsin</string>
 
@@ -90,6 +92,5 @@
     <string name="all_document">Tüm Kaynaklar</string>
     <string name="my_devplans">Gelişim Planlarım</string>
     <string name="add_new">Yeni Ekle</string>
-
-
+    <string name="sign_up_error">Bütün Alanlar Zorunludur!</string>
 </resources>

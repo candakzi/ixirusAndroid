@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorButtonDisabled">#FE7874</color>
     <color name="colorPrimary">#FA5752</color>
     <color name="colorPrimaryDark">#FA5752</color>
     <color name="colorAccent">#FA5752</color>
@@ -12,4 +13,6 @@
     <color name="list_color">#DFE5ED</color>
     <color name="color_question">#5C5C5C</color>
     <color name ="purple_color">#565799</color>
+    <color name ="create_account_back">#3F2C59</color>
+    <color name="edit_text_color">#E2DBE7</color>
 </resources>

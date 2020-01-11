@@ -28,10 +28,14 @@
     <string name="menu_coaching">Coaching/Mentoring</string>
     <string name="menu_ixirus_big">IXIRUS</string>
     <string name="button_text">Next</string>
+    <string name="name_hint">Name</string>
+    <string name="surname_hint">Surname</string>
+    <string name="company_code_hint">Company Code</string>
+
     <string name="user_name_hint">Email</string>
     <string name="password_hint">Password</string>
     <string name="sign_in">SIGN IN</string>
-    <string name="sign_up">SIGN UP</string>
+    <string name="sign_up">REGISTER</string>
     <string name="welcome">Welcome to Ixirus</string>
     <string name="or_login_with">OR "\n" login with </string>
     <string name="choose_behaviour">CHOOSE BEHAVIOUR</string>
@@ -86,4 +90,7 @@
     <string name="all_document">All Resources</string>
     <string name="my_devplans">My DevPlans</string>
     <string name="add_new">Add New</string>
+    <string name="sign_up_error">All Fields Are Required!</string>
+
+
 </resources>

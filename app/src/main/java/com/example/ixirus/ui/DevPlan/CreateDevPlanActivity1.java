@@ -3,14 +3,18 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -62,7 +66,21 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         final TextView tv = (TextView)findViewById(R.id.textView2) ;
         final ImageView refreshImage = (ImageView)findViewById(R.id.refreshIco) ;
         final Button nextButton = (Button) findViewById(R.id.button);
+        final EditText editTextPlanName =   (EditText)findViewById(R.id.editTextPlanName);
         ImageView imageView = findViewById(R.id.buttonBack);
+
+        final View activityRootView = findViewById(R.id.rootView);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int heightDiff = activityRootView.getRootView().getHeight() - activityRootView.getHeight();
+                if (heightDiff > dpToPx(getBaseContext(), 200)) { // if more than 200 dp, it's probably a keyboard...
+                   nextButton.setVisibility(View.GONE);
+                }
+                else
+                    nextButton.setVisibility(View.VISIBLE);
+            }
+        });
 
 
         getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan) ;
@@ -104,7 +122,7 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                     return;
                 }
                else if(selectedObj==null) {
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.select_item), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext   (), getResources().getString(R.string.select_item), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else {
@@ -155,7 +173,6 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                                 else {
                                     Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
                                 }
-
                             }
                         }) {
                             @Override
@@ -180,6 +197,11 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    public static float dpToPx(Context context, float valueInDp) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
     }
 
     public void setItemSelected(View view){

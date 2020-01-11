@@ -20,16 +20,17 @@
         <activity android:name=".ui.DevPlan.CreateDevPlanActivity7" />
         <activity
             android:name=".ui.DevPlan.CreateDevPlanActivity6"
-            android:windowSoftInputMode="adjustNothing" />
-        <activity android:name=".ui.SignUpActivity" />
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"  />
+        <activity android:name=".ui.SignUpActivity"
+            android:hardwareAccelerated="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            >
+            </activity>
         <activity
             android:name=".ui.BaseScreenActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.DevPlan.CreateDevPlanActivity5" />
         <activity
@@ -37,20 +38,28 @@
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.DevPlan.CreateDevPlanActivity3"
-            android:windowSoftInputMode="adjustNothing" />
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
             android:name=".ui.DevPlan.CreateDevPlanActivity2"
-            android:windowSoftInputMode="adjustNothing" />
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"  />
         <activity android:name=".ui.DevPlan.MyDevPlanListActivity" />
         <activity
             android:name=".ui.DevPlan.CreateDevPlanActivity1"
             android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustNothing" />
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"  />
         <activity android:name=".ui.MainActivityWithoutFragment" />
         <activity
             android:name=".ui.LoginActivity"
             android:hardwareAccelerated="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            </activity>
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"

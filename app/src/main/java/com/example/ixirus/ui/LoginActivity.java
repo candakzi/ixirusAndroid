@@ -45,6 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.progressBar).setVisibility(View.GONE);
 
         Button loginButton = (Button) findViewById(R.id.login);
+        Button signUpButton = (Button) findViewById(R.id.signUp);
+
         final EditText usernameEditText = findViewById(R.id.username);
         final EditText passwordEditText = findViewById(R.id.password);
 
@@ -101,6 +103,14 @@ public class LoginActivity extends AppCompatActivity {
 
                 RequestQueue queue = Volley.newRequestQueue(getBaseContext());
                 queue.add(jsonObjRequest);
+            }
+        });
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), SignUpActivity.class);
+                startActivity(intent);
             }
         });
     }

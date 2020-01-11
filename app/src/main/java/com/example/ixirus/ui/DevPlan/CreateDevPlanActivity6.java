@@ -5,14 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -74,6 +77,9 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
             }
         });
 
+
+
+
         final EditText editText = findViewById(R.id.editTextNewBehaviour);
         final TextView tv = (TextView) findViewById(R.id.textView2);
         final ImageView refreshImage = (ImageView) findViewById(R.id.refreshIco);
@@ -106,6 +112,20 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+
+        final View activityRootView = findViewById(R.id.rootView);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int heightDiff = activityRootView.getRootView().getHeight() - activityRootView.getHeight();
+                if (heightDiff > dpToPx(getBaseContext(), 200)) { // if more than 200 dp, it's probably a keyboard...
+                    nextButton.setVisibility(View.GONE);
+                }
+                else
+                    nextButton.setVisibility(View.VISIBLE);
+            }
+        });
+
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -291,6 +311,11 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public static float dpToPx(Context context, float valueInDp) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
     }
 
     private void updateLabel() {
