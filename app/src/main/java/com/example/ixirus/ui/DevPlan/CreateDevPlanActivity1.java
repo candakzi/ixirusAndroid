@@ -130,7 +130,6 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                     Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity2.class);
                     intent.putExtra("programId",selectedListItem.Id);
                     intent.putExtra("planName",planEditText.getText().toString().trim());
-
                     startActivity(intent);
                 }
             }

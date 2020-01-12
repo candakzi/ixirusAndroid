@@ -1,9 +1,11 @@
 package com.example.ixirus.ui.DevPlan;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ixirus.CustomListItem;
 import com.example.ixirus.ListAdapters.GenericListAdapter;
@@ -46,6 +49,7 @@ import java.util.Map;
 public class MyDevPlanListActivity extends AppCompatActivity {
 
     private ListView lv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +84,66 @@ public class MyDevPlanListActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                long viewId = arg1.getId();
+                final Object selectedItem = lv.getItemAtPosition(position);
+                final String selectedId = Integer.toString(((ListItem) selectedItem).Id);
 
+                if (viewId == R.id.deleteImage) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MyDevPlanListActivity.this);
+                    builder.setTitle(getString(R.string.dev_plan));
+                    builder.setMessage(getString(R.string.are_you_sure));
+
+                    builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            StringRequest jsonObjRequest = new StringRequest(Request.Method.DELETE, "https://ixirus.azurewebsites.net/api/developmentplan?devPlanId="+selectedId, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    loadListItem(savedToken);
+                                }
+                            }, new Response.ErrorListener() {
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    if (error.networkResponse.statusCode == 401) {
+                                        Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }) {
+
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String> headers = new HashMap<>();
+                                    headers.put("Authorization", "Bearer " + savedToken);
+                                    return headers;
+                                }
+                            };
+
+                            RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                            queue.add(jsonObjRequest);
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            // Do nothing
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                } else if (viewId == R.id.editImage) {
+                    Toast.makeText(getBaseContext(), "Edit", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getBaseContext(), "ListView clicked", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         fab.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +151,7 @@ public class MyDevPlanListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity1.class);
                 startActivity(intent);
-                overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
             }
         });
 
@@ -97,7 +160,7 @@ public class MyDevPlanListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), MainActivityWithoutFragment.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.nav_default_enter_anim,R.anim.nav_default_exit_anim);
+                overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
             }
         });
 
@@ -142,11 +205,10 @@ public class MyDevPlanListActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if(error.networkResponse.statusCode==401){
+                if (error.networkResponse.statusCode == 401) {
                     Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
                     findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);

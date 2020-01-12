@@ -51,6 +51,7 @@
     <string name="type_plan_name">Please Type a Plan Name</string>
     <string name="plan_saved_successfully">Successfully Added to Your Development Plans</string>
     <string name="source_list">Source List</string>
+    <string name="are_you_sure">Are you sure?</string>
 
     <string name="type_expect">Type the benefits what you expect from this program</string>
     <string name="click_list_ico">Data Feed Error! Click to Refresh</string>
@@ -91,6 +92,8 @@
     <string name="my_devplans">My DevPlans</string>
     <string name="add_new">Add New</string>
     <string name="sign_up_error">All Fields Are Required!</string>
-
+    <string name="dev_plan">Dev Plan</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 </resources>

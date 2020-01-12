@@ -93,4 +93,9 @@
     <string name="my_devplans">Gelişim Planlarım</string>
     <string name="add_new">Yeni Ekle</string>
     <string name="sign_up_error">Bütün Alanlar Zorunludur!</string>
+    <string name="are_you_sure">Emin misiniz?</string>
+    <string name="dev_plan">Dev Plan</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+
 </resources>
