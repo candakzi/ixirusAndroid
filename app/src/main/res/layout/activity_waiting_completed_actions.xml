@@ -1,9 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/rootView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.DevPlan.WaitingCompletedActionsActivity">
+    tools:context=".ui.DevPlan.CreateDevPlanActivity2">
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:elevation="15dp"
+        android:translationZ="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:text="@string/menu_create_dev_plan"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/create_dev_plan_size"
+
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/listView"
+            app:layout_constraintEnd_toStartOf="@+id/listView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/buttonBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="16dp"
+            android:src="@mipmap/back_arrow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.cardview.widget.CardView>
+
+    <ScrollView
+        android:id="@+id/firstScrollView"
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="50dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewWaiting"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="17dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:text="@string/waiting_actions"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewListWaiting"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.35"
+                android:layout_marginStart="16dp"
+
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                app:cardUseCompatPadding="true"
+                app:elevation="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewWaiting">
+
+                <ListView
+                    android:id="@+id/listViewWaiting"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@drawable/divider_black"
+                    android:dividerHeight="1dp"
+                    android:tag="listViewWaiting"
+                    />
+
+                <ProgressBar
+                    android:id="@+id/progressBarWaiting"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:elevation="100dp"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/refreshIcoWaiting"
+                    android:layout_width="64dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/refresh_ico" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textViewCompleted"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="17dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:text="@string/completed_actions"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardViewListWaiting"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewListCompleted"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.35"
+                android:layout_marginStart="16dp"
+
+                android:layout_marginEnd="16dp"
+                android:background="@android:color/transparent"
+                app:cardUseCompatPadding="true"
+                app:elevation="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCompleted">
+
+                <ListView
+                    android:id="@+id/listViewCompleted"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@drawable/divider_black"
+                    android:dividerHeight="1dp"
+                    android:tag="listViewCompleted"
+                    />
+
+                <ProgressBar
+                    android:id="@+id/progressBarCompleted"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:elevation="100dp"
+
+                    />
+
+                <ImageView
+                    android:id="@+id/refreshIcoCompleted"
+                    android:layout_width="64dp"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/refresh_ico" />
+
+            </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+
+
+
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

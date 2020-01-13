@@ -94,6 +94,8 @@
     <string name="dev_plan">Dev Plan</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="waiting_actions">WAITING ACTIONS</string>
+    <string name="completed_actions">COMPLETED ACTIONS</string>
 
 
 </resources>

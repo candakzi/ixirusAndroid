@@ -97,5 +97,6 @@
     <string name="dev_plan">Dev Plan</string>
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
-
+    <string name="waiting_actions">BEKLEYEN AKSİYONLAR</string>
+    <string name="completed_actions">TAMAMLANAN AKSİYONLAR</string>
 </resources>

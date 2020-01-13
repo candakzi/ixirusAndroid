@@ -142,7 +142,9 @@ public class MyDevPlanListActivity extends AppCompatActivity {
                 } else if (viewId == R.id.editImage) {
                     Toast.makeText(getBaseContext(), "Edit", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getBaseContext(), "ListView clicked", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getBaseContext(), WaitingCompletedActionsActivity.class);
+                    intent.putExtra("devPlanId", selectedId);
+                    startActivity(intent);
                 }
             }
         });
