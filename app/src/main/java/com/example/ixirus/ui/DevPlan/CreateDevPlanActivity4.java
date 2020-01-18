@@ -25,6 +25,7 @@ import com.example.ixirus.R;
 import org.json.JSONObject;
 
 public class CreateDevPlanActivity4 extends AppCompatActivity {
+    private JSONObject object;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,20 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
         TextView tv = (TextView) findViewById(R.id.textView2);
         tv.setTextSize(9 * density);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            try {
+                if(extras.getString("editedDevPlan")!=null) {
+                    object = new JSONObject(extras.getString("editedDevPlan"));
+                    String  benefitText = object.getString("benefit");
+
+                    ((EditText) findViewById(R.id.editTextBenefits)).setText(benefitText);
+                }
+            } catch (Throwable t) {
+                return;
+            }
+        }
+
         Button nextButton = (Button) findViewById(R.id.button);
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +81,9 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
                     planName = extras.getString("planName");
 
                     Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity5.class);
+                    if (object != null)
+                        intent.putExtra("editedDevPlan", object.toString());
+
                     intent.putExtra("behaviourId", behaviourId);
                     intent.putExtra("perfectionId", perfectionId);
                     intent.putExtra("programId", programId);

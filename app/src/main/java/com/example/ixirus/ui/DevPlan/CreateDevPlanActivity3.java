@@ -50,6 +50,7 @@ import java.util.Map;
 public class CreateDevPlanActivity3 extends AppCompatActivity {
     private ListView lv;
     private Object selectedItem = null;
+    private JSONObject object;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,6 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
         final TextView tv = (TextView) findViewById(R.id.textView2);
         final ImageView refreshImage = (ImageView) findViewById(R.id.refreshIco);
         final Button nextButton = (Button) findViewById(R.id.button);
-
 
         final View activityRootView = findViewById(R.id.rootView);
         activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -101,12 +101,24 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
 
         SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
         final String savedToken = sp.getString("Token", null);
-        loadListItem(savedToken, null, false);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            try {
+                if(extras.getString("editedDevPlan")!=null) {
+                    object = new JSONObject(extras.getString("editedDevPlan"));
+                    loadListItemFromEdit(savedToken, object);
+                }
+                else
+                    loadListItem(savedToken, null, false);
+            } catch (Throwable t) {
+                return;
+            }
+        } else
+            loadListItem(savedToken, null, false);
 
         float density = getResources().getDisplayMetrics().density;
-
         tv.setTextSize(9 * density);
-
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,6 +139,9 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
                     } else {
                         ListItem selectedListItem = (ListItem) selectedObj;
                         Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
+                        if (object != null)
+                            intent.putExtra("editedDevPlan", object.toString());
+
                         intent.putExtra("behaviourId", selectedListItem.Id);
                         intent.putExtra("perfectionId", perfectionId);
                         intent.putExtra("programId", programId);
@@ -252,6 +267,65 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
                 }
 
 
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + savedToken);
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+        queue.add(request);
+    }
+
+    public void loadListItemFromEdit(final String savedToken, final JSONObject object) {
+        lv.setAdapter(null);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/behavior", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                ArrayList<ListItem> arr = new ArrayList<ListItem>();
+                try {
+                    JSONArray programArray = response.getJSONArray("data");
+                    for (int i = 0; i < programArray.length(); i++) {
+                        JSONObject obj = programArray.getJSONObject(i);
+                        ListItem item = new ListItem();
+                        item.Id = Integer.parseInt(obj.getString("id"));
+                        item.Name = obj.getString("name");
+                        arr.add(item);
+                    }
+                    final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(), arr);
+                    lv.setAdapter(adapter);
+
+                    Integer programId = object.getInt("behaviorId");
+                    for (int position = 0; position < adapter.getCount(); position++)
+                        if (((ListItem) adapter.getItem(position)).Id == programId) {
+                            lv.setItemChecked(position, true);
+                            lv.setSelection(position);
+                            selectedItem = lv.getItemAtPosition(position);
+                        }
+
+                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                } catch (JSONException e) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                    findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse.statusCode == 401) {
+                    Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                    startActivity(intent);
+                } else {
+
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                    findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                }
             }
         }) {
             @Override

@@ -41,11 +41,15 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
     private Object selectedItem4 = null;
     private Object selectedItem5 = null;
 
+    private JSONObject object;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_dev_plan5);
+
+
+
         lv1 = findViewById(R.id.listView);
 
         lv1.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -117,6 +121,44 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
         TextView tv = (TextView)findViewById(R.id.textView2) ;
         tv.setTextSize(9 * density);
         loadListItems();
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            try {
+                if (extras.getString("editedDevPlan") != null) {
+                    object = new JSONObject(extras.getString("editedDevPlan"));
+                    Integer question1 = object.getInt("question1");
+                    Integer question2 = object.getInt("question2");
+                    Integer question3 = object.getInt("question3");
+                    Integer question4 = object.getInt("question4");
+                    Integer question5 = object.getInt("question5");
+
+                    selectedItem1 = lv1.getItemAtPosition(question1-1);
+                    selectedItem2 = lv2.getItemAtPosition(question2-1);
+                    selectedItem3 = lv3.getItemAtPosition(question3-1);
+                    selectedItem4 = lv4.getItemAtPosition(question4-1);
+                    selectedItem5 = lv5.getItemAtPosition(question5-1);
+
+                    lv1.setSelection(question1-1);
+                    lv1.setItemChecked(question1-1, true);
+
+                    lv2.setSelection(question2-1);
+                    lv2.setItemChecked(question2-1, true);
+
+                    lv3.setSelection(question3-1);
+                    lv3.setItemChecked(question3-1, true);
+
+                    lv4.setSelection(question4-1);
+                    lv4.setItemChecked(question4-1, true);
+
+                    lv5.setSelection(question5-1);
+                    lv5.setItemChecked(question5-1, true);
+                }
+            } catch (Throwable t) {
+                return;
+            }
+        }
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,6 +189,9 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
                         return;
                     } else {
                         Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity6.class);
+                        if (object != null)
+                            intent.putExtra("editedDevPlan", object.toString());
+
                         intent.putExtra("behaviourId", behaviourId);
                         intent.putExtra("perfectionId", perfectionId);
                         intent.putExtra("programId", programId);

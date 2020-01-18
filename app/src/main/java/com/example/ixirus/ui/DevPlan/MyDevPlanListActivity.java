@@ -31,6 +31,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.ixirus.CustomListItem;
 import com.example.ixirus.ListAdapters.GenericListAdapter;
 import com.example.ixirus.ListAdapters.MyDevPlanListAdapter;
+import com.example.ixirus.ListAdapters.WaitingCompletedListAdapter;
 import com.example.ixirus.ListItem;
 import com.example.ixirus.R;
 import com.example.ixirus.ui.BaseScreenActivity;
@@ -140,7 +141,64 @@ public class MyDevPlanListActivity extends AppCompatActivity {
                     AlertDialog alert = builder.create();
                     alert.show();
                 } else if (viewId == R.id.editImage) {
-                    Toast.makeText(getBaseContext(), "Edit", Toast.LENGTH_SHORT).show();
+
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/developmentplan?devPlanId=" + selectedId, null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            ArrayList<ListItem> arrWaiting = new ArrayList<ListItem>();
+                            ArrayList<ListItem> arrCompleted = new ArrayList<ListItem>();
+
+                            try {
+
+                                JSONObject objectt = response.getJSONObject("data");
+//                                String programName = response.getJSONObject("data").getString("name");
+//                                Integer programId = response.getJSONObject("data").getInt("programId");
+//                                Integer behaviorId = response.getJSONObject("data").getInt("behaviorId");
+//                                Integer perfectionId = response.getJSONObject("data").getInt("perfectionId");
+//                                JSONArray actionTasks = response.getJSONObject("data").getJSONArray("actionTasks");
+//                                JSONArray sourceTasks = response.getJSONObject("data").getJSONArray("sourceTasks");
+//                                String benefit = response.getJSONObject("data").getString("benefit");
+//
+//                                Integer question1 = response.getJSONObject("data").getInt("question1");
+//                                Integer question2 = response.getJSONObject("data").getInt("question2");
+//                                Integer question3 = response.getJSONObject("data").getInt("question3");
+//                                Integer question4 = response.getJSONObject("data").getInt("question4");
+//                                Integer question5 = response.getJSONObject("data").getInt("question5");
+//                                Boolean managerCanFollow = response.getJSONObject("data").getBoolean("managerCanFollow");
+//                                Boolean lecturerCanFollow = response.getJSONObject("data").getBoolean("lecturerCanFollow");
+                                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity1.class);
+                                intent.putExtra("editedDevPlan",objectt.toString());
+                                startActivity(intent);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (error.networkResponse.statusCode == 401) {
+                                Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                                findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                                findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                            }
+                        }
+                    }) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> headers = new HashMap<>();
+                            headers.put("Authorization", "Bearer " + savedToken);
+                            return headers;
+                        }
+                    };
+
+                    RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                    queue.add(request);
                 } else {
                     Intent intent = new Intent(getBaseContext(), WaitingCompletedActionsActivity.class);
                     intent.putExtra("devPlanId", selectedId);
@@ -227,5 +285,12 @@ public class MyDevPlanListActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(getBaseContext());
         queue.add(request);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getBaseContext(), MainActivityWithoutFragment.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
     }
 }

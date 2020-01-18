@@ -59,6 +59,8 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
     private ListView lv;
     private Calendar myCalendar;
     private TextView dateTextView;
+    private JSONObject object;
+    private  ArrayList<ListItemTasks> arr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +78,6 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
 
             }
         });
-
-
-
 
         final EditText editText = findViewById(R.id.editTextNewBehaviour);
         final TextView tv = (TextView) findViewById(R.id.textView2);
@@ -126,7 +125,6 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
             }
         });
 
-
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ImageView imgView = new ImageView(this);
@@ -151,8 +149,21 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
             }
         });
 
-        final ArrayList<ListItemTasks> arr = new ArrayList<ListItemTasks>();
+        arr = new ArrayList<ListItemTasks>();
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            try {
+                if(extras.getString("editedDevPlan")!=null) {
+                    object = new JSONObject(extras.getString("editedDevPlan"));
+                    JSONArray  selectedActionTasks = object.getJSONArray("actionTasks");
+                    loadDefaultListItem(selectedActionTasks);
+
+                }
+            } catch (Throwable t) {
+                return;
+            }
+        }
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -280,6 +291,9 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
 
                         Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity7.class);
 
+                        if (object != null)
+                            intent.putExtra("editedDevPlan", object.toString());
+
                         intent.putExtra("behaviourId", behaviourId);
                         intent.putExtra("perfectionId", perfectionId);
                         intent.putExtra("programId", programId);
@@ -311,6 +325,40 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void loadDefaultListItem(JSONArray selectedActionTasks) {
+        for (int position = 0; position < selectedActionTasks.length(); position++) {
+            try {
+                JSONObject obj = selectedActionTasks.getJSONObject(position);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String myFormat = "dd.MM.yyyy";
+                SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+
+
+                int id =  obj.getInt("id");
+                String name =  obj.getString("name");
+                String endDateStr =  obj.getString("endDate");
+                Date d = sdf.parse(endDateStr);
+                ListItemTasks item = new ListItemTasks();
+                final String currentDateStr = dateFormat.format(d);
+
+                item.Id = id;
+                item.Name = name + " - " + currentDateStr;
+                item.Date = d;
+                item.SourceId = 0;
+                arr.add(item);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        final TaskListAdapter adapter = new TaskListAdapter(getBaseContext(), arr);
+        lv.setAdapter(adapter);
     }
 
     public static float dpToPx(Context context, float valueInDp) {

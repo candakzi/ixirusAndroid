@@ -52,6 +52,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -68,6 +69,8 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
     private TextView dateTextView;
     private static final int PERMISSION_REQUEST_CODE = 1;
     private Object selectedSourceObject;
+    private JSONObject object;
+    private  ArrayList<ListItemTasks> arr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +111,7 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         display.getMetrics(outMetrics);
         float density = getResources().getDisplayMetrics().density;
         tv.setTextSize(9 * density);
-        final ArrayList<ListItemTasks> arr = new ArrayList<ListItemTasks>();
+        arr= new ArrayList<ListItemTasks>();
 
         SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
         final String savedToken = sp.getString("Token", null);
@@ -143,6 +146,21 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         dialog.setCancelable(false);
         final ListView sourcesListView = dialog.findViewById(R.id.listViewResources);
         loadSourceListItem(savedToken, sourcesListView);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            try {
+                if(extras.getString("editedDevPlan")!=null) {
+                    object = new JSONObject(extras.getString("editedDevPlan"));
+                    JSONArray  selectedSourceTasks = object.getJSONArray("sourceTasks");
+                    loadDefaultListItem(selectedSourceTasks);
+
+                }
+            } catch (Throwable t) {
+                return;
+            }
+        }
+
 
         sourcesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -198,6 +216,9 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                         actionTasks = extras.getIntegerArrayList("actionTasks");
 
                         Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity8.class);
+
+                        if (object != null)
+                            intent.putExtra("editedDevPlan", object.toString());
 
                         intent.putExtra("behaviourId", behaviourId);
                         intent.putExtra("perfectionId", perfectionId);
@@ -403,6 +424,43 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(getBaseContext());
         queue.add(request);
     }
+
+    private void loadDefaultListItem(JSONArray selectedActionTasks) {
+        for (int position = 0; position < selectedActionTasks.length(); position++) {
+            try {
+                JSONObject obj = selectedActionTasks.getJSONObject(position);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String myFormat = "dd.MM.yyyy";
+                SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+
+
+                int id =  obj.getInt("id");
+                String name =  obj.getString("name");
+                String endDateStr =  obj.getString("endDate");
+                int sourceId =  obj.getInt("sourceId");
+
+                Date d = sdf.parse(endDateStr);
+                ListItemTasks item = new ListItemTasks();
+                final String currentDateStr = dateFormat.format(d);
+
+                item.Id = id;
+                item.Name = name + " - " + currentDateStr;
+                item.Date = d;
+                item.SourceId = sourceId;
+                arr.add(item);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        final TaskListAdapter adapter = new TaskListAdapter(getBaseContext(), arr);
+        lv.setAdapter(adapter);
+    }
+
 
     public void addProgramm(final String savedToken, String addedText) {
         findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);

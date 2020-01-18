@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class CreateDevPlanActivity8 extends AppCompatActivity {
+    private JSONObject object;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,21 @@ public class CreateDevPlanActivity8 extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
         final String savedToken = sp.getString("Token", null);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            try {
+                if(extras.getString("editedDevPlan")!=null) {
+                    object = new JSONObject(extras.getString("editedDevPlan"));
+                    boolean  selectedManager = object.getBoolean("managerCanFollow");
+                    boolean  selectedlecturer = object.getBoolean("lecturerCanFollow");
+
+                    ((CheckBox) findViewById(R.id.managerCheck)).setChecked(selectedManager);
+                    ((CheckBox) findViewById(R.id.educatorCheck)).setChecked(selectedlecturer);
+                }
+            } catch (Throwable t) {
+                return;
+            }
+        }
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +99,6 @@ public class CreateDevPlanActivity8 extends AppCompatActivity {
                 onBackPressed();
             }
         });
-
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,89 +116,175 @@ public class CreateDevPlanActivity8 extends AppCompatActivity {
                 final String planName;
                 final ArrayList<Integer> actionTasks;
                 final ArrayList<Integer> sourceTasks;
-
                 if (extras != null) {
-                    programId = extras.getInt("programId");
-                    perfectionId = extras.getInt("perfectionId");
-                    behaviourId = extras.getInt("behaviourId");
-                    benefit = extras.getString("benefit");
-                    question1 = extras.getInt("question1");
-                    question2 = extras.getInt("question2");
-                    question3 = extras.getInt("question3");
-                    question4 = extras.getInt("question4");
-                    question5 = extras.getInt("question5");
-                    planName = extras.getString("planName");
+                    if (extras.getString("editedDevPlan") != null) {
+                        try {
+                            int devPlanId = object.getInt("id");
+                            programId = extras.getInt("programId");
+                            perfectionId = extras.getInt("perfectionId");
+                            behaviourId = extras.getInt("behaviourId");
+                            benefit = extras.getString("benefit");
+                            question1 = extras.getInt("question1");
+                            question2 = extras.getInt("question2");
+                            question3 = extras.getInt("question3");
+                            question4 = extras.getInt("question4");
+                            question5 = extras.getInt("question5");
+                            planName = extras.getString("planName");
 
-                    actionTasks = extras.getIntegerArrayList("actionTasks");
-                    sourceTasks = extras.getIntegerArrayList("sourceTasks");
-                    final Boolean managerCheck = ((CheckBox) findViewById(R.id.managerCheck)).isChecked();
-                    final Boolean educatorCheck = ((CheckBox) findViewById(R.id.educatorCheck)).isChecked();
-                    JSONObject jsonObject = new JSONObject();
-                    try {
-                        ArrayList<Integer> joinedList = new ArrayList<Integer>();
-                        joinedList.addAll(actionTasks);
-                        joinedList.addAll(sourceTasks);
-                        JSONArray arr = new JSONArray();
-                        for (int i = 0; i < joinedList.toArray().length; i++) {
-                            arr.put(joinedList.toArray()[i]);
-                        }
-
-
-                        jsonObject.put("Name", planName);
-                        jsonObject.put("ProgramId", programId);
-                        jsonObject.put("BehaviorId", behaviourId);
-                        jsonObject.put("PerfectionId", perfectionId);
-                        jsonObject.put("Tasks", arr);
-                        jsonObject.put("Benefit", benefit);
-                        jsonObject.put("Question1", question1);
-                        jsonObject.put("Question2", question2);
-                        jsonObject.put("Question3", question3);
-                        jsonObject.put("Question4", question4);
-                        jsonObject.put("Question5", question5);
-                        jsonObject.put("ManagerCanFollow", managerCheck);
-                        jsonObject.put("LecturerCanFollow", educatorCheck);
-
-                    } catch (JSONException e) {
-                        // handle exception
-                    }
-
-                    RequestQueue queue = Volley.newRequestQueue(getBaseContext());
-                    JsonObjectRequest jsonForPutRequest = new JsonObjectRequest(
-                            Request.Method.POST, "https://ixirus.azurewebsites.net/api/developmentplan", jsonObject,
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    Toast.makeText(getBaseContext(), getResources().getString(R.string.plan_saved_successfully) + "\n" + planName, Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getBaseContext(), MyDevPlanListActivity.class);
-                                    startActivity(intent);
+                            actionTasks = extras.getIntegerArrayList("actionTasks");
+                            sourceTasks = extras.getIntegerArrayList("sourceTasks");
+                            final Boolean managerCheck = ((CheckBox) findViewById(R.id.managerCheck)).isChecked();
+                            final Boolean educatorCheck = ((CheckBox) findViewById(R.id.educatorCheck)).isChecked();
+                            JSONObject jsonObject = new JSONObject();
+                            try {
+                                ArrayList<Integer> joinedList = new ArrayList<Integer>();
+                                joinedList.addAll(actionTasks);
+                                joinedList.addAll(sourceTasks);
+                                JSONArray arr = new JSONArray();
+                                for (int i = 0; i < joinedList.toArray().length; i++) {
+                                    arr.put(joinedList.toArray()[i]);
                                 }
-                            }, new Response.ErrorListener() {
+                                jsonObject.put("Id", devPlanId);
+                                jsonObject.put("Name", planName);
+                                jsonObject.put("ProgramId", programId);
+                                jsonObject.put("BehaviorId", behaviourId);
+                                jsonObject.put("PerfectionId", perfectionId);
+                                jsonObject.put("Tasks", arr);
+                                jsonObject.put("Benefit", benefit);
+                                jsonObject.put("Question1", question1);
+                                jsonObject.put("Question2", question2);
+                                jsonObject.put("Question3", question3);
+                                jsonObject.put("Question4", question4);
+                                jsonObject.put("Question5", question5);
+                                jsonObject.put("ManagerCanFollow", managerCheck);
+                                jsonObject.put("LecturerCanFollow", educatorCheck);
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            if (error.networkResponse.statusCode == 401) {
-                                Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
-                                startActivity(intent);
+                            } catch (JSONException e) {
+                                // handle exception
                             }
-                            else
-                                Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
-                        }
-                    }) {
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String, String> headers = new HashMap<>();
-                            headers.put("Authorization", "Bearer " + savedToken);
-                            return headers;
+
+                            RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                            JsonObjectRequest jsonForPutRequest = new JsonObjectRequest(
+                                    Request.Method.PUT, "https://ixirus.azurewebsites.net/api/developmentplan", jsonObject,
+                                    new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            Toast.makeText(getBaseContext(), getResources().getString(R.string.plan_saved_successfully) + "\n" + planName, Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(getBaseContext(), MyDevPlanListActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    }, new Response.ErrorListener() {
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    if (error.networkResponse.statusCode == 401) {
+                                        Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                        startActivity(intent);
+                                    } else
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                                }
+                            }) {
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String> headers = new HashMap<>();
+                                    headers.put("Authorization", "Bearer " + savedToken);
+                                    return headers;
+                                }
+
+                                @Override
+                                public String getBodyContentType() {
+                                    // TODO Auto-generated method stub
+                                    return "application/json";
+                                }
+                            };
+                            queue.add(jsonForPutRequest);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
 
-                        @Override
-                        public String getBodyContentType() {
-                            // TODO Auto-generated method stub
-                            return "application/json";
-                        }
-                    };
-                    queue.add(jsonForPutRequest);
 
+
+                    } else {
+                        programId = extras.getInt("programId");
+                        perfectionId = extras.getInt("perfectionId");
+                        behaviourId = extras.getInt("behaviourId");
+                        benefit = extras.getString("benefit");
+                        question1 = extras.getInt("question1");
+                        question2 = extras.getInt("question2");
+                        question3 = extras.getInt("question3");
+                        question4 = extras.getInt("question4");
+                        question5 = extras.getInt("question5");
+                        planName = extras.getString("planName");
+
+                        actionTasks = extras.getIntegerArrayList("actionTasks");
+                        sourceTasks = extras.getIntegerArrayList("sourceTasks");
+                        final Boolean managerCheck = ((CheckBox) findViewById(R.id.managerCheck)).isChecked();
+                        final Boolean educatorCheck = ((CheckBox) findViewById(R.id.educatorCheck)).isChecked();
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            ArrayList<Integer> joinedList = new ArrayList<Integer>();
+                            joinedList.addAll(actionTasks);
+                            joinedList.addAll(sourceTasks);
+                            JSONArray arr = new JSONArray();
+                            for (int i = 0; i < joinedList.toArray().length; i++) {
+                                arr.put(joinedList.toArray()[i]);
+                            }
+
+                            jsonObject.put("Name", planName);
+                            jsonObject.put("ProgramId", programId);
+                            jsonObject.put("BehaviorId", behaviourId);
+                            jsonObject.put("PerfectionId", perfectionId);
+                            jsonObject.put("Tasks", arr);
+                            jsonObject.put("Benefit", benefit);
+                            jsonObject.put("Question1", question1);
+                            jsonObject.put("Question2", question2);
+                            jsonObject.put("Question3", question3);
+                            jsonObject.put("Question4", question4);
+                            jsonObject.put("Question5", question5);
+                            jsonObject.put("ManagerCanFollow", managerCheck);
+                            jsonObject.put("LecturerCanFollow", educatorCheck);
+
+                        } catch (JSONException e) {
+                            // handle exception
+                        }
+
+                        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                        JsonObjectRequest jsonForPutRequest = new JsonObjectRequest(
+                                Request.Method.POST, "https://ixirus.azurewebsites.net/api/developmentplan", jsonObject,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.plan_saved_successfully) + "\n" + planName, Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getBaseContext(), MyDevPlanListActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                if (error.networkResponse.statusCode == 401) {
+                                    Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                    startActivity(intent);
+                                } else
+                                    Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                            }
+                        }) {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String, String> headers = new HashMap<>();
+                                headers.put("Authorization", "Bearer " + savedToken);
+                                return headers;
+                            }
+
+                            @Override
+                            public String getBodyContentType() {
+                                // TODO Auto-generated method stub
+                                return "application/json";
+                            }
+                        };
+                        queue.add(jsonForPutRequest);
+                    }
                 }
             }
         });

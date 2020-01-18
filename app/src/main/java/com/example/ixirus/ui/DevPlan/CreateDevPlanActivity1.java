@@ -1,7 +1,9 @@
 package com.example.ixirus.ui.DevPlan;
+
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -45,9 +47,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 public class CreateDevPlanActivity1 extends AppCompatActivity {
     private ListView lv;
     private Object selectedItem = null;
+    private JSONObject object;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,10 +68,10 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         });
 
         final EditText editText = findViewById(R.id.editTextNewProgramme);
-        final TextView tv = (TextView)findViewById(R.id.textView2) ;
-        final ImageView refreshImage = (ImageView)findViewById(R.id.refreshIco) ;
+        final TextView tv = (TextView) findViewById(R.id.textView2);
+        final ImageView refreshImage = (ImageView) findViewById(R.id.refreshIco);
         final Button nextButton = (Button) findViewById(R.id.button);
-        final EditText editTextPlanName =   (EditText)findViewById(R.id.editTextPlanName);
+        final EditText editTextPlanName = (EditText) findViewById(R.id.editTextPlanName);
         ImageView imageView = findViewById(R.id.buttonBack);
 
         final View activityRootView = findViewById(R.id.rootView);
@@ -75,15 +80,14 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
             public void onGlobalLayout() {
                 int heightDiff = activityRootView.getRootView().getHeight() - activityRootView.getHeight();
                 if (heightDiff > dpToPx(getBaseContext(), 200)) { // if more than 200 dp, it's probably a keyboard...
-                   nextButton.setVisibility(View.GONE);
-                }
-                else
+                    nextButton.setVisibility(View.GONE);
+                } else
                     nextButton.setVisibility(View.VISIBLE);
             }
         });
 
 
-        getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan) ;
+        getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ImageView imgView = new ImageView(this);
@@ -93,15 +97,30 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         getSupportActionBar().setCustomView(imgView);
 
         Display display = getWindowManager().getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics ();
+        DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
-        float density  = getResources().getDisplayMetrics().density;
+        float density = getResources().getDisplayMetrics().density;
 
         SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
-        final String savedToken = sp.getString("Token",null);
+        final String savedToken = sp.getString("Token", null);
 
         tv.setTextSize(9 * density);
-        loadListItem(savedToken,null,false);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            try {
+                if (extras.getString("editedDevPlan") != null) {
+                    object = new JSONObject(extras.getString("editedDevPlan"));
+                    String devPlanName = object.getString("name");
+                    ((EditText) findViewById(R.id.editTextPlanName)).setText(devPlanName);
+                    loadListItemFromEdit(savedToken, object);
+                } else
+                    loadListItem(savedToken, null, false);
+            } catch (Throwable t) {
+                return;
+            }
+        } else
+            loadListItem(savedToken, null, false);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,22 +133,23 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 JSONObject devPlanObject = new JSONObject();
-                Object selectedObj =  selectedItem;
-                EditText planEditText =  (EditText)findViewById(R.id.editTextPlanName);
+                Object selectedObj = selectedItem;
+                EditText planEditText = (EditText) findViewById(R.id.editTextPlanName);
 
-                if(planEditText.getText().toString().trim().matches("")) {
+                if (planEditText.getText().toString().trim().matches("")) {
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.type_plan_name), Toast.LENGTH_SHORT).show();
                     return;
-                }
-               else if(selectedObj==null) {
-                    Toast.makeText(getBaseContext   (), getResources().getString(R.string.select_item), Toast.LENGTH_SHORT).show();
+                } else if (selectedObj == null) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.select_item), Toast.LENGTH_SHORT).show();
                     return;
-                }
-                else {
-                    ListItem selectedListItem = (ListItem)selectedObj;
+                } else {
+                    ListItem selectedListItem = (ListItem) selectedObj;
                     Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity2.class);
-                    intent.putExtra("programId",selectedListItem.Id);
-                    intent.putExtra("planName",planEditText.getText().toString().trim());
+                    if (object != null)
+                        intent.putExtra("editedDevPlan", object.toString());
+
+                    intent.putExtra("programId", selectedListItem.Id);
+                    intent.putExtra("planName", planEditText.getText().toString().trim());
                     startActivity(intent);
                 }
             }
@@ -140,7 +160,7 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
             public void onClick(View v) {
                 refreshImage.setVisibility(View.GONE);
                 findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
-                loadListItem(savedToken,null,false);
+                loadListItem(savedToken, null, false);
 
             }
         });
@@ -148,16 +168,16 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         editText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId  == EditorInfo.IME_ACTION_DONE) {
-                   final String currentText = editText.getText().toString().trim();
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    final String currentText = editText.getText().toString().trim();
                     if (currentText.matches(""))
                         return false;
                     else {
                         StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/program", new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                               addProgramm(savedToken,currentText);
-                               editText.getText().clear();
+                                addProgramm(savedToken, currentText);
+                                editText.getText().clear();
                                 findViewById(R.id.refreshIco).setVisibility(View.GONE);
                                 findViewById(R.id.progressBar2).setVisibility(View.GONE);
                             }
@@ -165,11 +185,10 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
 
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                if(error.networkResponse.statusCode==401){
+                                if (error.networkResponse.statusCode == 401) {
                                     Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
                                     startActivity(intent);
-                                }
-                                else {
+                                } else {
                                     Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
                                 }
                             }
@@ -203,52 +222,48 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
     }
 
-    public void setItemSelected(View view){
+    public void setItemSelected(View view) {
         View rowView = view;
-        View v2 =  ((ViewGroup)view).getChildAt(0);
-        View v3 =  ((ViewGroup)v2).getChildAt(0);
-        TextView txtview = (TextView)v3;
+        View v2 = ((ViewGroup) view).getChildAt(0);
+        View v3 = ((ViewGroup) v2).getChildAt(0);
+        TextView txtview = (TextView) v3;
 
-        TextView tv = (TextView)v3;
+        TextView tv = (TextView) v3;
         txtview.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimary));
     }
 
-    public void setItemNormal()
-    {
-        for (int i=0; i< lv.getChildCount(); i++)
-        {
+    public void setItemNormal() {
+        for (int i = 0; i < lv.getChildCount(); i++) {
             View v = lv.getChildAt(i);
 
-            View v2 =  ((ViewGroup)v).getChildAt(0);
-            View v3 =  ((ViewGroup)v2).getChildAt(0);
+            View v2 = ((ViewGroup) v).getChildAt(0);
+            View v3 = ((ViewGroup) v2).getChildAt(0);
 
-            TextView txtview = (TextView)v3;
+            TextView txtview = (TextView) v3;
             txtview.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.black_overlay));
         }
     }
 
-    public void loadListItem(final String savedToken,final String addedText, final boolean fromAddItem)
-    {
+    public void loadListItem(final String savedToken, final String addedText, final boolean fromAddItem) {
         lv.setAdapter(null);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/program", null,new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/program", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 ArrayList<ListItem> arr = new ArrayList<ListItem>();
                 try {
                     JSONArray programArray = response.getJSONArray("data");
-                    for (int i=0; i < programArray.length(); i++) {
-                        JSONObject obj =  programArray.getJSONObject(i);
-                        ListItem item =  new ListItem();
-                        item.Id =  Integer.parseInt(obj.getString("id"));
-                        item.Name =  obj.getString("name");
+                    for (int i = 0; i < programArray.length(); i++) {
+                        JSONObject obj = programArray.getJSONObject(i);
+                        ListItem item = new ListItem();
+                        item.Id = Integer.parseInt(obj.getString("id"));
+                        item.Name = obj.getString("name");
                         arr.add(item);
                     }
-                    final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(),arr);
+                    final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(), arr);
                     lv.setAdapter(adapter);
-                    if(fromAddItem)
-                    {
-                        for (int position=0; position<adapter.getCount(); position++)
-                            if (((ListItem)adapter.getItem(position)).Name.equals(addedText)) {
+                    if (fromAddItem) {
+                        for (int position = 0; position < adapter.getCount(); position++)
+                            if (((ListItem) adapter.getItem(position)).Name.equals(addedText)) {
                                 lv.setItemChecked(position, true);
                                 lv.setSelection(position);
                                 selectedItem = lv.getItemAtPosition(position);
@@ -256,7 +271,7 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                     }
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 } catch (JSONException e) {
-                    Toast.makeText(getBaseContext(),getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
                     findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 }
@@ -264,11 +279,68 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if(error.networkResponse.statusCode==401){
+                if (error.networkResponse.statusCode == 401) {
                     Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
                     startActivity(intent);
+                } else {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                    findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 }
-                else {
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + savedToken);
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+        queue.add(request);
+    }
+
+    public void loadListItemFromEdit(final String savedToken, final JSONObject object) {
+        lv.setAdapter(null);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/program", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                ArrayList<ListItem> arr = new ArrayList<ListItem>();
+                try {
+                    JSONArray programArray = response.getJSONArray("data");
+                    for (int i = 0; i < programArray.length(); i++) {
+                        JSONObject obj = programArray.getJSONObject(i);
+                        ListItem item = new ListItem();
+                        item.Id = Integer.parseInt(obj.getString("id"));
+                        item.Name = obj.getString("name");
+                        arr.add(item);
+                    }
+                    final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(), arr);
+                    lv.setAdapter(adapter);
+
+                    Integer programId = object.getInt("programId");
+                    for (int position = 0; position < adapter.getCount(); position++)
+                        if (((ListItem) adapter.getItem(position)).Id == programId) {
+                            lv.setItemChecked(position, true);
+                            lv.setSelection(position);
+                            selectedItem = lv.getItemAtPosition(position);
+                        }
+
+                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                } catch (JSONException e) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                    findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error.networkResponse.statusCode == 401) {
+                    Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                    startActivity(intent);
+                } else {
 
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
                     findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
@@ -288,12 +360,11 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         queue.add(request);
     }
 
-    public void addProgramm(final String savedToken,String addedText)
-    {
+    public void addProgramm(final String savedToken, String addedText) {
         findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
         Toast.makeText(getBaseContext(), getResources().getString(R.string.successfully_added), Toast.LENGTH_SHORT).show();
-        loadListItem(savedToken,addedText,true);
-        lv.setItemChecked(0,true);
+        loadListItem(savedToken, addedText, true);
+        lv.setItemChecked(0, true);
         findViewById(R.id.progressBar2).setVisibility(View.GONE);
     }
 }

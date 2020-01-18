@@ -67,4 +67,9 @@ public class MainActivityWithoutFragment extends AppCompatActivity  {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 }
