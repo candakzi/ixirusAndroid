@@ -22,10 +22,15 @@ import android.widget.Toast;
 import com.example.ixirus.ListItem;
 import com.example.ixirus.R;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CreateDevPlanActivity4 extends AppCompatActivity {
     private JSONObject object;
+    private int selectedPerfectionId;
+    private int selectedProgramId;
+    private String selectedDevPlanName;
+    private int selectedBehaviourId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +59,19 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             try {
-                if(extras.getString("editedDevPlan")!=null) {
+                selectedBehaviourId = extras.getInt("behaviourId");
+                selectedPerfectionId = extras.getInt("perfectionId");
+                selectedProgramId = extras.getInt("programId");
+                selectedDevPlanName = extras.getString("planName");
+
+                if (extras.getString("editedDevPlan") != null) {
                     object = new JSONObject(extras.getString("editedDevPlan"));
-                    String  benefitText = object.getString("benefit");
+                    String benefitText = object.getString("benefit");
 
                     ((EditText) findViewById(R.id.editTextBenefits)).setText(benefitText);
+                }
+                else if(extras.getString("benefit") != null){
+                    ((EditText) findViewById(R.id.editTextBenefits)).setText(extras.getString("benefit"));
                 }
             } catch (Throwable t) {
                 return;
@@ -81,8 +94,59 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
                     planName = extras.getString("planName");
 
                     Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity5.class);
-                    if (object != null)
+                    if (object != null) {
+                        if(getIntent().hasExtra("question1")) {
+                            try {
+                                object.put("question1", getIntent().getExtras().getInt("question1"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                         if(getIntent().hasExtra("question2")) {
+                            try {
+                                object.put("question2", getIntent().getExtras().getInt("question2"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                         if(getIntent().hasExtra("question3")) {
+                            try {
+                                object.put("question3", getIntent().getExtras().getInt("question3"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        if(getIntent().hasExtra("question4")) {
+                            try {
+                                object.put("question4", getIntent().getExtras().getInt("question4"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        if(getIntent().hasExtra("question5")) {
+                            try {
+                                object.put("question5", getIntent().getExtras().getInt("question5"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
                         intent.putExtra("editedDevPlan", object.toString());
+                    }
+                    else {
+
+                        if (getIntent().hasExtra("question1")) {
+                            intent.putExtra("question1", getIntent().getExtras().getInt("question1"));
+                        }
+                        if (getIntent().hasExtra("question2"))
+                            intent.putExtra("question2", getIntent().getExtras().getInt("question2"));
+                        if (getIntent().hasExtra("question3"))
+                            intent.putExtra("question3", getIntent().getExtras().getInt("question3"));
+                        if (getIntent().hasExtra("question4"))
+                            intent.putExtra("question4", getIntent().getExtras().getInt("question4"));
+                        if (getIntent().hasExtra("question5"))
+                            intent.putExtra("question5", getIntent().getExtras().getInt("question5"));
+                    }
 
                     intent.putExtra("behaviourId", behaviourId);
                     intent.putExtra("perfectionId", perfectionId);
@@ -98,9 +162,38 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
+                if(object!=null)
+                    intent.putExtra("editedDevPlan", object.toString());
+
+                intent.putExtra("programId", selectedProgramId);
+                intent.putExtra("planName", selectedDevPlanName);
+                intent.putExtra("perfectionId", selectedPerfectionId);
+                intent.putExtra("behaviourId", selectedBehaviourId);
+                intent.putExtra("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
+
+                startActivity(intent);
+                overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
             }
         });
 
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
+
+        if(object!=null)
+            intent.putExtra("editedDevPlan", object.toString());
+
+        intent.putExtra("programId", selectedProgramId);
+        intent.putExtra("planName", selectedDevPlanName);
+        intent.putExtra("perfectionId", selectedPerfectionId);
+        intent.putExtra("behaviourId", selectedBehaviourId);
+        intent.putExtra("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
+
+        startActivity(intent);
+        overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
     }
 }

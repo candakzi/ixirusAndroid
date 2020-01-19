@@ -114,8 +114,12 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                     String devPlanName = object.getString("name");
                     ((EditText) findViewById(R.id.editTextPlanName)).setText(devPlanName);
                     loadListItemFromEdit(savedToken, object);
-                } else
+                } else {
+                    if (extras.getString("planName") != null)
+                        ((EditText) findViewById(R.id.editTextPlanName)).setText(extras.getString("planName"));
+
                     loadListItem(savedToken, null, false);
+                }
             } catch (Throwable t) {
                 return;
             }
@@ -125,7 +129,11 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+
+                Intent intent = new Intent(getBaseContext(), MyDevPlanListActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+                //onBackPressed();
             }
         });
 
@@ -135,6 +143,7 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                 JSONObject devPlanObject = new JSONObject();
                 Object selectedObj = selectedItem;
                 EditText planEditText = (EditText) findViewById(R.id.editTextPlanName);
+                Bundle extras = getIntent().getExtras();
 
                 if (planEditText.getText().toString().trim().matches("")) {
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.type_plan_name), Toast.LENGTH_SHORT).show();
@@ -145,8 +154,33 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                 } else {
                     ListItem selectedListItem = (ListItem) selectedObj;
                     Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity2.class);
-                    if (object != null)
-                        intent.putExtra("editedDevPlan", object.toString());
+                    if (object != null) {
+                        if (getIntent().hasExtra("perfectionId")) {
+                            int overridedPerfectionIdInt = extras.getInt("perfectionId");
+                            try {
+                                object.put("perfectionId", overridedPerfectionIdInt);
+                                intent.putExtra("editedDevPlan", object.toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            if(getIntent().hasExtra("behaviourId"))
+                                intent.putExtra("behaviourId", getIntent().getExtras().getInt("behaviourId"));
+
+                        } else {
+                            intent.putExtra("editedDevPlan", object.toString());
+                        }
+
+                    } else if (extras != null) {
+                        if (getIntent().hasExtra("perfectionId")) {
+                            intent.putExtra("perfectionId", extras.getInt("perfectionId"));
+                        }
+                        if(getIntent().hasExtra("behaviourId"))
+                            intent.putExtra("behaviourId", getIntent().getExtras().getInt("behaviourId"));
+
+                        if (getIntent().hasExtra("benefit"))
+                            intent.putExtra("benefit", getIntent().getExtras().getString("benefit"));
+                    }
 
                     intent.putExtra("programId", selectedListItem.Id);
                     intent.putExtra("planName", planEditText.getText().toString().trim());
@@ -268,6 +302,19 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                                 lv.setSelection(position);
                                 selectedItem = lv.getItemAtPosition(position);
                             }
+                    } else {
+                        Bundle extras = getIntent().getExtras();
+                        if (extras != null) {
+                            if (getIntent().hasExtra("programId")) {
+                                int OverridedPerfectionIdInt = extras.getInt("programId");
+                                for (int position = 0; position < adapter.getCount(); position++)
+                                    if (((ListItem) adapter.getItem(position)).Id == OverridedPerfectionIdInt) {
+                                        lv.setItemChecked(position, true);
+                                        lv.setSelection(position);
+                                        selectedItem = lv.getItemAtPosition(position);
+                                    }
+                            }
+                        }
                     }
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 } catch (JSONException e) {
@@ -366,5 +413,14 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
         loadListItem(savedToken, addedText, true);
         lv.setItemChecked(0, true);
         findViewById(R.id.progressBar2).setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(getBaseContext(), MyDevPlanListActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
     }
 }

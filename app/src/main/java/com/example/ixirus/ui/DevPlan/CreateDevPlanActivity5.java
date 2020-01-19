@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -42,6 +43,12 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
     private Object selectedItem5 = null;
 
     private JSONObject object;
+
+    private int selectedPerfectionId;
+    private int selectedProgramId;
+    private String selectedDevPlanName;
+    private int selectedBehaviourId;
+    private String typedBenefit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +132,12 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             try {
+                selectedBehaviourId = extras.getInt("behaviourId");
+                selectedPerfectionId = extras.getInt("perfectionId");
+                selectedProgramId = extras.getInt("programId");
+                selectedDevPlanName = extras.getString("planName");
+                typedBenefit = extras.getString("benefit");
+
                 if (extras.getString("editedDevPlan") != null) {
                     object = new JSONObject(extras.getString("editedDevPlan"));
                     Integer question1 = object.getInt("question1");
@@ -154,6 +167,35 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
                     lv5.setSelection(question5-1);
                     lv5.setItemChecked(question5-1, true);
                 }
+                else {
+                    if (getIntent().hasExtra("question1")) {
+                        lv1.setSelection(getIntent().getExtras().getInt("question1")-1);
+                        lv1.setItemChecked(getIntent().getExtras().getInt("question1")-1, true);
+                    }
+                    if (getIntent().hasExtra("question2")) {
+                        lv2.setSelection(getIntent().getExtras().getInt("question2")-1);
+                        lv2.setItemChecked(getIntent().getExtras().getInt("question2")-1, true);
+                    }
+                    if (getIntent().hasExtra("question3")) {
+                        lv3.setSelection(getIntent().getExtras().getInt("question3")-1);
+                        lv3.setItemChecked(getIntent().getExtras().getInt("question3")-1, true);
+                    }
+                    if (getIntent().hasExtra("question4")) {
+                        lv4.setSelection(getIntent().getExtras().getInt("question4")-1);
+                        lv4.setItemChecked(getIntent().getExtras().getInt("question4")-1, true);
+                    }
+                    if (getIntent().hasExtra("question5")) {
+                        lv5.setSelection(getIntent().getExtras().getInt("question5")-1);
+                        lv5.setItemChecked(getIntent().getExtras().getInt("question5")-1, true);
+                    }
+
+                    selectedItem1 = lv1.getItemAtPosition(getIntent().getExtras().getInt("question1")-1);
+                    selectedItem2 = lv2.getItemAtPosition(getIntent().getExtras().getInt("question2")-1);
+                    selectedItem3 = lv3.getItemAtPosition(getIntent().getExtras().getInt("question3")-1);
+                    selectedItem4 = lv4.getItemAtPosition(getIntent().getExtras().getInt("question4")-1);
+                    selectedItem5 = lv5.getItemAtPosition(getIntent().getExtras().getInt("question5")-1);
+                }
+
             } catch (Throwable t) {
                 return;
             }
@@ -162,7 +204,32 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
+                intent.putExtra("programId", selectedProgramId);
+                intent.putExtra("planName", selectedDevPlanName);
+                intent.putExtra("perfectionId", selectedPerfectionId);
+                intent.putExtra("behaviourId", selectedBehaviourId);
+                intent.putExtra("benefit", typedBenefit);
+
+                if(object!=null)
+                    intent.putExtra("editedDevPlan", object.toString());
+
+                if(selectedItem1!=null)
+                    intent.putExtra("question1", ((ListItem)selectedItem1).Id);
+                if(selectedItem2!=null)
+                    intent.putExtra("question2", ((ListItem)selectedItem2).Id);
+                if(selectedItem3!=null)
+                    intent.putExtra("question3", ((ListItem)selectedItem3).Id);
+                if(selectedItem4!=null)
+                    intent.putExtra("question4", ((ListItem)selectedItem4).Id);
+                if(selectedItem5!=null)
+                    intent.putExtra("question5", ((ListItem)selectedItem5).Id);
+
+                startActivity(intent);
+                overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+
+
+                //onBackPressed();
             }
         });
 
@@ -229,6 +296,34 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
         lv4.setAdapter(adapter);
         lv5.setAdapter(adapter);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
+        intent.putExtra("programId", selectedProgramId);
+        intent.putExtra("planName", selectedDevPlanName);
+        intent.putExtra("perfectionId", selectedPerfectionId);
+        intent.putExtra("behaviourId", selectedBehaviourId);
+        intent.putExtra("benefit", typedBenefit);
+
+        if(object!=null)
+            intent.putExtra("editedDevPlan", object.toString());
+
+        if(selectedItem1!=null)
+            intent.putExtra("question1", ((ListItem)selectedItem1).Id);
+        if(selectedItem2!=null)
+            intent.putExtra("question2", ((ListItem)selectedItem2).Id);
+        if(selectedItem3!=null)
+            intent.putExtra("question3", ((ListItem)selectedItem3).Id);
+        if(selectedItem4!=null)
+            intent.putExtra("question4", ((ListItem)selectedItem4).Id);
+        if(selectedItem5!=null)
+            intent.putExtra("question5", ((ListItem)selectedItem5).Id);
+
+        startActivity(intent);
+        overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
     }
 }
 
