@@ -145,17 +145,26 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
                         ListItem selectedListItem = (ListItem) selectedObj;
                         Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
                         if (object != null) {
-                            if (getIntent().hasExtra("behaviourId")) {
-                                int overridedBehaviourInt = extras.getInt("behaviourId");
-                                try {
-                                    object.put("behaviorId", overridedBehaviourInt);
-                                    intent.putExtra("editedDevPlan", object.toString());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            } else {
-                                intent.putExtra("editedDevPlan", object.toString());
+//                            if (getIntent().hasExtra("behaviourId")) {
+//                                int overridedBehaviourInt = extras.getInt("behaviourId");
+//                                try {
+//                                    object.put("behaviorId", overridedBehaviourInt);
+//                                    intent.putExtra("editedDevPlan", object.toString());
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            } else {
+//                                intent.putExtra("editedDevPlan", object.toString());
+//                            }
+                            try {
+                                object.put("perfectionId", selectedListItem.Id);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
+
+                            intent.putExtra("editedDevPlan", object.toString());
+
 
                         } else if (extras != null) {
                             if (getIntent().hasExtra("behaviourId")) {
@@ -189,8 +198,17 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity1.class);
-                if(object!=null)
+                if(object!=null) {
+                    if(selectedItem!=null) {
+                        try {
+                            object.put("perfectionId", ((ListItem)selectedItem).Id);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     intent.putExtra("editedDevPlan", object.toString());
+                }
 
                 if(selectedItem!=null)
                     intent.putExtra("perfectionId", ((ListItem)selectedItem).Id);
@@ -453,8 +471,17 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
         if(selectedItem!=null)
             intent.putExtra("perfectionId", ((ListItem)selectedItem).Id);
 
-        if(object!=null)
+        if(object!=null) {
+            if (selectedItem != null) {
+                try {
+                    object.put("perfectionId", ((ListItem) selectedItem).Id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
             intent.putExtra("editedDevPlan", object.toString());
+        }
 
         if(getIntent().hasExtra("behaviourId"))
             intent.putExtra("behaviourId", getIntent().getExtras().getInt("behaviourId"));

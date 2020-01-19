@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import com.example.ixirus.ListItemTasks;
 import com.example.ixirus.R;
@@ -44,13 +46,27 @@ public class TaskListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         // TODO Auto-generated method stub
+        MyDevPlanListAdapter.ViewHolder holder;
         View vi = convertView;
         if (vi == null)
-            vi = inflater.inflate(R.layout.row_small, null);
+            vi = inflater.inflate(R.layout.row_small_with_delete, null);
         TextView text = (TextView) vi.findViewById(R.id.text);
+        holder = new MyDevPlanListAdapter.ViewHolder();
         text.setText(data.get(position).Name);
+        ImageView deleteImage = (ImageView) vi.findViewById(R.id.deleteImage);
+        deleteImage.setImageResource(R.mipmap.delete_button);
+
+        holder.deleteImage = deleteImage;
+
+        deleteImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ListView) parent).performItemClick(view, position, 0); // Let the event be handled in onItemClick()
+            }
+        });
+
         return vi;
     }
 

@@ -147,10 +147,17 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
                         ListItem selectedListItem = (ListItem) selectedObj;
                         Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
                         if (object != null) {
+                            try {
+                                object.put("behaviorId", selectedListItem.Id);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
                             intent.putExtra("editedDevPlan", object.toString());
                         }
 
-                        if (getIntent().hasExtra("benefit"))
+                        else if (getIntent().hasExtra("benefit"))
                             intent.putExtra("benefit", getIntent().getExtras().getString("benefit"));
 
                         intent.putExtra("behaviourId", selectedListItem.Id);
@@ -182,8 +189,17 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
                 if(selectedItem!=null)
                     intent.putExtra("behaviourId", ((ListItem)selectedItem).Id);
 
-                if(object!=null)
+                if(object!=null) {
+                    if(selectedItem!=null) {
+                        try {
+                            object.put("behaviorId", ((ListItem)selectedItem).Id);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
                     intent.putExtra("editedDevPlan", object.toString());
+                }
 
                 if(getIntent().hasExtra("benefit"))
                     intent.putExtra("benefit", getIntent().getExtras().getString("benefit")); // 5 6 7 8 komple gelecek
@@ -420,8 +436,17 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
         if(selectedItem!=null)
             intent.putExtra("behaviourId", ((ListItem)selectedItem).Id);
 
-        if(object!=null)
+        if(object!=null) {
+            if(selectedItem!=null) {
+                try {
+                    object.put("behaviorId", ((ListItem)selectedItem).Id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
             intent.putExtra("editedDevPlan", object.toString());
+        }
 
         if(getIntent().hasExtra("benefit"))
             intent.putExtra("benefit", getIntent().getExtras().getString("benefit")); // 5 6 7 8 komple gelecek

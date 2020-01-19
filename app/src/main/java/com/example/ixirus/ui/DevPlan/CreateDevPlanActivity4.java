@@ -163,8 +163,14 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
-                if(object!=null)
+                if(object!=null) {
+                    try {
+                        object.put("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     intent.putExtra("editedDevPlan", object.toString());
+                }
 
                 intent.putExtra("programId", selectedProgramId);
                 intent.putExtra("planName", selectedDevPlanName);
@@ -184,8 +190,14 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
 
         Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
 
-        if(object!=null)
+        if(object!=null) {
+            try {
+                object.put("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             intent.putExtra("editedDevPlan", object.toString());
+        }
 
         intent.putExtra("programId", selectedProgramId);
         intent.putExtra("planName", selectedDevPlanName);

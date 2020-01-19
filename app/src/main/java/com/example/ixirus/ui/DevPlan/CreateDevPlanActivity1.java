@@ -155,21 +155,32 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                     ListItem selectedListItem = (ListItem) selectedObj;
                     Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity2.class);
                     if (object != null) {
-                        if (getIntent().hasExtra("perfectionId")) {
-                            int overridedPerfectionIdInt = extras.getInt("perfectionId");
-                            try {
-                                object.put("perfectionId", overridedPerfectionIdInt);
-                                intent.putExtra("editedDevPlan", object.toString());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+//                        if (getIntent().hasExtra("perfectionId")) {
+//                            int overridedPerfectionIdInt = extras.getInt("perfectionId");
+//                            try {
+//                                object.put("perfectionId", overridedPerfectionIdInt);
+//                                intent.putExtra("editedDevPlan", object.toString());
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                            if(getIntent().hasExtra("behaviourId"))
+//                                intent.putExtra("behaviourId", getIntent().getExtras().getInt("behaviourId"));
+//
+//                        } else {
+//                            intent.putExtra("editedDevPlan", object.toString());
+//                        }
+                        try {
+                            object.put("programId", selectedListItem.Id);
+                            object.put("name",  planEditText.getText().toString().trim());
 
-                            if(getIntent().hasExtra("behaviourId"))
-                                intent.putExtra("behaviourId", getIntent().getExtras().getInt("behaviourId"));
-
-                        } else {
-                            intent.putExtra("editedDevPlan", object.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
+
+
+                        intent.putExtra("editedDevPlan", object.toString());
+
 
                     } else if (extras != null) {
                         if (getIntent().hasExtra("perfectionId")) {
