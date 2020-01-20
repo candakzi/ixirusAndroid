@@ -96,6 +96,12 @@
     <string name="no">No</string>
     <string name="waiting_actions">WAITING ACTIONS</string>
     <string name="completed_actions">COMPLETED ACTIONS</string>
+    <string name="action_step_delete">Remove Action</string>
+    <string name="source_step_delete">Remove Source</string>
+    <string name="add_source_step">Please Add Source</string>
+    <string name="behaviour_based">Behaviour Based</string>
+    <string name="all_sources">All Sources</string>
+
 
 
 </resources>

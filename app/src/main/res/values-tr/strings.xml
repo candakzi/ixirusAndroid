@@ -99,4 +99,11 @@
     <string name="no">Hayır</string>
     <string name="waiting_actions">BEKLEYEN AKSİYONLAR</string>
     <string name="completed_actions">TAMAMLANAN AKSİYONLAR</string>
+    <string name="action_step_delete">Aksiyon Sil</string>
+    <string name="source_step_delete">Remove Source</string>
+    <string name="add_source_step">Kaynak Ekleyiniz</string>
+    <string name="behaviour_based">Davranış Bazlı</string>
+    <string name="all_sources">Tüm Kaynaklar</string>
+
+
 </resources>

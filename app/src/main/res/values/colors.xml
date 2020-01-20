@@ -15,4 +15,5 @@
     <color name ="purple_color">#565799</color>
     <color name ="create_account_back">#3F2C59</color>
     <color name="edit_text_color">#E2DBE7</color>
+    <color name="button_blue">#036FFF</color>
 </resources>

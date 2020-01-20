@@ -48,6 +48,8 @@
     <string name="select_item">Please Select Item!</string>
     <string name="answer_the_questions">Please Answer All Questions</string>
     <string name="add_action_step">Please Add Action Step</string>
+    <string name="add_source_step">Please Add Source</string>
+
     <string name="type_plan_name">Please Type a Plan Name</string>
     <string name="plan_saved_successfully">Successfully Added to Your Development Plans</string>
     <string name="source_list">Source List</string>
@@ -97,5 +99,9 @@
     <string name="no">No</string>
     <string name="waiting_actions">WAITING ACTIONS</string>
     <string name="completed_actions">COMPLETED ACTIONS</string>
+    <string name="action_step_delete">Remove Action</string>
+    <string name="source_step_delete">Remove Source</string>
+    <string name="behaviour_based">Behaviour Based</string>
+    <string name="all_sources">All Sources</string>
 
 </resources>

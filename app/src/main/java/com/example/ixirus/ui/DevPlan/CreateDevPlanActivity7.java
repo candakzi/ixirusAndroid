@@ -1,6 +1,7 @@
 package com.example.ixirus.ui.DevPlan;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
@@ -9,6 +10,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -17,6 +19,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -36,6 +39,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ixirus.BottomSheetListView;
 import com.example.ixirus.ListAdapters.GenericListAdapter;
 import com.example.ixirus.ListAdapters.SourceListAdapter;
 import com.example.ixirus.ListAdapters.TaskListAdapter;
@@ -44,8 +48,10 @@ import com.example.ixirus.ListItemSources;
 import com.example.ixirus.ListItemTasks;
 import com.example.ixirus.R;
 import com.example.ixirus.ui.BaseScreenActivity;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,7 +76,8 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 1;
     private Object selectedSourceObject;
     private JSONObject object;
-    private  ArrayList<ListItemTasks> arr;
+    private ArrayList<ListItemTasks> arr;
+    private  BottomSheetDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +89,7 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         lv = findViewById(R.id.listView);
         lv.setChoiceMode(ListView.CHOICE_MODE_NONE);
         lv.setClickable(true);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
-            }
-        });
 
         final TextView tv = (TextView) findViewById(R.id.textView2);
         final ImageView refreshImage = (ImageView) findViewById(R.id.refreshIco);
@@ -111,10 +113,75 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         display.getMetrics(outMetrics);
         float density = getResources().getDisplayMetrics().density;
         tv.setTextSize(9 * density);
-        arr= new ArrayList<ListItemTasks>();
+        arr = new ArrayList<ListItemTasks>();
 
         SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
         final String savedToken = sp.getString("Token", null);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
+
+                long viewId = arg1.getId();
+                final Object selectedItem = lv.getItemAtPosition(position);
+                final String selectedId = Integer.toString(((ListItemTasks) selectedItem).Id);
+
+                if (viewId == R.id.deleteImage) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CreateDevPlanActivity7.this);
+                    builder.setTitle(getString(R.string.source_step_delete));
+                    builder.setMessage(getString(R.string.are_you_sure));
+
+                    builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            StringRequest jsonObjRequest = new StringRequest(Request.Method.DELETE, "https://ixirus.azurewebsites.net/api/task?taskId=" + selectedId, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    arr.remove(position);
+                                    ((TaskListAdapter) lv.getAdapter()).notifyDataSetChanged();
+                                }
+                            }, new Response.ErrorListener() {
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    if (error.networkResponse.statusCode == 401) {
+                                        Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }) {
+
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String> headers = new HashMap<>();
+                                    headers.put("Authorization", "Bearer " + savedToken);
+                                    return headers;
+                                }
+                            };
+
+                            RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                            queue.add(jsonObjRequest);
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            // Do nothing
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+
+            }
+        });
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -141,26 +208,29 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
             }
         });
 
-        final BottomSheetDialog dialog = new BottomSheetDialog(CreateDevPlanActivity7.this);
+        dialog= new BottomSheetDialog(CreateDevPlanActivity7.this);
         dialog.setContentView(R.layout.dialog_devplan_resources);
-        dialog.setCancelable(false);
-        final ListView sourcesListView = dialog.findViewById(R.id.listViewResources);
-        loadSourceListItem(savedToken, sourcesListView);
+        //dialog.setCancelable(false);
+        final BottomSheetListView sourcesListView = (BottomSheetListView) dialog.findViewById(R.id.listViewResources);
+        final TabLayout tabLayout = (TabLayout) dialog.findViewById(R.id.tabs);
+
+        loadSourceListItem(savedToken, sourcesListView, 0);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             try {
-                if(extras.getString("editedDevPlan")!=null) {
+                if (extras.getString("editedDevPlan") != null) {
                     object = new JSONObject(extras.getString("editedDevPlan"));
-                    JSONArray  selectedSourceTasks = object.getJSONArray("sourceTasks");
-                    loadDefaultListItem(selectedSourceTasks);
+                    JSONArray selectedSourceTasks = object.getJSONArray("sourceTasks");
+                    loadDefaultListItemFromEdit(selectedSourceTasks);
+                } else {
+                    loadDefaultListItem();
 
                 }
             } catch (Throwable t) {
                 return;
             }
         }
-
 
         sourcesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -176,17 +246,34 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         resourceText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.setCancelable(false);
                 dialog.show();
             }
         });
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                loadSourceListItem(savedToken, sourcesListView, tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 TaskListAdapter finalAdapter = (TaskListAdapter) lv.getAdapter();
                 if (finalAdapter.getCount() == 0) {
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.add_action_step), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.add_source_step), Toast.LENGTH_SHORT).show();
                     return;
                 } else {
                     Bundle extras = getIntent().getExtras();
@@ -236,18 +323,17 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                         ArrayList<Integer> list = new ArrayList<Integer>();
                         for (int position = 0; position < finalAdapter.getCount(); position++) {
                             ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
-                            String name = item.Name.split("-")[0].trim();
-                            String myFormatPosted = "MM/dd/yy";
-                            SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
-                            final String endDatePosted = sdfPosted.format(item.Date);
-                            int sourceId = item.SourceId;
+                            if (item.SourceId == 0)
+                                continue;
                             int id = item.Id;
-                            JSONObject obj = new JSONObject();
                             list.add(id);
-                            ;
                         }
-                        intent.putExtra("sourceTasks", list);
-                        startActivity(intent);
+                        if (list.toArray().length == 0)
+                            Toast.makeText(getBaseContext(), getResources().getString(R.string.add_source_step), Toast.LENGTH_SHORT).show();
+                        else {
+                            intent.putExtra("sourceTasks", list);
+                            startActivity(intent);
+                        }
                     }
                 }
             }
@@ -263,7 +349,7 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
+                dialog.findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
                 final String currentText = resourceText.getText().toString().trim();
                 String myFormatAdded = "dd.MM.yyyy";
                 String myFormatPosted = "MM/dd/yy";
@@ -275,12 +361,12 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                 final String endDateAdded = sdfAdded.format(myCalendar.getTime());
 
                 if (selectedSourceObject == null) {
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.select_source), Toast.LENGTH_SHORT).show();
-                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.add_source_step), Toast.LENGTH_SHORT).show();
+                    dialog.findViewById(R.id.progressBar2).setVisibility(View.GONE);
                     return;
                 } else if (dateTextView.getText() == ("")) {
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.select_date), Toast.LENGTH_SHORT).show();
-                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                    dialog.findViewById(R.id.progressBar2).setVisibility(View.GONE);
 
                 } else {
                     StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/task", new Response.Listener<String>() {
@@ -303,18 +389,18 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
 
                                 final TaskListAdapter adapter = new TaskListAdapter(getBaseContext(), arr);
                                 lv.setAdapter(adapter);
-                                findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.progressBar2).setVisibility(View.GONE);
                             } catch (JSONException e) {
                                 Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
-                                findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                                dialog.findViewById(R.id.progressBar2).setVisibility(View.GONE);
 
                             }
                             dateTextView.setText(null);
                             resourceText.setText(null);
                             selectedSourceObject = null;
 
-                            findViewById(R.id.refreshIco).setVisibility(View.GONE);
-                            findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                            dialog.findViewById(R.id.refreshIco).setVisibility(View.GONE);
+                            dialog.findViewById(R.id.progressBar2).setVisibility(View.GONE);
                         }
                     }, new Response.ErrorListener() {
 
@@ -360,8 +446,12 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         dateTextView.setText(sdf.format(myCalendar.getTime()));
     }
 
-    public void loadSourceListItem(final String savedToken, final ListView sourcesLv) {
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/source", null, new Response.Listener<JSONObject>() {
+    public void loadSourceListItem(final String savedToken, final BottomSheetListView sourcesLv, int tabPosition) {
+        sourcesLv.setAdapter(null);
+        dialog.findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
+        int selectedBehaviourId = getIntent().getExtras().getInt("behaviourId");
+        String url = tabPosition == 0 ? "https://ixirus.azurewebsites.net/api/source?behaviorId=" + Integer.toString(selectedBehaviourId) : "https://ixirus.azurewebsites.net/api/source";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 ArrayList<ListItemSources> arr = new ArrayList<ListItemSources>();
@@ -392,11 +482,11 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                     final SourceListAdapter adapter = new SourceListAdapter(getBaseContext(), arr);
                     sourcesLv.setAdapter(adapter);
 
-//                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                    dialog.findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 } catch (JSONException e) {
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
                     findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
-                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                    dialog.findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 }
             }
         }, new Response.ErrorListener() {
@@ -405,11 +495,10 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                 if (error.networkResponse.statusCode == 401) {
                     Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
                     startActivity(intent);
-                }
-                else {
+                } else {
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
                     findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
-                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                    dialog.findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 }
             }
         }) {
@@ -425,7 +514,29 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         queue.add(request);
     }
 
-    private void loadDefaultListItem(JSONArray selectedActionTasks) {
+    private void loadDefaultListItemFromEdit(JSONArray selectedActionTasks) {
+
+        if (getIntent().hasExtra("passedActionList")) {
+            ArrayList<ListItemTasks> passedTasks = new ArrayList<ListItemTasks>();
+            passedTasks = (ArrayList<ListItemTasks>) getIntent().getSerializableExtra("passedActionList");
+
+            for (int position = 0; position < passedTasks.toArray().length; position++) {
+                ListItemTasks current = (ListItemTasks) passedTasks.toArray()[position];
+
+                ListItemTasks item = new ListItemTasks();
+                String myFormat = "dd.MM.yyyy";
+                SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+                final String currentDateStr = dateFormat.format(current.Date);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                item.Id = current.Id;
+                item.Name = current.Name;
+                item.Date = current.Date;
+                item.SourceId = current.SourceId;
+                arr.add(item);
+            }
+        }
+
+
         for (int position = 0; position < selectedActionTasks.length(); position++) {
             try {
                 JSONObject obj = selectedActionTasks.getJSONObject(position);
@@ -434,10 +545,10 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                 SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
 
 
-                int id =  obj.getInt("id");
-                String name =  obj.getString("name");
-                String endDateStr =  obj.getString("endDate");
-                int sourceId =  obj.getInt("sourceId");
+                int id = obj.getInt("id");
+                String name = obj.getString("name");
+                String endDateStr = obj.getString("endDate");
+                int sourceId = obj.getInt("sourceId");
 
                 Date d = sdf.parse(endDateStr);
                 ListItemTasks item = new ListItemTasks();
@@ -461,13 +572,30 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         lv.setAdapter(adapter);
     }
 
+    private void loadDefaultListItem() {
 
-    public void addProgramm(final String savedToken, String addedText) {
-        findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
-        Toast.makeText(getBaseContext(), getResources().getString(R.string.successfully_added), Toast.LENGTH_SHORT).show();
-        //loadListItem(savedToken);
-        lv.setItemChecked(0, true);
-        findViewById(R.id.progressBar2).setVisibility(View.GONE);
+        if (getIntent().hasExtra("passedActionList")) {
+            ArrayList<ListItemTasks> passedTasks = new ArrayList<ListItemTasks>();
+            passedTasks = (ArrayList<ListItemTasks>) getIntent().getSerializableExtra("passedActionList");
+
+            for (int position = 0; position < passedTasks.toArray().length; position++) {
+                ListItemTasks current = (ListItemTasks) passedTasks.toArray()[position];
+
+                ListItemTasks item = new ListItemTasks();
+                String myFormat = "dd.MM.yyyy";
+                SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+                final String currentDateStr = dateFormat.format(current.Date);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                item.Id = current.Id;
+                item.Name = current.Name;
+                item.Date = current.Date;
+                item.SourceId = current.SourceId;
+                arr.add(item);
+            }
+        }
+
+        final TaskListAdapter adapter = new TaskListAdapter(getBaseContext(), arr);
+        lv.setAdapter(adapter);
     }
 
     private boolean checkPermission() {

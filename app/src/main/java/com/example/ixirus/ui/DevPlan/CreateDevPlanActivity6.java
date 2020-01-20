@@ -1,11 +1,13 @@
 package com.example.ixirus.ui.DevPlan;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -36,6 +38,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ixirus.ListAdapters.TaskListAdapter;
+import com.example.ixirus.ListItem;
 import com.example.ixirus.ListItemTasks;
 import com.example.ixirus.R;
 import com.example.ixirus.ui.BaseScreenActivity;
@@ -44,6 +47,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -164,6 +168,69 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                 return;
             }
         }
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
+                long viewId = arg1.getId();
+                final Object selectedItem = lv.getItemAtPosition(position);
+                final String selectedId = Integer.toString(((ListItemTasks) selectedItem).Id);
+
+                if (viewId == R.id.deleteImage) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CreateDevPlanActivity6.this);
+                    builder.setTitle(getString(R.string.action_step_delete));
+                    builder.setMessage(getString(R.string.are_you_sure));
+
+                    builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            StringRequest jsonObjRequest = new StringRequest(Request.Method.DELETE, "https://ixirus.azurewebsites.net/api/task?taskId="+selectedId, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    arr.remove(position);
+                                    ((TaskListAdapter)lv.getAdapter()).notifyDataSetChanged();
+                                }
+                            }, new Response.ErrorListener() {
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    if (error.networkResponse.statusCode == 401) {
+                                        Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }) {
+
+                                @Override
+                                public Map<String, String> getHeaders() throws AuthFailureError {
+                                    Map<String, String> headers = new HashMap<>();
+                                    headers.put("Authorization", "Bearer " + savedToken);
+                                    return headers;
+                                }
+                            };
+
+                            RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                            queue.add(jsonObjRequest);
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            // Do nothing
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            }
+        });
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -307,6 +374,8 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
 
                         JSONArray array = new JSONArray();
                         ArrayList<Integer> list = new ArrayList<Integer>();
+                        ArrayList<ListItemTasks> passedActionList = new ArrayList<ListItemTasks>();
+
 
                         for (int position = 0; position < finalAdapter.getCount(); position++) {
                             ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
@@ -318,8 +387,12 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                             int id = item.Id;
                             JSONObject obj = new JSONObject();
                             list.add(id);
+                            passedActionList.add(item);
+
                         }
                         intent.putExtra("actionTasks", list);
+                        intent.putExtra("passedActionList", passedActionList);
+
                         startActivity(intent);
                     }
                 }
