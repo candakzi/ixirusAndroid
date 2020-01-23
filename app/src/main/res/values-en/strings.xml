@@ -101,7 +101,8 @@
     <string name="add_source_step">Please Add Source</string>
     <string name="behaviour_based">Behaviour Based</string>
     <string name="all_sources">All Sources</string>
-
+    <string name="preview">Preview</string>
+    <string name="choose_source">Select Source</string>
 
 
 </resources>

@@ -9,4 +9,6 @@ public class ListItemSources {
     public String Name ;
     public String Description ;
     public Drawable Drawable;
+    public String Url;
+    public int SourceType;
 }

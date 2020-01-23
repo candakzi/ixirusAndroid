@@ -49,12 +49,12 @@ public class TaskListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
         // TODO Auto-generated method stub
-        MyDevPlanListAdapter.ViewHolder holder;
+        ViewHolder holder;
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.row_small_with_delete, null);
         TextView text = vi.findViewById(R.id.text);
-        holder = new MyDevPlanListAdapter.ViewHolder();
+        holder = new ViewHolder();
         text.setText(data.get(position).Name);
         ImageView deleteImage = vi.findViewById(R.id.deleteImage);
         deleteImage.setImageResource(R.mipmap.delete_button);
@@ -64,7 +64,6 @@ public class TaskListAdapter extends BaseAdapter {
         if (((ListView)parent).getTag().equals("SourceList") && data.get(position).SourceId == 0)
             deleteImage.setVisibility(View.GONE);
         else {
-
             deleteImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -79,5 +78,10 @@ public class TaskListAdapter extends BaseAdapter {
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
+    }
+
+    class ViewHolder {
+        public ImageView deleteImage;
+        public ImageView editImage;
     }
 }

@@ -86,11 +86,7 @@ public class MyDevPlanListAdapter extends BaseAdapter {
             }
         });
 
-
         return vi;
-
-
-
     }
 
     @Override
@@ -98,7 +94,7 @@ public class MyDevPlanListAdapter extends BaseAdapter {
         super.notifyDataSetChanged();
     }
 
-    static class ViewHolder {
+    class ViewHolder {
         public ImageView deleteImage;
         public ImageView editImage;
     }

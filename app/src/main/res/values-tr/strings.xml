@@ -104,6 +104,7 @@
     <string name="add_source_step">Kaynak Ekleyiniz</string>
     <string name="behaviour_based">Davranış Bazlı</string>
     <string name="all_sources">Tüm Kaynaklar</string>
-
+    <string name="preview">Görüntüle</string>
+    <string name="choose_source">Seç</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.example.ixirus;
 
 import android.content.Context;
+import android.text.style.ClickableSpan;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.AbsListView;

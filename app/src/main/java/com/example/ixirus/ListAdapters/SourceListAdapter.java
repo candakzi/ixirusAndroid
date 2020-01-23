@@ -5,9 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.ixirus.BottomSheetListView;
 import com.example.ixirus.ListItem;
 import com.example.ixirus.ListItemSources;
 import com.example.ixirus.R;
@@ -47,23 +50,51 @@ public class SourceListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         // TODO Auto-generated method stub
+        ViewHolder holder;
         View vi = convertView;
         if (vi == null)
             vi = inflater.inflate(R.layout.row_sources_devplan, null);
-        TextView text = (TextView) vi.findViewById(R.id.text);
-        TextView textDescription = (TextView) vi.findViewById(R.id.textDescription);
-        ImageView sourceIcon = (ImageView) vi.findViewById(R.id.imageView3);
+        TextView text =  vi.findViewById(R.id.text);
+        holder = new ViewHolder();
+        TextView textDescription =  vi.findViewById(R.id.textDescription);
+        ImageView sourceIcon =  vi.findViewById(R.id.imageView3);
+        Button previewButton = vi.findViewById(R.id.buttonPreview);
+        Button selectButton = vi.findViewById(R.id.buttonSelectSource);
+
+        holder.previewButton = previewButton;
+        holder.chooseButton = selectButton;
 
         text.setText(data.get(position).Name);
         textDescription.setText(data.get(position).Description);
         sourceIcon.setImageDrawable(data.get(position).Drawable);
+
+        previewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ListView) parent).performItemClick(view, position, 0); // Let the event be handled in onItemClick()
+            }
+        });
+
+        selectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ListView) parent).performItemClick(view, position, 0); // Let the event be handled in onItemClick()
+            }
+        });
+
+
         return vi;
     }
 
     @Override
     public void notifyDataSetChanged() {
         super.notifyDataSetChanged();
+    }
+
+    class ViewHolder {
+        public Button previewButton;
+        public Button chooseButton;
     }
 }

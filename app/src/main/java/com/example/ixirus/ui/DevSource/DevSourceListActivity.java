@@ -24,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ixirus.ListAdapters.DevSourceListAdapter;
 import com.example.ixirus.ListAdapters.SourceListAdapter;
 import com.example.ixirus.ListItemSources;
 import com.example.ixirus.R;
@@ -89,8 +90,6 @@ public class DevSourceListActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
-
-
     }
 
     public void loadSourceListItem(final String savedToken, final ListView sourcesLv) {
@@ -122,7 +121,7 @@ public class DevSourceListActivity extends AppCompatActivity {
 
                         arr.add(item);
                     }
-                    final SourceListAdapter adapter = new SourceListAdapter(getBaseContext(), arr);
+                    final DevSourceListAdapter adapter = new DevSourceListAdapter(getBaseContext(), arr);
                     sourcesLv.setAdapter(adapter);
 
                     findViewById(R.id.progressBar2).setVisibility(View.GONE);

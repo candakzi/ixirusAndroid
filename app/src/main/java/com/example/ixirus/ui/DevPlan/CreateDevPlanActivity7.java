@@ -8,12 +8,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -21,6 +23,8 @@ import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.MimeTypeMap;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -30,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -48,6 +53,7 @@ import com.example.ixirus.ListItemSources;
 import com.example.ixirus.ListItemTasks;
 import com.example.ixirus.R;
 import com.example.ixirus.ui.BaseScreenActivity;
+import com.example.ixirus.ui.VideoActivity;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -77,8 +83,9 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
     private Object selectedSourceObject;
     private JSONObject object;
     private ArrayList<ListItemTasks> arr;
-    private  BottomSheetDialog dialog;
+    private BottomSheetDialog dialog;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,7 +128,6 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, final int position, long arg3) {
-
                 long viewId = arg1.getId();
                 final Object selectedItem = lv.getItemAtPosition(position);
                 final String selectedId = Integer.toString(((ListItemTasks) selectedItem).Id);
@@ -208,10 +214,36 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
             }
         });
 
-        dialog= new BottomSheetDialog(CreateDevPlanActivity7.this);
+        dialog = new BottomSheetDialog(CreateDevPlanActivity7.this);
         dialog.setContentView(R.layout.dialog_devplan_resources);
         //dialog.setCancelable(false);
-        final BottomSheetListView sourcesListView = (BottomSheetListView) dialog.findViewById(R.id.listViewResources);
+        final ListView sourcesListView = (ListView) dialog.findViewById(R.id.listViewResources);
+
+        sourcesListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+        sourcesListView.setClickable(true);
+
+        sourcesListView.setOnTouchListener(new ListView.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow NestedScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow NestedScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+
+                // Handle ListView touch events.
+                v.onTouchEvent(event);
+                return true;
+            }
+        });
+
         final TabLayout tabLayout = (TabLayout) dialog.findViewById(R.id.tabs);
 
         loadSourceListItem(savedToken, sourcesListView, 0);
@@ -235,11 +267,27 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         sourcesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                dialog.setCancelable(true);
-                dialog.hide();
-                Object listItem = sourcesListView.getItemAtPosition(position);
-                selectedSourceObject = listItem;
-                resourceText.setText(((ListItemSources) listItem).Name);
+                long viewId = arg1.getId();
+                final Object selectedItem = sourcesListView.getItemAtPosition(position);
+                final int sourceType = ((ListItemSources) selectedItem).SourceType;
+                final String sourceUrl = ((ListItemSources) selectedItem).Url;
+
+                if (viewId == R.id.buttonPreview) {
+                    String extension = MimeTypeMap.getFileExtensionFromUrl(sourceUrl);
+                    String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+                    Intent mediaIntent = new Intent(Intent.ACTION_VIEW);
+                    mediaIntent.setDataAndType(Uri.parse(sourceUrl), mimeType);
+                    if (mediaIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(mediaIntent);
+                    }
+                }
+                else if(viewId == R.id.buttonSelectSource){
+
+                    dialog.hide();
+                    Object listItem = sourcesListView.getItemAtPosition(position);
+                    selectedSourceObject = listItem;
+                    resourceText.setText(((ListItemSources) listItem).Name);
+                }
             }
         });
 
@@ -446,7 +494,7 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         dateTextView.setText(sdf.format(myCalendar.getTime()));
     }
 
-    public void loadSourceListItem(final String savedToken, final BottomSheetListView sourcesLv, int tabPosition) {
+    public void loadSourceListItem(final String savedToken, final ListView sourcesLv, int tabPosition) {
         sourcesLv.setAdapter(null);
         dialog.findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
         int selectedBehaviourId = getIntent().getExtras().getInt("behaviourId");
@@ -462,12 +510,16 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                         ListItemSources item = new ListItemSources();
                         int sourceType = Integer.parseInt(obj.getString("sourceType"));
                         String description = obj.getString("description");
+                        String url = obj.getString("fileUrl");
+
                         String name = obj.getString("name");
                         int id = Integer.parseInt(obj.getString("id"));
 
                         item.Id = id;
                         item.Name = name;
                         item.Description = description;
+                        item.SourceType = sourceType;
+                        item.Url = url;
                         if (sourceType == 1)
                             item.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.pdf_icon);
                         else if (sourceType == 2)
@@ -478,6 +530,18 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                             item.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.image_icon);
 
                         arr.add(item);
+                        arr.add(item);
+                        arr.add(item);
+                        arr.add(item);
+                        arr.add(item);
+                        arr.add(item);
+                        arr.add(item);
+                        arr.add(item);
+                        arr.add(item);
+                        arr.add(item);
+                        arr.add(item);
+                        arr.add(item);
+
                     }
                     final SourceListAdapter adapter = new SourceListAdapter(getBaseContext(), arr);
                     sourcesLv.setAdapter(adapter);
@@ -628,5 +692,20 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                 }
                 break;
         }
+    }
+
+    public boolean canScrollVertically (AbsListView view) {
+        boolean canScroll = false;
+
+        if (view !=null && view.getChildCount ()> 0) {
+            boolean isOnTop = view.getFirstVisiblePosition() != 0 || view.getChildAt(0).getTop() != 0;
+            boolean isAllItemsVisible = isOnTop && view.getLastVisiblePosition() == view.getChildCount();
+
+            if (isOnTop || isAllItemsVisible) {
+                canScroll = true;
+            }
+        }
+
+        return  canScroll;
     }
 }
