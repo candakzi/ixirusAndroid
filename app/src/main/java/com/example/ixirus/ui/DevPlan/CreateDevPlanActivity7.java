@@ -530,18 +530,6 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                             item.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.drawable.image_icon);
 
                         arr.add(item);
-                        arr.add(item);
-                        arr.add(item);
-                        arr.add(item);
-                        arr.add(item);
-                        arr.add(item);
-                        arr.add(item);
-                        arr.add(item);
-                        arr.add(item);
-                        arr.add(item);
-                        arr.add(item);
-                        arr.add(item);
-
                     }
                     final SourceListAdapter adapter = new SourceListAdapter(getBaseContext(), arr);
                     sourcesLv.setAdapter(adapter);
