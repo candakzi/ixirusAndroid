@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ixirus.ListAdapters.AnswersListAdapter;
 import com.example.ixirus.ListAdapters.GenericListAdapter;
 import com.example.ixirus.ListItem;
 import com.example.ixirus.R;
@@ -54,8 +55,6 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_dev_plan5);
-
-
 
         lv1 = findViewById(R.id.listView);
 
@@ -227,9 +226,6 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
 
                 startActivity(intent);
                 overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
-
-
-                //onBackPressed();
             }
         });
 
@@ -255,7 +251,7 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), getResources().getString(R.string.answer_the_questions), Toast.LENGTH_SHORT).show();
                         return;
                     } else {
-                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity6.class);
+                        Intent intent = new Intent(getBaseContext(), CreateDevPlanQuestionsSummary.class);
                         if (object != null)
                             intent.putExtra("editedDevPlan", object.toString());
 
@@ -327,51 +323,3 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
     }
 }
 
- class AnswersListAdapter extends BaseAdapter {
-    Context context;
-    ArrayList<ListItem>  data ;
-
-    private static LayoutInflater inflater = null;
-
-    public AnswersListAdapter(Context context, ArrayList<ListItem>  data) {
-        // TODO Auto-generated constructor stub
-        this.context = context;
-        this.data = data;
-        inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    @Override
-    public int getCount() {
-        // TODO Auto-generated method stub
-        return data.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        // TODO Auto-generated method stub
-        return data.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        // TODO Auto-generated method stub
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
-        View vi = convertView;
-        if (vi == null)
-            vi = inflater.inflate(R.layout.row_small_answers, null);
-        TextView text = (TextView) vi.findViewById(R.id.text);
-        text.setText(data.get(position).Name);
-        return vi;
-    }
-
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
-    }
-}

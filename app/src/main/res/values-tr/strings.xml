@@ -106,5 +106,9 @@
     <string name="all_sources">Tüm Kaynaklar</string>
     <string name="preview">Görüntüle</string>
     <string name="choose_source">Seç</string>
+    <string name="main_question">Geliştirmeyi hedeflediğiniz davranış için hangi performans engelini aşmanız gerekiyor?</string>
+    <string name="questions">SORULAR</string>
+    <string name="plase_answer_questions">Lütfen aşağıdaki soruları cevaplayınız.</string>
+    <string name="check_answers">Lütfen sorulara vermiş olduğunuz cevapları kontrol edin. Sonraki adımlarda bu sorulara vermiş olduğunuz cevaplara bağlı olarak aksiyon adımı ekleyeceksiniz.</string>
 
 </resources>

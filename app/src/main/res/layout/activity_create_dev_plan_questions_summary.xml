@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.DevPlan.CreateDevPlanActivity5">
+    tools:context=".ui.DevPlan.CreateDevPlanQuestionsSummary">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -51,61 +51,20 @@
     <TextView
         android:id="@+id/textViewQuestions"
         android:layout_width="fill_parent"
-        android:layout_height="30dp"
+        android:layout_height="130dp"
         android:layout_marginStart="17dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="17dp"
         android:background="@android:color/transparent"
         android:gravity="center_vertical"
-        android:text="@string/questions"
+        android:text="@string/check_answers"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardView" />
 
-    <TextView
-        android:id="@+id/textViewQuestion1"
-        android:layout_width="fill_parent"
-        android:layout_height="80dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="17dp"
-        android:alpha="0.8"
-        android:background="@drawable/rounded_corner_question"
-        android:gravity="top|start"
-        android:inputType="textMultiLine"
-        android:paddingStart="15dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="15dp"
-        android:paddingBottom="10dp"
-        app:autoSizeTextType="uniform"
-        android:text="@string/main_question"
-        android:textColor="@color/color_question"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewQuestions" />
-
-    <TextView
-        android:id="@+id/textViewDownQuestions"
-        android:layout_width="fill_parent"
-        android:layout_height="30dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="17dp"
-        android:background="@android:color/transparent"
-        android:gravity="center_vertical"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
-        android:text="@string/plase_answer_questions"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewQuestion1" />
 
 
     <ScrollView
@@ -116,7 +75,7 @@
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewDownQuestions">
+        app:layout_constraintTop_toBottomOf="@id/textViewQuestions">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -145,7 +104,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewList"
                 android:layout_width="match_parent"
-                android:layout_height="157dp"
+                android:layout_height="57dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:background="@android:color/transparent"
@@ -192,7 +151,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewList2"
                 android:layout_width="match_parent"
-                android:layout_height="157dp"
+                android:layout_height="57dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:background="@android:color/transparent"
@@ -235,7 +194,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewList3"
                 android:layout_width="match_parent"
-                android:layout_height="157dp"
+                android:layout_height="57dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:background="@android:color/transparent"
@@ -278,7 +237,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewList4"
                 android:layout_width="match_parent"
-                android:layout_height="157dp"
+                android:layout_height="57dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:background="@android:color/transparent"
@@ -321,7 +280,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewList5"
                 android:layout_width="match_parent"
-                android:layout_height="157dp"
+                android:layout_height="57dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 android:background="@android:color/transparent"

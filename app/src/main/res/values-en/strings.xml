@@ -53,13 +53,13 @@
     <string name="successfully_added">Successfully Added!</string>
     <string name="retry_add">Plase Try Again!</string>
     <string name="question_1">I have all kinds of information.</string>
-    <string name="question_2">I can apply very well.</string>
+    <string name="question_2">I\'m in a good position to apply</string>
     <string name="answer_1">I totally agree</string>
     <string name="answer_2">I agree</string>
     <string name="answer_3">I do not agree</string>
-    <string name="question_3">Bana gerekli olduğunu, fayda sağlayacağını, geliştirmem gerektiğine inanıyorum</string>
-    <string name="question_4">Sergileyebilme konusunda kendime güveniyorum</string>
-    <string name="question_5">Geliştirmek ve sergilemek istiyorum</string>
+    <string name="question_3">I believe that it is necessary, that it will benefit me, that i need to improve.</string>
+    <string name="question_4">I trust myself to exhibit.</string>
+    <string name="question_5">I want to develop and exhibit.</string>
     <string name="action_steps">Action Steps</string>
     <string name="add_new_action">Add New Action</string>
     <string name="date_define">Set Date</string>
@@ -103,6 +103,9 @@
     <string name="all_sources">All Sources</string>
     <string name="preview">Preview</string>
     <string name="choose_source">Select Source</string>
-
+    <string name="main_question">What performance barriers do you need to overcome for the behavior you intend to improve?</string>
+    <string name="questions">QUESTIONS</string>
+    <string name="plase_answer_questions">Please answer the questions below.</string>
+    <string name="check_answers">Please check your answers to the test questions. In The next steps, you will add action steps depending on this answers.</string>
 
 </resources>
