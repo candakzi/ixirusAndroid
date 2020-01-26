@@ -23,7 +23,7 @@
         <activity
             android:name=".ui.DevPlan.CreateDevPlanActivity6"
             android:hardwareAccelerated="true"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.SignUpActivity"
             android:hardwareAccelerated="true"

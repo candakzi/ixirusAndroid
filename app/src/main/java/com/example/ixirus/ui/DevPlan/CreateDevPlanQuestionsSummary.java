@@ -166,11 +166,11 @@ public class CreateDevPlanQuestionsSummary extends AppCompatActivity {
                     intent.putExtra("perfectionId", perfectionId);
                     intent.putExtra("programId", programId);
                     intent.putExtra("benefit", benefit);
-                    intent.putExtra("question1", getIntent().getExtras().getInt("question1") - 1);
-                    intent.putExtra("question2", getIntent().getExtras().getInt("question2") - 1);
-                    intent.putExtra("question3", getIntent().getExtras().getInt("question3") - 1);
-                    intent.putExtra("question4", getIntent().getExtras().getInt("question4") - 1);
-                    intent.putExtra("question5", getIntent().getExtras().getInt("question5") - 1);
+                    intent.putExtra("question1", getIntent().getExtras().getInt("question1"));
+                    intent.putExtra("question2", getIntent().getExtras().getInt("question2"));
+                    intent.putExtra("question3", getIntent().getExtras().getInt("question3"));
+                    intent.putExtra("question4", getIntent().getExtras().getInt("question4"));
+                    intent.putExtra("question5", getIntent().getExtras().getInt("question5"));
                     intent.putExtra("planName", planName);
 
                     startActivity(intent);

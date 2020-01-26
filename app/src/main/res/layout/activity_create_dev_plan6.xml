@@ -66,7 +66,8 @@
             <TextView
                 android:id="@+id/textViewChoose"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.05"
                 android:layout_marginStart="17dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="17dp"
@@ -84,7 +85,7 @@
                 android:id="@+id/cardViewList"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.4"
+                app:layout_constraintHeight_percent="0.40"
                 android:layout_marginStart="16dp"
 
                 android:layout_marginEnd="16dp"
@@ -128,8 +129,10 @@
             <EditText
                 android:id="@+id/editTextNewBehaviour"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="8dp"
+                app:layout_constraintHeight_percent="0.075"
+
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:alpha="0.8"
@@ -149,10 +152,12 @@
             <TextView
                 android:id="@+id/editTextDate"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
+                app:layout_constraintHeight_percent="0.075"
+
                 android:alpha="0.8"
                 android:background="@color/dev_plan_button"
                 android:drawableStart="@drawable/calendar_icon"
