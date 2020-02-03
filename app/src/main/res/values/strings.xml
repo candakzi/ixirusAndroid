@@ -109,5 +109,12 @@
     <string name="questions">QUESTIONS</string>
     <string name="plase_answer_questions">Please answer the questions below.</string>
     <string name="check_answers">Please check your answers to the test questions. In The next steps, you will add action steps depending on this answers.</string>
+    <string name="menu_dev_preview">Preview</string>
+    <string name="preview_dev_plan_name">DEVELOPMENT PLAN NAME</string>
+    <string name="preview_programme">SELECTED PROGRAMME</string>
+    <string name="preview_perfection">SELECTED PERFECTION</string>
+    <string name="preview_behaviour">SELECTED BEHAVIOUR</string>
+    <string name="preview_benefits">EXPECTED BENEFITS</string>
+    <string name="preview_quiz">QUIZ</string>
 
 </resources>

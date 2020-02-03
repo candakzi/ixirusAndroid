@@ -166,8 +166,10 @@ public class MyDevPlanListActivity extends AppCompatActivity {
 //                                Integer question5 = response.getJSONObject("data").getInt("question5");
 //                                Boolean managerCanFollow = response.getJSONObject("data").getBoolean("managerCanFollow");
 //                                Boolean lecturerCanFollow = response.getJSONObject("data").getBoolean("lecturerCanFollow");
-                                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity1.class);
+                                Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
                                 intent.putExtra("editedDevPlan",objectt.toString());
+                                intent.putExtra("fromEdit",true);
+
                                 startActivity(intent);
 
                             } catch (JSONException e) {

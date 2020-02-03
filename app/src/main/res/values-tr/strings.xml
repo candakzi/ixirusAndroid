@@ -110,5 +110,11 @@
     <string name="questions">SORULAR</string>
     <string name="plase_answer_questions">Lütfen aşağıdaki soruları cevaplayınız.</string>
     <string name="check_answers">Lütfen sorulara vermiş olduğunuz cevapları kontrol edin. Sonraki adımlarda bu sorulara vermiş olduğunuz cevaplara bağlı olarak aksiyon adımı ekleyeceksiniz.</string>
-
+    <string name="menu_dev_preview">Önizleme</string>
+    <string name="preview_dev_plan_name">GELİŞİM PLANI İSMİ</string>
+    <string name="preview_programme">SEÇİLİ PROGRAM</string>
+    <string name="preview_perfection">SEÇİLİ YETKİNLİK</string>
+    <string name="preview_behaviour">SEÇİLİ DAVRANIŞ</string>
+    <string name="preview_benefits">BEKLENEN KAZANIMLAR</string>
+    <string name="preview_quiz">QUİZ</string>
 </resources>

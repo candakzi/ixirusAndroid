@@ -53,6 +53,8 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
     private JSONObject object;
     private int selectedPerfectionId;
     private int selectedProgramId;
+    private String selectedProgramName;
+
     private String selectedDevPlanName;
 
     @Override
@@ -110,9 +112,11 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
             try {
                 selectedPerfectionId = extras.getInt("perfectionId");
                 selectedProgramId = extras.getInt("programId");
+                selectedProgramName = extras.getString("programName");
                 selectedDevPlanName = extras.getString("planName");
 
                 if(extras.getString("editedDevPlan")!=null) {
+                    imageView.setVisibility(View.GONE);//geri tuşu inaktif
                     object = new JSONObject(extras.getString("editedDevPlan"));
                     loadListItemFromEdit(savedToken, object);
                 }
@@ -145,27 +149,40 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
                         return;
                     } else {
                         ListItem selectedListItem = (ListItem) selectedObj;
-                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
-                        if (object != null) {
+
+                        if (object != null && getIntent().hasExtra("fromEdit")) {
+                            Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
                             try {
-                                object.put("behaviorId", selectedListItem.Id);
+                                JSONObject behviorObj = new JSONObject();
+                                behviorObj.put("id", selectedListItem.Id);
+                                behviorObj.put("name", selectedListItem.Name);
+
+                                object.put("behavior", behviorObj);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
                             intent.putExtra("editedDevPlan", object.toString());
+                            intent.putExtra("fromEdit", true);
+                            startActivity(intent);
+                        }
+                        else if (object != null && !getIntent().hasExtra("fromEdit")) {
+                            //son sayfaya kadar geldi sonra edite bastı from edit setlenmez
                         }
 
-                        else if (getIntent().hasExtra("benefit"))
-                            intent.putExtra("benefit", getIntent().getExtras().getString("benefit"));
+                        else {
+                            Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
+                            if (getIntent().hasExtra("benefit"))
+                                intent.putExtra("benefit", getIntent().getExtras().getString("benefit"));
 
-                        intent.putExtra("behaviourId", selectedListItem.Id);
-                        intent.putExtra("perfectionId", perfectionId);
-                        intent.putExtra("programId", programId);
-                        intent.putExtra("planName", planName);
+                            intent.putExtra("behaviourId", selectedListItem.Id);
+                            intent.putExtra("perfectionId", perfectionId);
+                            intent.putExtra("programId", programId);
+                            intent.putExtra("planName", planName);
 
-                        startActivity(intent);
+                            startActivity(intent);
+                        }
                     }
                 }
             }
@@ -221,6 +238,8 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
 
                 intent.putExtra("perfectionId",selectedPerfectionId);
                 intent.putExtra("programId",selectedProgramId);
+                intent.putExtra("programName",selectedProgramName);
+
                 intent.putExtra("planName",selectedDevPlanName);
 
                 startActivity(intent);
@@ -374,9 +393,10 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
                     final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(), arr);
                     lv.setAdapter(adapter);
 
-                    Integer programId = object.getInt("behaviorId");
+                    JSONObject behavior = object.getJSONObject("behavior");
+                    Integer behaviorId = behavior.getInt("id");
                     for (int position = 0; position < adapter.getCount(); position++)
-                        if (((ListItem) adapter.getItem(position)).Id == programId) {
+                        if (((ListItem) adapter.getItem(position)).Id == behaviorId) {
                             lv.setItemChecked(position, true);
                             lv.setSelection(position);
                             selectedItem = lv.getItemAtPosition(position);
@@ -468,6 +488,8 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
 
         intent.putExtra("perfectionId",selectedPerfectionId);
         intent.putExtra("programId",selectedProgramId);
+        intent.putExtra("programName",selectedProgramName);
+
         intent.putExtra("planName",selectedDevPlanName);
 
         startActivity(intent);

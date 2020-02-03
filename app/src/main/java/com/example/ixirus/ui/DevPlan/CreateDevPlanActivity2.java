@@ -52,6 +52,8 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
     private Object selectedItem = null;
     private JSONObject object;
     private int selectedProgramId;
+    private String selectedProgramName;
+
     private String selectedDevPlanName;
 
 
@@ -111,11 +113,15 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
         if (extras != null) {
             try {
                 selectedProgramId = extras.getInt("programId");
+                selectedProgramName = extras.getString("programName");
+
                 selectedDevPlanName = extras.getString("planName");
 
                 if(extras.getString("editedDevPlan")!=null) {
+                    imageView.setVisibility(View.GONE);//geri tuşu inaktif
                     object = new JSONObject(extras.getString("editedDevPlan"));
-                    int perfectionId =  object.getInt("perfectionId");
+                    JSONObject perfection =  object.getJSONObject("perfection");
+                    int perfectionId =  perfection.getInt("id");
                     loadListItemFromEdit(savedToken, perfectionId);
                 }
                 else
@@ -132,9 +138,12 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
                 Bundle extras = getIntent().getExtras();
                 int programId;
                 String planName;
+                String programName;
+
                 if (extras != null) {
                     programId = extras.getInt("programId");
                     planName = extras.getString("planName");
+                    programName = extras.getString("programName");
 
                     JSONObject devPlanObject = new JSONObject();
                     Object selectedObj = selectedItem;
@@ -143,42 +152,45 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
                         return;
                     } else {
                         ListItem selectedListItem = (ListItem) selectedObj;
-                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
-                        if (object != null) {
-//                            if (getIntent().hasExtra("behaviourId")) {
-//                                int overridedBehaviourInt = extras.getInt("behaviourId");
-//                                try {
-//                                    object.put("behaviorId", overridedBehaviourInt);
-//                                    intent.putExtra("editedDevPlan", object.toString());
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            } else {
-//                                intent.putExtra("editedDevPlan", object.toString());
-//                            }
+
+                        if (object != null && getIntent().hasExtra("fromEdit")) {
+                            Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
                             try {
-                                object.put("perfectionId", selectedListItem.Id);
+                                JSONObject perfObject = new JSONObject();
+                                perfObject.put("id", selectedListItem.Id);
+                                perfObject.put("name", selectedListItem.Name);
+
+                                object.put("perfection", perfObject);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
                             intent.putExtra("editedDevPlan", object.toString());
+                            intent.putExtra("fromEdit", true);
+                            startActivity(intent);
 
+                        }
+                        else if (object != null && !getIntent().hasExtra("fromEdit")) {
+                            //son sayfaya kadar geldi sonra edite bastı from edit setlenmez
+                        }
 
-                        } else if (extras != null) {
+                        else  {
+                            Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
                             if (getIntent().hasExtra("behaviourId")) {
                                 intent.putExtra("behaviourId", extras.getInt("behaviourId"));
                             }
                             if (getIntent().hasExtra("benefit"))
                                 intent.putExtra("benefit", getIntent().getExtras().getString("benefit"));
+
+                            intent.putExtra("perfectionId", selectedListItem.Id);
+                            intent.putExtra("programId", programId);
+                            intent.putExtra("programName", programName);
+
+                            intent.putExtra("planName", planName);
+
+                            startActivity(intent);
                         }
-
-                        intent.putExtra("perfectionId", selectedListItem.Id);
-                        intent.putExtra("programId", programId);
-                        intent.putExtra("planName", planName);
-
-                        startActivity(intent);
                     }
                 }
             }
@@ -507,6 +519,8 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
 
         intent.putExtra("programId",selectedProgramId);
         intent.putExtra("planName",selectedDevPlanName);
+        intent.putExtra("programName",selectedProgramName);
+
 
         startActivity(intent);
         overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
