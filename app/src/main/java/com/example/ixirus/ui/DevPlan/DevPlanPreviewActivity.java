@@ -2,11 +2,17 @@ package com.example.ixirus.ui.DevPlan;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,14 +22,34 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.ixirus.ListAdapters.AnswersListAdapter;
+import com.example.ixirus.ListAdapters.TaskListAdapter;
+import com.example.ixirus.ListAdapters.TaskListAdapterPreview;
 import com.example.ixirus.ListItem;
+import com.example.ixirus.ListItemTasks;
 import com.example.ixirus.R;
+import com.example.ixirus.ui.BaseScreenActivity;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class DevPlanPreviewActivity extends AppCompatActivity {
     private ListView lv1;
@@ -31,23 +57,11 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
     private ListView lv3;
     private ListView lv4;
     private ListView lv5;
+    private ListView lvAction;
+    private ListView lvSource;
 
     private JSONObject object;
 
-    private int programId;
-    private int perfectionId;
-    private int behaviourId;
-    private String benefit;
-    private int question1;
-    private int question2;
-    private int question3;
-    private int question4;
-    private int question5;
-    private String planName;
-    private ArrayList<Integer> actionTasks;
-    private ArrayList<Integer> sourceTasks;
-    private Boolean managerCheck;
-    private Boolean educatorCheck;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -60,6 +74,20 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
         final TextView textPerfection = findViewById(R.id.textViewSelectedPerfection);
         final TextView textBehaviour = findViewById(R.id.textViewSelectedBehaviour);
         final TextView textBenefit = findViewById(R.id.textViewSelectedBenefits);
+        final TextView textQuiz = findViewById(R.id.textViewQuiz);
+        final TextView textViewManager = findViewById(R.id.textViewManager);
+        final TextView textViewLecturer= findViewById(R.id.textViewInstructor);
+
+        final Button devPlanButton =findViewById(R.id.buttonDevPlan);
+        final Button programButton =findViewById(R.id.buttonProgram);
+        final Button perfectionButton =findViewById(R.id.buttonPerfection);
+        final Button behviorButton =findViewById(R.id.buttonBehavior);
+        final Button benefitsButton =findViewById(R.id.buttonBenefits);
+        final Button quizButton =findViewById(R.id.buttonQuiz);
+        final Button actionsButton =findViewById(R.id.buttonActionStep);
+        final Button sourcesButton =findViewById(R.id.buttonSourceStep);
+        final Button managerButton =findViewById(R.id.buttonManager);
+        final Button instructorButton =findViewById(R.id.buttonInstructor);
 
 
         lv1 = findViewById(R.id.listView);
@@ -85,6 +113,14 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
         lv5.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         lv5.setClickable(false);
 
+        lvAction = findViewById(R.id.listViewActionStep);
+        lvAction.setChoiceMode(ListView.CHOICE_MODE_NONE);
+        lvAction.setClickable(true);
+
+        lvSource = findViewById(R.id.listViewSourceStep);
+        lvSource.setChoiceMode(ListView.CHOICE_MODE_NONE);
+        lvSource.setClickable(true);
+
         ImageView imageView = findViewById(R.id.buttonBack);
         getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan);
 
@@ -104,6 +140,9 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
 
         TextView tv = (TextView) findViewById(R.id.textView2);
         tv.setTextSize(9 * density);
+        SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
+        final String savedToken = sp.getString("Token", null);
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             try {
@@ -120,13 +159,16 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
                     int question3Obj = object.getInt("question3");
                     int question4Obj = object.getInt("question4");
                     int question5Obj = object.getInt("question5");
+                    JSONArray selectedActionTasks = object.getJSONArray("actionTasks");
+                    JSONArray selectedSourceTask = object.getJSONArray("sourceTasks");
+                    boolean managerCanFollow = object.getBoolean("managerCanFollow");
+                    boolean lecturerCanFollow = object.getBoolean("lecturerCanFollow");
 
                     textDevPlanName.setText(devPlanName);
                     textProgramName.setText(programIdObj.getString("name"));
                     textPerfection.setText(perfectionIdObj.getString("name"));
                     textBehaviour.setText(behaviorIdObj.getString("name"));
                     textBenefit.setText(benefitObj);
-
 
                     loadListItem(question1Obj - 1, lv1);
                     lv1.setSelection(0);
@@ -152,70 +194,84 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
                     lv5.setSelection(0);
                     lv5.setItemChecked(0, true);
 
+                    loadActonListItem(selectedActionTasks);
+                    loadSourceItem(selectedSourceTask);
+
+                    if(managerCanFollow)
+                        textViewManager.setText(getResources().getString(R.string.yes));
+                    else
+                        textViewManager.setText(getResources().getString(R.string.no));
+
+                    if(lecturerCanFollow)
+                        textViewLecturer.setText(getResources().getString(R.string.yes));
+                    else
+                        textViewLecturer.setText(getResources().getString(R.string.no));
                 } else {
-                    programId = extras.getInt("programId");
-                    perfectionId = extras.getInt("perfectionId");
-                    behaviourId = extras.getInt("behaviourId");
-                    benefit = extras.getString("benefit");
-                    question1 = extras.getInt("question1");
-                    question2 = extras.getInt("question2");
-                    question3 = extras.getInt("question3");
-                    question4 = extras.getInt("question4");
-                    question5 = extras.getInt("question5");
-                    planName = extras.getString("planName");
-                    actionTasks = extras.getIntegerArrayList("actionTasks");
-                    sourceTasks = extras.getIntegerArrayList("sourceTasks");
-                    managerCheck = extras.getBoolean("managerCanFollow");
-                    educatorCheck = extras.getBoolean("lecturerCanFollow");
-
-                    object = new JSONObject();
-                    object.put("programId", programId);
-                    object.put("name", planName);
-                    object.put("perfectionId", perfectionId);
-                    object.put("behaviourId", behaviourId);
-                    object.put("benefit", benefit);
-                    object.put("question1", question1);
-                    object.put("question2", question2);
-                    object.put("question3", question3);
-                    object.put("question4", question4);
-                    object.put("question5", question5);
-                    object.put("question5", question5);
-                    object.put("actionTasks", actionTasks);
-                    object.put("sourceTasks", sourceTasks);
-                    object.put("managerCanFollow", managerCheck);
-                    object.put("lecturerCanFollow", educatorCheck);
-
-                    textDevPlanName.setText(planName);
-                    textProgramName.setText(programId);
-                    textPerfection.setText(perfectionId);
-                    textBehaviour.setText(behaviourId);
-                    textBenefit.setText(benefit);
-
-                    if (getIntent().hasExtra("question1")) {
-                        loadListItem(getIntent().getExtras().getInt("question1") - 1, lv1);
-                        lv1.setSelection(0);
-                        lv1.setItemChecked(0, true);
-                    }
-                    if (getIntent().hasExtra("question2")) {
-                        loadListItem(getIntent().getExtras().getInt("question2") - 1, lv2);
-                        lv2.setSelection(0);
-                        lv2.setItemChecked(0, true);
-                    }
-                    if (getIntent().hasExtra("question3")) {
-                        loadListItem(getIntent().getExtras().getInt("question3") - 1, lv3);
-                        lv3.setSelection(0);
-                        lv3.setItemChecked(0, true);
-                    }
-                    if (getIntent().hasExtra("question4")) {
-                        loadListItem(getIntent().getExtras().getInt("question4") - 1, lv4);
-                        lv4.setSelection(0);
-                        lv4.setItemChecked(0, true);
-                    }
-                    if (getIntent().hasExtra("question5")) {
-                        loadListItem(getIntent().getExtras().getInt("question5") - 1, lv5);
-                        lv5.setSelection(0);
-                        lv5.setItemChecked(0, true);
-                    }
+//                    // Buraya ilk defa yeni ekleden gelirse düşecek
+//
+//                    programId = extras.getInt("programId");
+//                    perfectionId = extras.getInt("perfectionId");
+//                    behaviourId = extras.getInt("behaviourId");
+//                    benefit = extras.getString("benefit");
+//                    question1 = extras.getInt("question1");
+//                    question2 = extras.getInt("question2");
+//                    question3 = extras.getInt("question3");
+//                    question4 = extras.getInt("question4");
+//                    question5 = extras.getInt("question5");
+//                    planName = extras.getString("planName");
+//                    actionTasks = extras.getIntegerArrayList("actionTasks");
+//                    sourceTasks = extras.getIntegerArrayList("sourceTasks");
+//                    managerCheck = extras.getBoolean("managerCanFollow");
+//                    educatorCheck = extras.getBoolean("lecturerCanFollow");
+//
+//                    object = new JSONObject();
+//                    object.put("programId", programId);
+//                    object.put("name", planName);
+//                    object.put("perfectionId", perfectionId);
+//                    object.put("behaviourId", behaviourId);
+//                    object.put("benefit", benefit);
+//                    object.put("question1", question1);
+//                    object.put("question2", question2);
+//                    object.put("question3", question3);
+//                    object.put("question4", question4);
+//                    object.put("question5", question5);
+//                    object.put("question5", question5);
+//                    object.put("actionTasks", actionTasks);
+//                    object.put("sourceTasks", sourceTasks);
+//                    object.put("managerCanFollow", managerCheck);
+//                    object.put("lecturerCanFollow", educatorCheck);
+//
+//                    textDevPlanName.setText(planName);
+//                    textProgramName.setText(programId);
+//                    textPerfection.setText(perfectionId);
+//                    textBehaviour.setText(behaviourId);
+//                    textBenefit.setText(benefit);
+//
+//                    if (getIntent().hasExtra("question1")) {
+//                        loadListItem(getIntent().getExtras().getInt("question1") - 1, lv1);
+//                        lv1.setSelection(0);
+//                        lv1.setItemChecked(0, true);
+//                    }
+//                    if (getIntent().hasExtra("question2")) {
+//                        loadListItem(getIntent().getExtras().getInt("question2") - 1, lv2);
+//                        lv2.setSelection(0);
+//                        lv2.setItemChecked(0, true);
+//                    }
+//                    if (getIntent().hasExtra("question3")) {
+//                        loadListItem(getIntent().getExtras().getInt("question3") - 1, lv3);
+//                        lv3.setSelection(0);
+//                        lv3.setItemChecked(0, true);
+//                    }
+//                    if (getIntent().hasExtra("question4")) {
+//                        loadListItem(getIntent().getExtras().getInt("question4") - 1, lv4);
+//                        lv4.setSelection(0);
+//                        lv4.setItemChecked(0, true);
+//                    }
+//                    if (getIntent().hasExtra("question5")) {
+//                        loadListItem(getIntent().getExtras().getInt("question5") - 1, lv5);
+//                        lv5.setSelection(0);
+//                        lv5.setItemChecked(0, true);
+//                    }
                 }
 
             } catch (Throwable t) {
@@ -234,157 +290,257 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle extras = getIntent().getExtras();
-                int programId;
-                int perfectionId;
-                int behaviourId;
-                String benefit;
-                String planName;
+                if (getIntent().hasExtra("fromEdit")) {//editlenen obje
 
-                if (extras != null) {
-                    programId = extras.getInt("programId");
-                    perfectionId = extras.getInt("perfectionId");
-                    behaviourId = extras.getInt("behaviourId");
-                    benefit = extras.getString("benefit");
-                    planName = extras.getString("planName");
-                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity6.class);
-                    if (object != null)
-                        intent.putExtra("editedDevPlan", object.toString());
+                    try {
+                        JSONObject jsonObject = new JSONObject();
 
-                    intent.putExtra("behaviourId", behaviourId);
-                    intent.putExtra("perfectionId", perfectionId);
-                    intent.putExtra("programId", programId);
-                    intent.putExtra("benefit", benefit);
-                    intent.putExtra("question1", getIntent().getExtras().getInt("question1"));
-                    intent.putExtra("question2", getIntent().getExtras().getInt("question2"));
-                    intent.putExtra("question3", getIntent().getExtras().getInt("question3"));
-                    intent.putExtra("question4", getIntent().getExtras().getInt("question4"));
-                    intent.putExtra("question5", getIntent().getExtras().getInt("question5"));
-                    intent.putExtra("planName", planName);
+                        String devPlanId = object.getString("id");
+                        final String devPlanName = object.getString("name");
+                        JSONObject programIdObj = object.getJSONObject("program");
+                        JSONObject perfectionIdObj = object.getJSONObject("perfection");
+                        JSONObject behaviorIdObj = object.getJSONObject("behavior");
 
+                        int programId = programIdObj.getInt("id");
+                        int perfectionId = perfectionIdObj.getInt("id");
+                        int behaviorId = behaviorIdObj.getInt("id");
+
+                        String benefitObj = object.getString("benefit");
+                        int question1Obj = object.getInt("question1");
+                        int question2Obj = object.getInt("question2");
+                        int question3Obj = object.getInt("question3");
+                        int question4Obj = object.getInt("question4");
+                        int question5Obj = object.getInt("question5");
+                        JSONArray selectedActionTasks = object.getJSONArray("actionTasks");
+                        JSONArray selectedSourceTask = object.getJSONArray("sourceTasks");
+                        boolean managerCanFollow = object.getBoolean("managerCanFollow");
+                        boolean lecturerCanFollow = object.getBoolean("lecturerCanFollow");
+
+                        JSONArray arr = new JSONArray();
+                        for (int i = 0; i < selectedActionTasks.length(); i++) {
+                           JSONObject obj = selectedActionTasks.getJSONObject(i);
+                           int id = obj.getInt("id");
+                            arr.put(id);
+                        }
+
+                        for (int i = 0; i < selectedSourceTask.length(); i++) {
+                            JSONObject obj = selectedSourceTask.getJSONObject(i);
+                            int id = obj.getInt("id");
+                            arr.put(id);
+                        }
+
+                        jsonObject.put("Id", devPlanId);
+                        jsonObject.put("Name", devPlanName);
+                        jsonObject.put("ProgramId", programId);
+                        jsonObject.put("BehaviorId", behaviorId);
+                        jsonObject.put("PerfectionId", perfectionId);
+                        jsonObject.put("Tasks", arr);
+                        jsonObject.put("Benefit", benefitObj);
+                        jsonObject.put("Question1", question1Obj);
+                        jsonObject.put("Question2", question2Obj);
+                        jsonObject.put("Question3", question3Obj);
+                        jsonObject.put("Question4", question4Obj);
+                        jsonObject.put("Question5", question5Obj);
+                        jsonObject.put("ManagerCanFollow", managerCanFollow);
+                        jsonObject.put("LecturerCanFollow", lecturerCanFollow);
+
+                        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                        JsonObjectRequest jsonForPutRequest = new JsonObjectRequest(
+                                Request.Method.PUT, "https://ixirus.azurewebsites.net/api/developmentplan", jsonObject,
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.plan_saved_successfully) + "\n" + devPlanName, Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getBaseContext(), MyDevPlanListActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                if (error.networkResponse.statusCode == 401) {
+                                    Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                    startActivity(intent);
+                                } else
+                                    Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                            }
+                        }) {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String, String> headers = new HashMap<>();
+                                headers.put("Authorization", "Bearer " + savedToken);
+                                return headers;
+                            }
+
+                            @Override
+                            public String getBodyContentType() {
+                                // TODO Auto-generated method stub
+                                return "application/json";
+                            }
+                        };
+                        queue.add(jsonForPutRequest);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else{ //yeni kayıt
+
+
+                }
+            }
+        });
+
+
+        devPlanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (object != null) {
+                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity1.class);
+                    if (getIntent().hasExtra("fromEdit"))
+                        intent.putExtra("fromEdit", true);
+
+                    intent.putExtra("editedDevPlan", object.toString());
                     startActivity(intent);
                 }
             }
         });
 
-        textDevPlanName.setOnTouchListener(new View.OnTouchListener() {
+
+        programButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
+            public void onClick(View v) {
+                if (object != null) {
+                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity1.class);
+                    if (getIntent().hasExtra("fromEdit"))
+                        intent.putExtra("fromEdit", true);
 
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (event.getRawX() >= (textDevPlanName.getRight() - textDevPlanName.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        if (object != null) {
-                            Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity1.class);
-                            if (getIntent().hasExtra("fromEdit"))
-                                intent.putExtra("fromEdit", true);
-
-                            intent.putExtra("editedDevPlan", object.toString());
-                            startActivity(intent);
-                        }
-
-                        return true;
-                    }
+                    intent.putExtra("editedDevPlan", object.toString());
+                    startActivity(intent);
                 }
-                return false;
             }
         });
 
-        textProgramName.setOnTouchListener(new View.OnTouchListener() {
+        perfectionButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
+            public void onClick(View v) {
+                if (object != null) {
+                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity2.class);
+                    if (getIntent().hasExtra("fromEdit"))
+                        intent.putExtra("fromEdit", true);
 
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (event.getRawX() >= (textProgramName.getRight() - textProgramName.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity1.class);
-                        if (getIntent().hasExtra("fromEdit"))
-                            intent.putExtra("fromEdit", true);
-                        intent.putExtra("editedDevPlan", object.toString());
-                        startActivity(intent);
-
-                        return true;
-                    }
+                    intent.putExtra("editedDevPlan", object.toString());
+                    startActivity(intent);
                 }
-                return false;
             }
         });
 
-        textPerfection.setOnTouchListener(new View.OnTouchListener() {
+        behviorButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
+            public void onClick(View v) {
+                if (object != null) {
+                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
+                    if (getIntent().hasExtra("fromEdit"))
+                        intent.putExtra("fromEdit", true);
 
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (event.getRawX() >= (textPerfection.getRight() - textPerfection.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity2.class);
-                        if (getIntent().hasExtra("fromEdit"))
-                            intent.putExtra("fromEdit", true);
-                        intent.putExtra("editedDevPlan", object.toString());
-                        startActivity(intent);
-
-                        return true;
-                    }
+                    intent.putExtra("editedDevPlan", object.toString());
+                    startActivity(intent);
                 }
-                return false;
             }
         });
 
-        textBehaviour.setOnTouchListener(new View.OnTouchListener() {
+        benefitsButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
+            public void onClick(View v) {
+                if (object != null) {
+                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
+                    if (getIntent().hasExtra("fromEdit"))
+                        intent.putExtra("fromEdit", true);
 
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (event.getRawX() >= (textBehaviour.getRight() - textBehaviour.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
-                        if (getIntent().hasExtra("fromEdit"))
-                            intent.putExtra("fromEdit", true);
-                        intent.putExtra("editedDevPlan", object.toString());
-                        startActivity(intent);
-
-                        return true;
-                    }
+                    intent.putExtra("editedDevPlan", object.toString());
+                    startActivity(intent);
                 }
-                return false;
             }
         });
 
-        textBenefit.setOnTouchListener(new View.OnTouchListener() {
+        quizButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
+            public void onClick(View v) {
+                if (object != null) {
+                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity5.class);
+                    if (getIntent().hasExtra("fromEdit"))
+                        intent.putExtra("fromEdit", true);
 
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    if (event.getRawX() >= (textBenefit.getRight() - textBenefit.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
-                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
-                        if (getIntent().hasExtra("fromEdit"))
-                            intent.putExtra("fromEdit", true);
-                        intent.putExtra("editedDevPlan", object.toString());
-                        startActivity(intent);
-
-                        return true;
-                    }
+                    intent.putExtra("editedDevPlan", object.toString());
+                    startActivity(intent);
                 }
-                return false;
             }
         });
 
+        actionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (object != null) {
+                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity6.class);
+                    if (getIntent().hasExtra("fromEdit"))
+                        intent.putExtra("fromEdit", true);
+
+                    intent.putExtra("editedDevPlan", object.toString());
+                    startActivity(intent);
+                }
+            }
+        });
+        sourcesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (object != null) {
+                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity7.class);
+                    if (getIntent().hasExtra("fromEdit"))
+                        intent.putExtra("fromEdit", true);
+                    //Source edit tıklandığında aksiyon listesindekileri getirmek için
+                    ArrayList<ListItemTasks> passedActionList = new ArrayList<ListItemTasks>();
+                    TaskListAdapterPreview actionListAdapter = (TaskListAdapterPreview) lvAction.getAdapter();
+
+                    for (int position = 0; position < actionListAdapter.getCount(); position++) {
+                        ListItemTasks item = (ListItemTasks) lvAction.getItemAtPosition(position);
+                        passedActionList.add(item);
+                    }
+
+
+                    intent.putExtra("editedDevPlan", object.toString());
+                    intent.putExtra("passedActionList", passedActionList);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        managerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (object != null) {
+                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity8.class);
+                    if (getIntent().hasExtra("fromEdit"))
+                        intent.putExtra("fromEdit", true);
+
+                    intent.putExtra("editedDevPlan", object.toString());
+                    startActivity(intent);
+                }
+            }
+        });
+
+        instructorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (object != null) {
+                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity8.class);
+                    if (getIntent().hasExtra("fromEdit"))
+                        intent.putExtra("fromEdit", true);
+
+                    intent.putExtra("editedDevPlan", object.toString());
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     public void loadListItem(int index, ListView lv) {
@@ -400,4 +556,103 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
         lv.setItemChecked(0, true);
 
     }
+
+    private void loadActonListItem(JSONArray selectedActionTasks) {
+        ArrayList<ListItemTasks> arr = new ArrayList<>();
+        float dip = 42f;
+        Resources r = getResources();
+        float px = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dip,
+                r.getDisplayMetrics()
+        );
+        CardView actionCard =  findViewById(R.id.cardViewListActionStep);
+        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) actionCard.getLayoutParams();
+        lp.height = selectedActionTasks.length()*Math.round(px);
+        actionCard.setLayoutParams(lp);
+
+        for (int position = 0; position < selectedActionTasks.length(); position++) {
+            try {
+                JSONObject obj = selectedActionTasks.getJSONObject(position);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String myFormat = "dd.MM.yyyy";
+                SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+
+                int id =  obj.getInt("id");
+                String name =  obj.getString("name");
+                String endDateStr =  obj.getString("endDate");
+                Date d = sdf.parse(endDateStr);
+                ListItemTasks item = new ListItemTasks();
+                final String currentDateStr = dateFormat.format(d);
+
+                item.Id = id;
+                item.Name = name + " - " + currentDateStr;
+                item.Date = d;
+                item.SourceId = 0;
+                arr.add(item);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        final TaskListAdapterPreview adapter = new TaskListAdapterPreview(getBaseContext(), arr);
+        lvAction.setAdapter(adapter);
+    }
+
+    private void loadSourceItem(JSONArray selectedActionTasks) {
+        float dip = 42f;
+        Resources r = getResources();
+        float px = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dip,
+                r.getDisplayMetrics()
+        );
+
+        CardView sourceCard =  findViewById(R.id.cardViewListSourceStep);
+        ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) sourceCard.getLayoutParams();
+        lp.height = selectedActionTasks.length()*  Math.round(px);
+        sourceCard.setLayoutParams(lp);
+
+        ArrayList<ListItemTasks> arr = new ArrayList<>();
+        for (int position = 0; position < selectedActionTasks.length(); position++) {
+            try {
+                JSONObject obj = selectedActionTasks.getJSONObject(position);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String myFormat = "dd.MM.yyyy";
+                SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+
+                int id = obj.getInt("id");
+                String name = obj.getString("name");
+                String endDateStr = obj.getString("endDate");
+                if(!obj.has("sourceId"))
+                    continue;
+
+                int sourceId = obj.getInt("sourceId");
+
+                Date d = sdf.parse(endDateStr);
+                ListItemTasks item = new ListItemTasks();
+                final String currentDateStr = dateFormat.format(d);
+
+                item.Id = id;
+                item.Name = name + " - " + currentDateStr;
+                item.Date = d;
+                item.SourceId = sourceId;
+                arr.add(item);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        final TaskListAdapterPreview adapter = new TaskListAdapterPreview(getBaseContext(), arr);
+        lvSource.setAdapter(adapter);
+    }
+
 }

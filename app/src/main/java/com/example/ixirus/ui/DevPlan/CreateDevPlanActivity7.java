@@ -239,6 +239,7 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         if (extras != null) {
             try {
                 if (extras.getString("editedDevPlan") != null) {
+                    imageView.setVisibility(View.GONE);
                     object = new JSONObject(extras.getString("editedDevPlan"));
                     JSONArray selectedSourceTasks = object.getJSONArray("sourceTasks");
                     loadDefaultListItemFromEdit(selectedSourceTasks);
@@ -267,8 +268,7 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                     if (mediaIntent.resolveActivity(getPackageManager()) != null) {
                         startActivity(mediaIntent);
                     }
-                }
-                else if(viewId == R.id.buttonSelectSource){
+                } else if (viewId == R.id.buttonSelectSource) {
 
                     dialog.hide();
                     Object listItem = sourcesListView.getItemAtPosition(position);
@@ -302,7 +302,6 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
             }
         });
 
-
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -325,49 +324,84 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                     final ArrayList<Integer> actionTasks;
 
                     if (extras != null) {
-                        programId = extras.getInt("programId");
-                        perfectionId = extras.getInt("perfectionId");
-                        behaviourId = extras.getInt("behaviourId");
-                        benefit = extras.getString("benefit");
-                        question1 = extras.getInt("question1");
-                        question2 = extras.getInt("question2");
-                        question3 = extras.getInt("question3");
-                        question4 = extras.getInt("question4");
-                        question5 = extras.getInt("question5");
-                        planName = extras.getString("planName");
-                        actionTasks = extras.getIntegerArrayList("actionTasks");
+                        if (object != null) {
+                            Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
+                            try {
+                                JSONArray newArr = new JSONArray();
 
-                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity8.class);
+                                for (int position = 0; position < finalAdapter.getCount(); position++) {
+                                    JSONObject sourceTaskObject = new JSONObject();
+                                    ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
 
-                        if (object != null)
+                                    if(item.SourceId==0)//Bu aksiyon adımı elemanıdır taşınmaz
+                                        continue;
+
+                                    String name = item.Name.split("-")[0].trim();
+                                    sourceTaskObject.put("id", item.Id);
+                                    sourceTaskObject.put("name", name);
+                                    sourceTaskObject.put("sourceId", item.SourceId);
+                                    String myFormatPosted = "yyyy-MM-dd";
+                                    SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
+                                    final String endDatePosted = sdfPosted.format(item.Date);
+                                    sourceTaskObject.put("endDate", endDatePosted);
+                                    newArr.put(sourceTaskObject);
+                                }
+                                object.put("sourceTasks", newArr);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            if (getIntent().hasExtra("fromEdit"))
+                                intent.putExtra("fromEdit", true);
+
                             intent.putExtra("editedDevPlan", object.toString());
-
-                        intent.putExtra("behaviourId", behaviourId);
-                        intent.putExtra("perfectionId", perfectionId);
-                        intent.putExtra("programId", programId);
-                        intent.putExtra("benefit", benefit);
-                        intent.putExtra("question1", question1);
-                        intent.putExtra("question2", question2);
-                        intent.putExtra("question3", question3);
-                        intent.putExtra("question4", question4);
-                        intent.putExtra("question5", question5);
-                        intent.putExtra("actionTasks", actionTasks);
-                        intent.putExtra("planName", planName);
-
-                        JSONArray array = new JSONArray();
-                        ArrayList<Integer> list = new ArrayList<Integer>();
-                        for (int position = 0; position < finalAdapter.getCount(); position++) {
-                            ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
-                            if (item.SourceId == 0)
-                                continue;
-                            int id = item.Id;
-                            list.add(id);
-                        }
-                        if (list.toArray().length == 0)
-                            Toast.makeText(getBaseContext(), getResources().getString(R.string.add_source_step), Toast.LENGTH_SHORT).show();
-                        else {
-                            intent.putExtra("sourceTasks", list);
                             startActivity(intent);
+
+                        } else {
+                            programId = extras.getInt("programId");
+                            perfectionId = extras.getInt("perfectionId");
+                            behaviourId = extras.getInt("behaviourId");
+                            benefit = extras.getString("benefit");
+                            question1 = extras.getInt("question1");
+                            question2 = extras.getInt("question2");
+                            question3 = extras.getInt("question3");
+                            question4 = extras.getInt("question4");
+                            question5 = extras.getInt("question5");
+                            planName = extras.getString("planName");
+                            actionTasks = extras.getIntegerArrayList("actionTasks");
+
+                            Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity8.class);
+
+                            if (object != null)
+                                intent.putExtra("editedDevPlan", object.toString());
+
+                            intent.putExtra("behaviourId", behaviourId);
+                            intent.putExtra("perfectionId", perfectionId);
+                            intent.putExtra("programId", programId);
+                            intent.putExtra("benefit", benefit);
+                            intent.putExtra("question1", question1);
+                            intent.putExtra("question2", question2);
+                            intent.putExtra("question3", question3);
+                            intent.putExtra("question4", question4);
+                            intent.putExtra("question5", question5);
+                            intent.putExtra("actionTasks", actionTasks);
+                            intent.putExtra("planName", planName);
+
+                            JSONArray array = new JSONArray();
+                            ArrayList<Integer> list = new ArrayList<Integer>();
+                            for (int position = 0; position < finalAdapter.getCount(); position++) {
+                                ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
+                                if (item.SourceId == 0)
+                                    continue;
+                                int id = item.Id;
+                                list.add(id);
+                            }
+                            if (list.toArray().length == 0)
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.add_source_step), Toast.LENGTH_SHORT).show();
+                            else {
+                                intent.putExtra("sourceTasks", list);
+                                startActivity(intent);
+                            }
                         }
                     }
                 }
@@ -558,7 +592,6 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         if (getIntent().hasExtra("passedActionList")) {
             ArrayList<ListItemTasks> passedTasks = new ArrayList<ListItemTasks>();
             passedTasks = (ArrayList<ListItemTasks>) getIntent().getSerializableExtra("passedActionList");
-
             for (int position = 0; position < passedTasks.toArray().length; position++) {
                 ListItemTasks current = (ListItemTasks) passedTasks.toArray()[position];
 
@@ -669,10 +702,10 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         }
     }
 
-    public boolean canScrollVertically (AbsListView view) {
+    public boolean canScrollVertically(AbsListView view) {
         boolean canScroll = false;
 
-        if (view !=null && view.getChildCount ()> 0) {
+        if (view != null && view.getChildCount() > 0) {
             boolean isOnTop = view.getFirstVisiblePosition() != 0 || view.getChildAt(0).getTop() != 0;
             boolean isAllItemsVisible = isOnTop && view.getLastVisiblePosition() == view.getChildCount();
 
@@ -681,6 +714,6 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
             }
         }
 
-        return  canScroll;
+        return canScroll;
     }
 }

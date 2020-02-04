@@ -81,6 +81,7 @@ public class CreateDevPlanActivity8 extends AppCompatActivity {
         if (extras != null) {
             try {
                 if (extras.getString("editedDevPlan") != null) {
+                    imageView.setVisibility(View.GONE);
                     object = new JSONObject(extras.getString("editedDevPlan"));
                     boolean selectedManager = object.getBoolean("managerCanFollow");
                     boolean selectedlecturer = object.getBoolean("lecturerCanFollow");
@@ -121,11 +122,14 @@ public class CreateDevPlanActivity8 extends AppCompatActivity {
                 if (object != null) { //edit butonundan gelince
                     Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
                     try {
-                        object.put("ManagerCanFollow", managerCheck);
-                        object.put("LecturerCanFollow", educatorCheck);
+                        object.put("managerCanFollow", managerCheck);
+                        object.put("lecturerCanFollow", educatorCheck);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                    if (getIntent().hasExtra("fromEdit"))
+                        intent.putExtra("fromEdit", true);
 
                     intent.putExtra("editedDevPlan", object.toString());
                     startActivity(intent);

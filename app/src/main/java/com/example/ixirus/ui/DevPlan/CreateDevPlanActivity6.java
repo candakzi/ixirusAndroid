@@ -64,7 +64,7 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
     private Calendar myCalendar;
     private TextView dateTextView;
     private JSONObject object;
-    private  ArrayList<ListItemTasks> arr;
+    private ArrayList<ListItemTasks> arr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,8 +123,7 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                 int heightDiff = activityRootView.getRootView().getHeight() - activityRootView.getHeight();
                 if (heightDiff > dpToPx(getBaseContext(), 200)) { // if more than 200 dp, it's probably a keyboard...
                     nextButton.setVisibility(View.GONE);
-                }
-                else
+                } else
                     nextButton.setVisibility(View.VISIBLE);
             }
         });
@@ -158,9 +157,10 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             try {
-                if(extras.getString("editedDevPlan")!=null) {
+                if (extras.getString("editedDevPlan") != null) {
+                    imageView.setVisibility(View.GONE);
                     object = new JSONObject(extras.getString("editedDevPlan"));
-                    JSONArray  selectedActionTasks = object.getJSONArray("actionTasks");
+                    JSONArray selectedActionTasks = object.getJSONArray("actionTasks");
                     loadDefaultListItem(selectedActionTasks);
 
                 }
@@ -183,11 +183,11 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
 
                     builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            StringRequest jsonObjRequest = new StringRequest(Request.Method.DELETE, "https://ixirus.azurewebsites.net/api/task?taskId="+selectedId, new Response.Listener<String>() {
+                            StringRequest jsonObjRequest = new StringRequest(Request.Method.DELETE, "https://ixirus.azurewebsites.net/api/task?taskId=" + selectedId, new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
                                     arr.remove(position);
-                                    ((TaskListAdapter)lv.getAdapter()).notifyDataSetChanged();
+                                    ((TaskListAdapter) lv.getAdapter()).notifyDataSetChanged();
                                 }
                             }, new Response.ErrorListener() {
 
@@ -345,55 +345,88 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                     String planName;
 
                     if (extras != null) {
-                        programId = extras.getInt("programId");
-                        perfectionId = extras.getInt("perfectionId");
-                        behaviourId = extras.getInt("behaviourId");
-                        benefit = extras.getString("benefit");
-                        question1 = extras.getInt("question1");
-                        question2 = extras.getInt("question2");
-                        question3 = extras.getInt("question3");
-                        question4 = extras.getInt("question4");
-                        question5 = extras.getInt("question5");
-                        planName = extras.getString("planName");
+                        if (object != null) {
+                            Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
+                            try {
+                                JSONArray newArr = new JSONArray();
 
-                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity7.class);
+                                for (int position = 0; position < finalAdapter.getCount(); position++) {
+                                    JSONObject actionTaskObject = new JSONObject();
 
-                        if (object != null)
+                                    ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
+                                    String name = item.Name.split("-")[0].trim();
+                                    actionTaskObject.put("id", item.Id);
+                                    actionTaskObject.put("name", name);
+                                    actionTaskObject.put("sourceId", null);
+                                    String myFormatPosted = "yyyy-MM-dd";
+                                    SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
+                                    final String endDatePosted = sdfPosted.format(item.Date);
+
+
+                                    actionTaskObject.put("endDate", endDatePosted);
+                                    newArr.put(actionTaskObject);
+                                }
+                                object.put("actionTasks", newArr);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            if (getIntent().hasExtra("fromEdit"))
+                                intent.putExtra("fromEdit", true);
                             intent.putExtra("editedDevPlan", object.toString());
+                            startActivity(intent);
+                        } else {
 
-                        intent.putExtra("behaviourId", behaviourId);
-                        intent.putExtra("perfectionId", perfectionId);
-                        intent.putExtra("programId", programId);
-                        intent.putExtra("benefit", benefit);
-                        intent.putExtra("question1", question1);
-                        intent.putExtra("question2", question2);
-                        intent.putExtra("question3", question3);
-                        intent.putExtra("question4", question4);
-                        intent.putExtra("question5", question5);
-                        intent.putExtra("planName", planName);
+                            programId = extras.getInt("programId");
+                            perfectionId = extras.getInt("perfectionId");
+                            behaviourId = extras.getInt("behaviourId");
+                            benefit = extras.getString("benefit");
+                            question1 = extras.getInt("question1");
+                            question2 = extras.getInt("question2");
+                            question3 = extras.getInt("question3");
+                            question4 = extras.getInt("question4");
+                            question5 = extras.getInt("question5");
+                            planName = extras.getString("planName");
 
-                        JSONArray array = new JSONArray();
-                        ArrayList<Integer> list = new ArrayList<Integer>();
-                        ArrayList<ListItemTasks> passedActionList = new ArrayList<ListItemTasks>();
+                            Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity7.class);
+
+                            if (object != null)
+                                intent.putExtra("editedDevPlan", object.toString());
+
+                            intent.putExtra("behaviourId", behaviourId);
+                            intent.putExtra("perfectionId", perfectionId);
+                            intent.putExtra("programId", programId);
+                            intent.putExtra("benefit", benefit);
+                            intent.putExtra("question1", question1);
+                            intent.putExtra("question2", question2);
+                            intent.putExtra("question3", question3);
+                            intent.putExtra("question4", question4);
+                            intent.putExtra("question5", question5);
+                            intent.putExtra("planName", planName);
+
+                            JSONArray array = new JSONArray();
+                            ArrayList<Integer> list = new ArrayList<Integer>();
+                            ArrayList<ListItemTasks> passedActionList = new ArrayList<ListItemTasks>();
 
 
-                        for (int position = 0; position < finalAdapter.getCount(); position++) {
-                            ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
-                            String name = item.Name.split("-")[0].trim();
-                            String myFormatPosted = "MM/dd/yy";
-                            SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
-                            final String endDatePosted = sdfPosted.format(item.Date);
-                            int sourceId = item.SourceId;
-                            int id = item.Id;
-                            JSONObject obj = new JSONObject();
-                            list.add(id);
-                            passedActionList.add(item);
+                            for (int position = 0; position < finalAdapter.getCount(); position++) {
+                                ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
+                                String name = item.Name.split("-")[0].trim();
+                                String myFormatPosted = "MM/dd/yy";
+                                SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
+                                final String endDatePosted = sdfPosted.format(item.Date);
+                                int sourceId = item.SourceId;
+                                int id = item.Id;
+                                JSONObject obj = new JSONObject();
+                                list.add(id);
+                                passedActionList.add(item);
+                            }
+                            intent.putExtra("actionTasks", list);
+                            intent.putExtra("passedActionList", passedActionList);
+
+                            startActivity(intent);
 
                         }
-                        intent.putExtra("actionTasks", list);
-                        intent.putExtra("passedActionList", passedActionList);
-
-                        startActivity(intent);
                     }
                 }
             }
@@ -409,9 +442,9 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                 SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
 
 
-                int id =  obj.getInt("id");
-                String name =  obj.getString("name");
-                String endDateStr =  obj.getString("endDate");
+                int id = obj.getInt("id");
+                String name = obj.getString("name");
+                String endDateStr = obj.getString("endDate");
                 Date d = sdf.parse(endDateStr);
                 ListItemTasks item = new ListItemTasks();
                 final String currentDateStr = dateFormat.format(d);

@@ -479,50 +479,59 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity1.class);
-        if(selectedItem!=null)
-            intent.putExtra("perfectionId", ((ListItem)selectedItem).Id);
+        if (object != null) {
+            Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
+            if (getIntent().hasExtra("fromEdit"))
+                intent.putExtra("fromEdit", true);
+            intent.putExtra("editedDevPlan", object.toString());
 
-        if(object!=null) {
-            if (selectedItem != null) {
-                try {
-                    object.put("perfectionId", ((ListItem) selectedItem).Id);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            startActivity(intent);
+            overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+        } else {
+            Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity1.class);
+            if (selectedItem != null)
+                intent.putExtra("perfectionId", ((ListItem) selectedItem).Id);
+
+            if (object != null) {
+                if (selectedItem != null) {
+                    try {
+                        object.put("perfectionId", ((ListItem) selectedItem).Id);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+                intent.putExtra("editedDevPlan", object.toString());
             }
 
-            intent.putExtra("editedDevPlan", object.toString());
+            if (getIntent().hasExtra("behaviourId"))
+                intent.putExtra("behaviourId", getIntent().getExtras().getInt("behaviourId"));
+
+            if (getIntent().hasExtra("benefit"))
+                intent.putExtra("benefit", getIntent().getExtras().getString("benefit")); // 5 6 7 8 komple gelecek
+
+            if (getIntent().hasExtra("question1"))
+                intent.putExtra("question1", getIntent().getExtras().getInt("question1"));  // 5 6 7 8 komple gelecek
+
+            if (getIntent().hasExtra("question2"))
+                intent.putExtra("question2", getIntent().getExtras().getInt("question2"));
+
+            if (getIntent().hasExtra("question3"))
+                intent.putExtra("question3", getIntent().getExtras().getInt("question3"));
+
+            if (getIntent().hasExtra("question4"))
+                intent.putExtra("question4", getIntent().getExtras().getInt("question4"));
+
+            if (getIntent().hasExtra("question5"))
+                intent.putExtra("question5", getIntent().getExtras().getInt("question5"));
+
+
+            intent.putExtra("programId", selectedProgramId);
+            intent.putExtra("planName", selectedDevPlanName);
+            intent.putExtra("programName", selectedProgramName);
+
+
+            startActivity(intent);
+            overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
         }
-
-        if(getIntent().hasExtra("behaviourId"))
-            intent.putExtra("behaviourId", getIntent().getExtras().getInt("behaviourId"));
-
-        if(getIntent().hasExtra("benefit"))
-            intent.putExtra("benefit", getIntent().getExtras().getString("benefit")); // 5 6 7 8 komple gelecek
-
-        if(getIntent().hasExtra("question1"))
-            intent.putExtra("question1", getIntent().getExtras().getInt("question1"));  // 5 6 7 8 komple gelecek
-
-        if(getIntent().hasExtra("question2"))
-            intent.putExtra("question2", getIntent().getExtras().getInt("question2"));
-
-        if(getIntent().hasExtra("question3"))
-            intent.putExtra("question3", getIntent().getExtras().getInt("question3"));
-
-        if(getIntent().hasExtra("question4"))
-            intent.putExtra("question4", getIntent().getExtras().getInt("question4"));
-
-        if(getIntent().hasExtra("question5"))
-            intent.putExtra("question5", getIntent().getExtras().getInt("question5"));
-
-
-        intent.putExtra("programId",selectedProgramId);
-        intent.putExtra("planName",selectedDevPlanName);
-        intent.putExtra("programName",selectedProgramName);
-
-
-        startActivity(intent);
-        overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
     }
 }

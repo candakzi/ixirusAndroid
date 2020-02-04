@@ -26,6 +26,7 @@ import com.example.ixirus.ListAdapters.GenericListAdapter;
 import com.example.ixirus.ListItem;
 import com.example.ixirus.R;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -108,7 +109,7 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
         });
 
         ImageView imageView = findViewById(R.id.buttonBack);
-        getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan) ;
+        getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan);
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -119,12 +120,12 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
         getSupportActionBar().setCustomView(imgView);
 
         Display display = getWindowManager().getDefaultDisplay();
-        DisplayMetrics outMetrics = new DisplayMetrics ();
+        DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
 
-        float density  = getResources().getDisplayMetrics().density;
+        float density = getResources().getDisplayMetrics().density;
 
-        TextView tv = (TextView)findViewById(R.id.textView2) ;
+        TextView tv = (TextView) findViewById(R.id.textView2);
         tv.setTextSize(9 * density);
         loadListItems();
 
@@ -137,7 +138,8 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
                 selectedDevPlanName = extras.getString("planName");
                 typedBenefit = extras.getString("benefit");
 
-                if (extras.getString("editedDevPlan") != null) {
+                if (extras.getString("editedDevPlan") != null) { //edit modda açılmıştır
+                    imageView.setVisibility(View.GONE);
                     object = new JSONObject(extras.getString("editedDevPlan"));
                     Integer question1 = object.getInt("question1");
                     Integer question2 = object.getInt("question2");
@@ -145,54 +147,54 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
                     Integer question4 = object.getInt("question4");
                     Integer question5 = object.getInt("question5");
 
-                    selectedItem1 = lv1.getItemAtPosition(question1-1);
-                    selectedItem2 = lv2.getItemAtPosition(question2-1);
-                    selectedItem3 = lv3.getItemAtPosition(question3-1);
-                    selectedItem4 = lv4.getItemAtPosition(question4-1);
-                    selectedItem5 = lv5.getItemAtPosition(question5-1);
+                    selectedItem1 = lv1.getItemAtPosition(question1 - 1);
+                    selectedItem2 = lv2.getItemAtPosition(question2 - 1);
+                    selectedItem3 = lv3.getItemAtPosition(question3 - 1);
+                    selectedItem4 = lv4.getItemAtPosition(question4 - 1);
+                    selectedItem5 = lv5.getItemAtPosition(question5 - 1);
 
-                    lv1.setSelection(question1-1);
-                    lv1.setItemChecked(question1-1, true);
+                    lv1.setSelection(question1 - 1);
+                    lv1.setItemChecked(question1 - 1, true);
 
-                    lv2.setSelection(question2-1);
-                    lv2.setItemChecked(question2-1, true);
+                    lv2.setSelection(question2 - 1);
+                    lv2.setItemChecked(question2 - 1, true);
 
-                    lv3.setSelection(question3-1);
-                    lv3.setItemChecked(question3-1, true);
+                    lv3.setSelection(question3 - 1);
+                    lv3.setItemChecked(question3 - 1, true);
 
-                    lv4.setSelection(question4-1);
-                    lv4.setItemChecked(question4-1, true);
+                    lv4.setSelection(question4 - 1);
+                    lv4.setItemChecked(question4 - 1, true);
 
-                    lv5.setSelection(question5-1);
-                    lv5.setItemChecked(question5-1, true);
-                }
-                else {
+                    lv5.setSelection(question5 - 1);
+                    lv5.setItemChecked(question5 - 1, true);
+
+                } else {
                     if (getIntent().hasExtra("question1")) {
-                        lv1.setSelection(getIntent().getExtras().getInt("question1")-1);
-                        lv1.setItemChecked(getIntent().getExtras().getInt("question1")-1, true);
+                        lv1.setSelection(getIntent().getExtras().getInt("question1") - 1);
+                        lv1.setItemChecked(getIntent().getExtras().getInt("question1") - 1, true);
                     }
                     if (getIntent().hasExtra("question2")) {
-                        lv2.setSelection(getIntent().getExtras().getInt("question2")-1);
-                        lv2.setItemChecked(getIntent().getExtras().getInt("question2")-1, true);
+                        lv2.setSelection(getIntent().getExtras().getInt("question2") - 1);
+                        lv2.setItemChecked(getIntent().getExtras().getInt("question2") - 1, true);
                     }
                     if (getIntent().hasExtra("question3")) {
-                        lv3.setSelection(getIntent().getExtras().getInt("question3")-1);
-                        lv3.setItemChecked(getIntent().getExtras().getInt("question3")-1, true);
+                        lv3.setSelection(getIntent().getExtras().getInt("question3") - 1);
+                        lv3.setItemChecked(getIntent().getExtras().getInt("question3") - 1, true);
                     }
                     if (getIntent().hasExtra("question4")) {
-                        lv4.setSelection(getIntent().getExtras().getInt("question4")-1);
-                        lv4.setItemChecked(getIntent().getExtras().getInt("question4")-1, true);
+                        lv4.setSelection(getIntent().getExtras().getInt("question4") - 1);
+                        lv4.setItemChecked(getIntent().getExtras().getInt("question4") - 1, true);
                     }
                     if (getIntent().hasExtra("question5")) {
-                        lv5.setSelection(getIntent().getExtras().getInt("question5")-1);
-                        lv5.setItemChecked(getIntent().getExtras().getInt("question5")-1, true);
+                        lv5.setSelection(getIntent().getExtras().getInt("question5") - 1);
+                        lv5.setItemChecked(getIntent().getExtras().getInt("question5") - 1, true);
                     }
 
-                    selectedItem1 = lv1.getItemAtPosition(getIntent().getExtras().getInt("question1")-1);
-                    selectedItem2 = lv2.getItemAtPosition(getIntent().getExtras().getInt("question2")-1);
-                    selectedItem3 = lv3.getItemAtPosition(getIntent().getExtras().getInt("question3")-1);
-                    selectedItem4 = lv4.getItemAtPosition(getIntent().getExtras().getInt("question4")-1);
-                    selectedItem5 = lv5.getItemAtPosition(getIntent().getExtras().getInt("question5")-1);
+                    selectedItem1 = lv1.getItemAtPosition(getIntent().getExtras().getInt("question1") - 1);
+                    selectedItem2 = lv2.getItemAtPosition(getIntent().getExtras().getInt("question2") - 1);
+                    selectedItem3 = lv3.getItemAtPosition(getIntent().getExtras().getInt("question3") - 1);
+                    selectedItem4 = lv4.getItemAtPosition(getIntent().getExtras().getInt("question4") - 1);
+                    selectedItem5 = lv5.getItemAtPosition(getIntent().getExtras().getInt("question5") - 1);
                 }
 
             } catch (Throwable t) {
@@ -210,19 +212,19 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
                 intent.putExtra("behaviourId", selectedBehaviourId);
                 intent.putExtra("benefit", typedBenefit);
 
-                if(object!=null)
+                if (object != null)
                     intent.putExtra("editedDevPlan", object.toString());
 
-                if(selectedItem1!=null)
-                    intent.putExtra("question1", ((ListItem)selectedItem1).Id);
-                if(selectedItem2!=null)
-                    intent.putExtra("question2", ((ListItem)selectedItem2).Id);
-                if(selectedItem3!=null)
-                    intent.putExtra("question3", ((ListItem)selectedItem3).Id);
-                if(selectedItem4!=null)
-                    intent.putExtra("question4", ((ListItem)selectedItem4).Id);
-                if(selectedItem5!=null)
-                    intent.putExtra("question5", ((ListItem)selectedItem5).Id);
+                if (selectedItem1 != null)
+                    intent.putExtra("question1", ((ListItem) selectedItem1).Id);
+                if (selectedItem2 != null)
+                    intent.putExtra("question2", ((ListItem) selectedItem2).Id);
+                if (selectedItem3 != null)
+                    intent.putExtra("question3", ((ListItem) selectedItem3).Id);
+                if (selectedItem4 != null)
+                    intent.putExtra("question4", ((ListItem) selectedItem4).Id);
+                if (selectedItem5 != null)
+                    intent.putExtra("question5", ((ListItem) selectedItem5).Id);
 
                 startActivity(intent);
                 overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
@@ -247,26 +249,43 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
                     benefit = extras.getString("benefit");
                     planName = extras.getString("planName");
 
-                    if (selectedItem1 == null|| selectedItem2 == null|| selectedItem3 == null || selectedItem4 == null || selectedItem5 == null ) {
+                    if (selectedItem1 == null || selectedItem2 == null || selectedItem3 == null || selectedItem4 == null || selectedItem5 == null) {
                         Toast.makeText(getBaseContext(), getResources().getString(R.string.answer_the_questions), Toast.LENGTH_SHORT).show();
                         return;
                     } else {
-                        Intent intent = new Intent(getBaseContext(), CreateDevPlanQuestionsSummary.class);
-                        if (object != null)
+
+                        if (object != null) {
+                            Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
+                            try {
+                                object.put("question1", ((ListItem) selectedItem1).Id);
+                                object.put("question2", ((ListItem) selectedItem2).Id);
+                                object.put("question3", ((ListItem) selectedItem3).Id);
+                                object.put("question4", ((ListItem) selectedItem4).Id);
+                                object.put("question5", ((ListItem) selectedItem5).Id);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            if (getIntent().hasExtra("fromEdit"))
+                                intent.putExtra("fromEdit", true);
                             intent.putExtra("editedDevPlan", object.toString());
+                            startActivity(intent);
 
-                        intent.putExtra("behaviourId", behaviourId);
-                        intent.putExtra("perfectionId", perfectionId);
-                        intent.putExtra("programId", programId);
-                        intent.putExtra("benefit", benefit);
-                        intent.putExtra("question1", ((ListItem)selectedItem1).Id);
-                        intent.putExtra("question2", ((ListItem)selectedItem2).Id);
-                        intent.putExtra("question3", ((ListItem)selectedItem3).Id);
-                        intent.putExtra("question4", ((ListItem)selectedItem4).Id);
-                        intent.putExtra("question5", ((ListItem)selectedItem5).Id);
-                        intent.putExtra("planName", planName);
+                        } else {
+                            Intent intent = new Intent(getBaseContext(), CreateDevPlanQuestionsSummary.class);
+                            intent.putExtra("behaviourId", behaviourId);
+                            intent.putExtra("perfectionId", perfectionId);
+                            intent.putExtra("programId", programId);
+                            intent.putExtra("benefit", benefit);
+                            intent.putExtra("question1", ((ListItem) selectedItem1).Id);
+                            intent.putExtra("question2", ((ListItem) selectedItem2).Id);
+                            intent.putExtra("question3", ((ListItem) selectedItem3).Id);
+                            intent.putExtra("question4", ((ListItem) selectedItem4).Id);
+                            intent.putExtra("question5", ((ListItem) selectedItem5).Id);
+                            intent.putExtra("planName", planName);
 
-                        startActivity(intent);
+                            startActivity(intent);
+                        }
                     }
                 }
             }
@@ -275,17 +294,16 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
 
     }
 
-    public void loadListItems()
-    {
+    public void loadListItems() {
         ArrayList<ListItem> arr = new ArrayList<ListItem>();
-        String[] answers = new String[]{getResources().getString(R.string.answer_1),getResources().getString(R.string.answer_2),getResources().getString(R.string.answer_3)};
-        for (int i=0; i < answers.length; i++) {
-            ListItem item =  new ListItem();
-            item.Id =  i+1;
+        String[] answers = new String[]{getResources().getString(R.string.answer_1), getResources().getString(R.string.answer_2), getResources().getString(R.string.answer_3)};
+        for (int i = 0; i < answers.length; i++) {
+            ListItem item = new ListItem();
+            item.Id = i + 1;
             item.Name = answers[i];
             arr.add(item);
         }
-        AnswersListAdapter adapter = new AnswersListAdapter(getBaseContext(),arr);
+        AnswersListAdapter adapter = new AnswersListAdapter(getBaseContext(), arr);
         lv1.setAdapter(adapter);
         lv2.setAdapter(adapter);
         lv3.setAdapter(adapter);
@@ -297,29 +315,40 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
-        intent.putExtra("programId", selectedProgramId);
-        intent.putExtra("planName", selectedDevPlanName);
-        intent.putExtra("perfectionId", selectedPerfectionId);
-        intent.putExtra("behaviourId", selectedBehaviourId);
-        intent.putExtra("benefit", typedBenefit);
 
-        if(object!=null)
+        if (object != null) {
+            Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
+            if (getIntent().hasExtra("fromEdit"))
+                intent.putExtra("fromEdit", true);
             intent.putExtra("editedDevPlan", object.toString());
 
-        if(selectedItem1!=null)
-            intent.putExtra("question1", ((ListItem)selectedItem1).Id);
-        if(selectedItem2!=null)
-            intent.putExtra("question2", ((ListItem)selectedItem2).Id);
-        if(selectedItem3!=null)
-            intent.putExtra("question3", ((ListItem)selectedItem3).Id);
-        if(selectedItem4!=null)
-            intent.putExtra("question4", ((ListItem)selectedItem4).Id);
-        if(selectedItem5!=null)
-            intent.putExtra("question5", ((ListItem)selectedItem5).Id);
+            startActivity(intent);
+            overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+        } else {
+            Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity4.class);
+            intent.putExtra("programId", selectedProgramId);
+            intent.putExtra("planName", selectedDevPlanName);
+            intent.putExtra("perfectionId", selectedPerfectionId);
+            intent.putExtra("behaviourId", selectedBehaviourId);
+            intent.putExtra("benefit", typedBenefit);
 
-        startActivity(intent);
-        overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+            if (object != null)
+                intent.putExtra("editedDevPlan", object.toString());
+
+            if (selectedItem1 != null)
+                intent.putExtra("question1", ((ListItem) selectedItem1).Id);
+            if (selectedItem2 != null)
+                intent.putExtra("question2", ((ListItem) selectedItem2).Id);
+            if (selectedItem3 != null)
+                intent.putExtra("question3", ((ListItem) selectedItem3).Id);
+            if (selectedItem4 != null)
+                intent.putExtra("question4", ((ListItem) selectedItem4).Id);
+            if (selectedItem5 != null)
+                intent.putExtra("question5", ((ListItem) selectedItem5).Id);
+
+            startActivity(intent);
+            overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+        }
     }
 }
 

@@ -16,4 +16,6 @@
     <color name ="create_account_back">#3F2C59</color>
     <color name="edit_text_color">#E2DBE7</color>
     <color name="button_blue">#036FFF</color>
+    <color name="button_grey">#A2A0A2</color>
+
 </resources>

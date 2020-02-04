@@ -161,25 +161,34 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
-
-        if(object!=null) {
-            try {
-                object.put("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        if (object != null) {
+            Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
+            if (getIntent().hasExtra("fromEdit"))
+                intent.putExtra("fromEdit", true);
             intent.putExtra("editedDevPlan", object.toString());
+
+            startActivity(intent);
+            overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+        } else {
+            Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
+
+            if (object != null) {
+                try {
+                    object.put("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                intent.putExtra("editedDevPlan", object.toString());
+            }
+
+            intent.putExtra("programId", selectedProgramId);
+            intent.putExtra("planName", selectedDevPlanName);
+            intent.putExtra("perfectionId", selectedPerfectionId);
+            intent.putExtra("behaviourId", selectedBehaviourId);
+            intent.putExtra("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
+
+            startActivity(intent);
+            overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
         }
-
-        intent.putExtra("programId", selectedProgramId);
-        intent.putExtra("planName", selectedDevPlanName);
-        intent.putExtra("perfectionId", selectedPerfectionId);
-        intent.putExtra("behaviourId", selectedBehaviourId);
-        intent.putExtra("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
-
-        startActivity(intent);
-        overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
     }
 }

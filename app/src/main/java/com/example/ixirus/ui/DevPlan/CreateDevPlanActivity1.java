@@ -173,7 +173,7 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                         intent.putExtra("fromEdit", true);
 
                     } else if (object != null && !getIntent().hasExtra("fromEdit")) {
-                        //son sayfaya kadar geldi sonra edite bastı from edit setlenmez
+                        //son sayfaya kadar geldi sonra edite bastı from edit setlenmez burası son sayfada new veya update işlemi için yapıldı
                     } else {
                         //normal akış
                         intent = new Intent(getBaseContext(), CreateDevPlanActivity2.class);
@@ -429,9 +429,19 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if (object != null) {
+            Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
+            if (getIntent().hasExtra("fromEdit"))
+                intent.putExtra("fromEdit", true);
+            intent.putExtra("editedDevPlan", object.toString());
 
-        Intent intent = new Intent(getBaseContext(), MyDevPlanListActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+            startActivity(intent);
+            overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+        } else {
+
+            Intent intent = new Intent(getBaseContext(), MyDevPlanListActivity.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+        }
     }
 }

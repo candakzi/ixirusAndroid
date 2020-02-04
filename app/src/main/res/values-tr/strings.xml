@@ -117,4 +117,6 @@
     <string name="preview_behaviour">SEÇİLİ DAVRANIŞ</string>
     <string name="preview_benefits">BEKLENEN KAZANIMLAR</string>
     <string name="preview_quiz">QUİZ</string>
+    <string name="selected_helpful_sources">SEÇİLİ YARDIMCI KAYNAKLAR</string>
+    <string name="edit">Düzenle</string>
 </resources>

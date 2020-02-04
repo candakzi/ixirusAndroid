@@ -81,7 +81,7 @@
     <string name="music_document_text">You can add audio document here</string>
     <string name="login_error_toast">Invalid Email or Password</string>
     <string name="save">Save</string>
-    <string name="let_educator"> Let my trainer follow my development plan</string>
+    <string name="let_educator"> Let my instructor follow my development plan</string>
     <string name="let_manager"> Let my manager follow my development plan</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="dummy_button">Dummy Button</string>
@@ -116,5 +116,7 @@
     <string name="preview_behaviour">SELECTED BEHAVIOUR</string>
     <string name="preview_benefits">EXPECTED BENEFITS</string>
     <string name="preview_quiz">QUIZ</string>
+    <string name="selected_helpful_sources">SELECTED HELPFUL SOURCES</string>
+    <string name="edit">Edit</string>
 
 </resources>

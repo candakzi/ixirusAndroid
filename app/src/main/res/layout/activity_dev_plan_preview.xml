@@ -71,20 +71,34 @@
 
             <TextView
                 android:id="@+id/textViewDevPlanNameHeader"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:paddingStart="5dp"
                 android:paddingEnd="15dp"
-
                 android:text="@string/preview_dev_plan_name"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.8"
+                />
+
+            <Button
+                android:id="@+id/buttonDevPlan"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/grey_button"
+                android:text="@string/edit"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/textViewDevPlanNameHeader"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.2" />
 
             <TextView
                 android:id="@+id/textViewDevPlanName"
@@ -92,8 +106,6 @@
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
-                android:paddingEnd="15dp"
-                android:drawableEnd="@mipmap/edit_button"
                 android:paddingStart="15dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
@@ -104,7 +116,7 @@
 
             <TextView
                 android:id="@+id/textViewSelectedProgramHeader"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
@@ -113,9 +125,23 @@
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewDevPlanName" />
+
+            <Button
+                android:id="@+id/buttonProgram"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/grey_button"
+                android:text="@string/edit"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/textViewSelectedProgramHeader"
+                app:layout_constraintTop_toBottomOf="@id/textViewDevPlanName"
+                app:layout_constraintWidth_percent="0.2" />
 
             <TextView
                 android:id="@+id/textViewSelectedProgram"
@@ -123,8 +149,6 @@
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
-                android:paddingEnd="15dp"
-                android:drawableEnd="@mipmap/edit_button"
                 android:paddingStart="15dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
@@ -135,7 +159,7 @@
 
             <TextView
                 android:id="@+id/textViewSelectedPerfectionHeader"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
@@ -144,9 +168,23 @@
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.8"
                 app:layout_constraintTop_toBottomOf="@id/textViewSelectedProgram" />
+
+            <Button
+                android:id="@+id/buttonPerfection"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/grey_button"
+                android:text="@string/edit"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/textViewSelectedPerfectionHeader"
+                app:layout_constraintTop_toBottomOf="@id/textViewSelectedProgram"
+                app:layout_constraintWidth_percent="0.2" />
 
             <TextView
                 android:id="@+id/textViewSelectedPerfection"
@@ -155,8 +193,6 @@
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:drawableEnd="@mipmap/edit_button"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -166,7 +202,7 @@
 
             <TextView
                 android:id="@+id/textViewSelectedBehaviourHeader"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
@@ -175,9 +211,23 @@
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.8"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewSelectedPerfection" />
+
+            <Button
+                android:id="@+id/buttonBehavior"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/grey_button"
+                android:text="@string/edit"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/textViewSelectedBehaviourHeader"
+                app:layout_constraintTop_toBottomOf="@id/textViewSelectedPerfection"
+                app:layout_constraintWidth_percent="0.2" />
 
             <TextView
                 android:id="@+id/textViewSelectedBehaviour"
@@ -186,8 +236,6 @@
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:paddingStart="15dp"
-                android:paddingEnd="15dp"
-                android:drawableEnd="@mipmap/edit_button"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -197,7 +245,7 @@
 
             <TextView
                 android:id="@+id/textViewSelectedBenefitsHeader"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
@@ -206,9 +254,23 @@
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.8"
                 app:layout_constraintTop_toBottomOf="@id/textViewSelectedBehaviour" />
+
+            <Button
+                android:id="@+id/buttonBenefits"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/grey_button"
+                android:text="@string/edit"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/textViewSelectedBenefitsHeader"
+                app:layout_constraintTop_toBottomOf="@id/textViewSelectedBehaviour"
+                app:layout_constraintWidth_percent="0.2" />
 
             <TextView
                 android:id="@+id/textViewSelectedBenefits"
@@ -220,15 +282,13 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:paddingEnd="15dp"
-                android:drawableEnd="@mipmap/edit_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewSelectedBenefitsHeader" />
 
             <TextView
                 android:id="@+id/textViewQuiz"
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
@@ -237,9 +297,24 @@
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.8"
                 app:layout_constraintTop_toBottomOf="@id/textViewSelectedBenefits" />
+
+
+            <Button
+                android:id="@+id/buttonQuiz"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/grey_button"
+                android:text="@string/edit"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/textViewQuiz"
+                app:layout_constraintTop_toBottomOf="@id/textViewSelectedBenefits"
+                app:layout_constraintWidth_percent="0.2" />
 
 
             <TextView
@@ -441,11 +516,9 @@
                 android:layout_height="57dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginBottom="32dp"
                 android:background="@android:color/transparent"
                 app:cardElevation="0dp"
                 app:cardUseCompatPadding="true"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView9">
@@ -461,6 +534,220 @@
 
             </androidx.cardview.widget.CardView>
 
+
+            <TextView
+                android:id="@+id/textViewActionSteps"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="17dp"
+                android:paddingStart="5dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="15dp"
+
+                android:paddingBottom="10dp"
+                android:text="@string/action_steps"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.8"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewList5" />
+
+
+            <Button
+                android:id="@+id/buttonActionStep"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/grey_button"
+                android:text="@string/edit"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/textViewActionSteps"
+                app:layout_constraintTop_toBottomOf="@id/cardViewList5"
+                app:layout_constraintWidth_percent="0.2" />
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewListActionStep"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+
+                android:layout_marginEnd="16dp"
+                android:background="@color/list_color"
+                app:cardBackgroundColor="@color/list_color"
+                app:elevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewActionSteps">
+
+                <ListView
+                    android:id="@+id/listViewActionStep"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@drawable/divider_black"
+                    android:dividerHeight="1dp"
+                    android:tag="ActionList" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textViewSourceSteps"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:paddingStart="5dp"
+                android:paddingTop="10dp"
+
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:text="@string/selected_helpful_sources"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewListActionStep"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <Button
+                android:id="@+id/buttonSourceStep"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/grey_button"
+                android:text="@string/edit"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/textViewSourceSteps"
+                app:layout_constraintTop_toBottomOf="@id/cardViewListActionStep"
+                app:layout_constraintWidth_percent="0.2" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewListSourceStep"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+
+                android:layout_marginEnd="16dp"
+                android:background="@color/list_color"
+                app:cardBackgroundColor="@color/list_color"
+                app:elevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewSourceSteps">
+
+                <ListView
+                    android:id="@+id/listViewSourceStep"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@drawable/divider_black"
+                    android:dividerHeight="1dp"
+                    android:tag="SourceList" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textViewManagerHeader"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:paddingStart="5dp"
+                android:paddingTop="10dp"
+
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:text="@string/let_manager"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewListSourceStep"
+                app:layout_constraintWidth_percent="0.8" />
+
+
+            <Button
+                android:id="@+id/buttonManager"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/grey_button"
+                android:text="@string/edit"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/textViewManagerHeader"
+                app:layout_constraintTop_toBottomOf="@id/cardViewListSourceStep"
+                app:layout_constraintWidth_percent="0.2" />
+
+            <TextView
+                android:id="@+id/textViewManager"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewManagerHeader" />
+
+            <TextView
+                android:id="@+id/textViewInstructorHeader"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:paddingStart="5dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="15dp"
+
+                android:paddingBottom="10dp"
+                android:text="@string/let_educator"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                app:layout_constraintWidth_percent="0.8"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewManager" />
+
+
+            <Button
+                android:id="@+id/buttonInstructor"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/grey_button"
+                android:text="@string/edit"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/textViewInstructorHeader"
+                app:layout_constraintTop_toBottomOf="@id/textViewManager"
+                app:layout_constraintWidth_percent="0.2" />
+
+            <TextView
+                android:id="@+id/textViewInstructor"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="32dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewInstructorHeader" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
