@@ -153,10 +153,9 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                     return;
                 } else {
                     ListItem selectedListItem = (ListItem) selectedObj;
-                    Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity2.class);
-                    if (object != null && getIntent().hasExtra("fromEdit")) {
+                    if (object != null) {
                         //edit butonuyla dev plan editten gelirse
-                        intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
+                        Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
                         try {
                             JSONObject programObj = new JSONObject();
                             programObj.put("id", selectedListItem.Id);
@@ -168,15 +167,14 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        if (getIntent().hasExtra("fromEdit"))
+                            intent.putExtra("fromEdit", true);
 
                         intent.putExtra("editedDevPlan", object.toString());
-                        intent.putExtra("fromEdit", true);
-
-                    } else if (object != null && !getIntent().hasExtra("fromEdit")) {
-                        //son sayfaya kadar geldi sonra edite bastı from edit setlenmez burası son sayfada new veya update işlemi için yapıldı
+                        startActivity(intent);
                     } else {
                         //normal akış
-                        intent = new Intent(getBaseContext(), CreateDevPlanActivity2.class);
+                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity2.class);
                         if (getIntent().hasExtra("perfectionId")) {
                             intent.putExtra("perfectionId", extras.getInt("perfectionId"));
                         }
@@ -185,16 +183,30 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
 
                         if (getIntent().hasExtra("benefit"))
                             intent.putExtra("benefit", getIntent().getExtras().getString("benefit"));
+
+                        if (getIntent().hasExtra("perfection")) {
+                            intent.putExtra("perfection", extras.getString("perfection"));
+                        }
+
+                        if (getIntent().hasExtra("behavior")) {
+                            intent.putExtra("behavior", extras.getString("behavior"));
+                        }
+
+
+                        intent.putExtra("programId", selectedListItem.Id);
+                        intent.putExtra("planName", planEditText.getText().toString().trim());
+
+                        JSONObject programObj = new JSONObject();
+                        try {
+                            programObj.put("id", selectedListItem.Id);
+                            programObj.put("name", selectedListItem.Name);
+                            intent.putExtra("program", programObj.toString());
+                            intent.putExtra("planName", planEditText.getText().toString().trim());
+                            startActivity(intent);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-
-
-                    intent.putExtra("programId", selectedListItem.Id);
-                    intent.putExtra("planName", planEditText.getText().toString().trim());
-
-
-                    intent.putExtra("programName", selectedListItem.Name);
-                    intent.putExtra("planName", planEditText.getText().toString().trim());
-                    startActivity(intent);
                 }
             }
         });
@@ -264,28 +276,6 @@ public class CreateDevPlanActivity1 extends AppCompatActivity {
     public static float dpToPx(Context context, float valueInDp) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
-    }
-
-    public void setItemSelected(View view) {
-        View rowView = view;
-        View v2 = ((ViewGroup) view).getChildAt(0);
-        View v3 = ((ViewGroup) v2).getChildAt(0);
-        TextView txtview = (TextView) v3;
-
-        TextView tv = (TextView) v3;
-        txtview.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorPrimary));
-    }
-
-    public void setItemNormal() {
-        for (int i = 0; i < lv.getChildCount(); i++) {
-            View v = lv.getChildAt(i);
-
-            View v2 = ((ViewGroup) v).getChildAt(0);
-            View v3 = ((ViewGroup) v2).getChildAt(0);
-
-            TextView txtview = (TextView) v3;
-            txtview.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.black_overlay));
-        }
     }
 
     public void loadListItem(final String savedToken, final String addedText, final boolean fromAddItem) {

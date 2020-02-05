@@ -212,6 +212,15 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
                 intent.putExtra("behaviourId", selectedBehaviourId);
                 intent.putExtra("benefit", typedBenefit);
 
+                if (getIntent().hasExtra("program"))
+                    intent.putExtra("program", getIntent().getExtras().getString("program"));
+
+                if (getIntent().hasExtra("perfection"))
+                    intent.putExtra("perfection", getIntent().getExtras().getString("perfection"));
+
+                if (getIntent().hasExtra("behavior"))
+                    intent.putExtra("behavior", getIntent().getExtras().getString("behavior"));
+
                 if (object != null)
                     intent.putExtra("editedDevPlan", object.toString());
 
@@ -284,6 +293,15 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
                             intent.putExtra("question5", ((ListItem) selectedItem5).Id);
                             intent.putExtra("planName", planName);
 
+                            if (getIntent().hasExtra("program"))
+                                intent.putExtra("program", getIntent().getExtras().getString("program"));
+
+                            if (getIntent().hasExtra("perfection"))
+                                intent.putExtra("perfection", getIntent().getExtras().getString("perfection"));
+
+                            if (getIntent().hasExtra("behavior"))
+                                intent.putExtra("behavior", getIntent().getExtras().getString("behavior"));
+
                             startActivity(intent);
                         }
                     }
@@ -345,6 +363,15 @@ public class CreateDevPlanActivity5 extends AppCompatActivity {
                 intent.putExtra("question4", ((ListItem) selectedItem4).Id);
             if (selectedItem5 != null)
                 intent.putExtra("question5", ((ListItem) selectedItem5).Id);
+
+            if (getIntent().hasExtra("program"))
+                intent.putExtra("program", getIntent().getExtras().getString("program"));
+
+            if (getIntent().hasExtra("perfection"))
+                intent.putExtra("perfection", getIntent().getExtras().getString("perfection"));
+
+            if (getIntent().hasExtra("behavior"))
+                intent.putExtra("behavior", getIntent().getExtras().getString("behavior"));
 
             startActivity(intent);
             overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);

@@ -21,6 +21,8 @@
     <string name="add_action_step">Please Add Action Step</string>
     <string name="type_plan_name">Please Type a Plan Name</string>
     <string name="plan_saved_successfully">Successfully Added to Your Development Plans</string>
+    <string name="plan_updated_successfully">Successfully Updated Your Development Plan</string>
+
     <string name="source_list">Source List</string>
 
 

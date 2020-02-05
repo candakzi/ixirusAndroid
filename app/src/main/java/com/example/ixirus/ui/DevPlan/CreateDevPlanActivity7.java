@@ -372,9 +372,6 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
 
                             Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity8.class);
 
-                            if (object != null)
-                                intent.putExtra("editedDevPlan", object.toString());
-
                             intent.putExtra("behaviourId", behaviourId);
                             intent.putExtra("perfectionId", perfectionId);
                             intent.putExtra("programId", programId);
@@ -386,6 +383,18 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                             intent.putExtra("question5", question5);
                             intent.putExtra("actionTasks", actionTasks);
                             intent.putExtra("planName", planName);
+
+                            if (getIntent().hasExtra("actionTasksObject"))
+                                intent.putExtra("actionTasksObject", getIntent().getExtras().getString("actionTasksObject"));
+
+                            if (getIntent().hasExtra("program"))
+                                intent.putExtra("program", getIntent().getExtras().getString("program"));
+
+                            if (getIntent().hasExtra("perfection"))
+                                intent.putExtra("perfection", getIntent().getExtras().getString("perfection"));
+
+                            if (getIntent().hasExtra("behavior"))
+                                intent.putExtra("behavior", getIntent().getExtras().getString("behavior"));
 
                             JSONArray array = new JSONArray();
                             ArrayList<Integer> list = new ArrayList<Integer>();
@@ -399,6 +408,33 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
                             if (list.toArray().length == 0)
                                 Toast.makeText(getBaseContext(), getResources().getString(R.string.add_source_step), Toast.LENGTH_SHORT).show();
                             else {
+
+                                JSONArray newArr = new JSONArray();
+                                try {
+                                    for (int position = 0; position < finalAdapter.getCount(); position++) {
+                                        JSONObject sourceTasksObject = new JSONObject();
+
+                                        ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
+                                        String name = item.Name.split("-")[0].trim();
+
+                                        if(item.SourceId==0)//Bu aksiyon adımı elemanıdır taşınmaz
+                                            continue;
+
+                                        sourceTasksObject.put("id", item.Id);
+                                        sourceTasksObject.put("name", name);
+                                        sourceTasksObject.put("sourceId", item.SourceId);
+                                        String myFormatPosted = "yyyy-MM-dd";
+                                        SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
+                                        final String endDatePosted = sdfPosted.format(item.Date);
+
+                                        sourceTasksObject.put("endDate", endDatePosted);
+                                        newArr.put(sourceTasksObject);
+                                    }
+                                    intent.putExtra("sourceTasksObject", newArr.toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                                 intent.putExtra("sourceTasks", list);
                                 startActivity(intent);
                             }
@@ -668,52 +704,5 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
 
         final TaskListAdapter adapter = new TaskListAdapter(getBaseContext(), arr);
         lv.setAdapter(adapter);
-    }
-
-    private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(CreateDevPlanActivity7.this, Manifest.permission.READ_EXTERNAL_STORAGE);
-        if (result == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void requestPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(CreateDevPlanActivity7.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            Toast.makeText(CreateDevPlanActivity7.this, "Write External Storage permission allows us to do store images. Please allow this permission in App Settings.", Toast.LENGTH_LONG).show();
-        } else {
-            ActivityCompat.requestPermissions(CreateDevPlanActivity7.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                    intent.setType("*/*");
-                    startActivityForResult(intent, 7);
-                } else {
-                    Log.e("value", "Permission Denied, You cannot use local drive .");
-                }
-                break;
-        }
-    }
-
-    public boolean canScrollVertically(AbsListView view) {
-        boolean canScroll = false;
-
-        if (view != null && view.getChildCount() > 0) {
-            boolean isOnTop = view.getFirstVisiblePosition() != 0 || view.getChildAt(0).getTop() != 0;
-            boolean isAllItemsVisible = isOnTop && view.getLastVisiblePosition() == view.getChildCount();
-
-            if (isOnTop || isAllItemsVisible) {
-                canScroll = true;
-            }
-        }
-
-        return canScroll;
     }
 }

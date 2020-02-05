@@ -151,9 +151,6 @@ public class CreateDevPlanActivity8 extends AppCompatActivity {
 
                         Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
 
-                        if (object != null)
-                            intent.putExtra("editedDevPlan", object.toString());
-
                         intent.putExtra("behaviourId", behaviourId);
                         intent.putExtra("perfectionId", perfectionId);
                         intent.putExtra("programId", programId);
@@ -168,6 +165,22 @@ public class CreateDevPlanActivity8 extends AppCompatActivity {
                         intent.putExtra("managerCanFollow", managerCheck);
                         intent.putExtra("lecturerCanFollow", educatorCheck);
                         intent.putExtra("planName", planName);
+
+                        if (getIntent().hasExtra("actionTasksObject"))
+                            intent.putExtra("actionTasksObject", getIntent().getExtras().getString("actionTasksObject"));
+
+                        if (getIntent().hasExtra("sourceTasksObject"))
+                            intent.putExtra("sourceTasksObject", getIntent().getExtras().getString("sourceTasksObject"));
+
+
+                        if (getIntent().hasExtra("program"))
+                            intent.putExtra("program", getIntent().getExtras().getString("program"));
+
+                        if (getIntent().hasExtra("perfection"))
+                            intent.putExtra("perfection", getIntent().getExtras().getString("perfection"));
+
+                        if (getIntent().hasExtra("behavior"))
+                            intent.putExtra("behavior", getIntent().getExtras().getString("behavior"));
 
                         startActivity(intent);
                     }

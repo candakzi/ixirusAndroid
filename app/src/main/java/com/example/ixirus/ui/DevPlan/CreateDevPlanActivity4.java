@@ -70,8 +70,7 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
                     String benefitText = object.getString("benefit");
 
                     ((EditText) findViewById(R.id.editTextBenefits)).setText(benefitText);
-                }
-                else if(extras.getString("benefit") != null){
+                } else if (extras.getString("benefit") != null) {
                     ((EditText) findViewById(R.id.editTextBenefits)).setText(extras.getString("benefit"));
                 }
             } catch (Throwable t) {
@@ -94,19 +93,22 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
                     behaviourId = extras.getInt("behaviourId");
                     planName = extras.getString("planName");
 
-                    if (object != null && getIntent().hasExtra("fromEdit")) {
+                    if (object != null) {
                         Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
 
                         try {
-                            object.put("benefit",((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
+                            object.put("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+                        if (getIntent().hasExtra("fromEdit"))
+                            intent.putExtra("fromEdit", true);
+
                         intent.putExtra("editedDevPlan", object.toString());
-                        intent.putExtra("fromEdit", true);
+
                         startActivity(intent);
-                    }
-                    else {
+                    } else {
                         Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity5.class);
 
                         if (getIntent().hasExtra("question1")) {
@@ -126,6 +128,17 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
                         intent.putExtra("programId", programId);
                         intent.putExtra("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
                         intent.putExtra("planName", planName);
+
+                        if (getIntent().hasExtra("program"))
+                            intent.putExtra("program", getIntent().getExtras().getString("program"));
+
+                        if (getIntent().hasExtra("perfection"))
+                            intent.putExtra("perfection", getIntent().getExtras().getString("perfection"));
+
+                        if (getIntent().hasExtra("behavior"))
+                            intent.putExtra("behavior", getIntent().getExtras().getString("behavior"));
+
+
                         startActivity(intent);
                     }
                 }
@@ -137,27 +150,38 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
-                if(object!=null) {
+                if (object != null) {
                     try {
                         object.put("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     intent.putExtra("editedDevPlan", object.toString());
+                } else {
+
+                    intent.putExtra("programId", selectedProgramId);
+                    intent.putExtra("planName", selectedDevPlanName);
+                    intent.putExtra("perfectionId", selectedPerfectionId);
+                    intent.putExtra("behaviourId", selectedBehaviourId);
+                    intent.putExtra("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
+
+                    if (getIntent().hasExtra("program"))
+                        intent.putExtra("program", getIntent().getExtras().getString("program"));
+
+                    if (getIntent().hasExtra("perfection"))
+                        intent.putExtra("perfection", getIntent().getExtras().getString("perfection"));
+
+                    if (getIntent().hasExtra("behavior"))
+                        intent.putExtra("behavior", getIntent().getExtras().getString("behavior"));
+
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
                 }
-
-                intent.putExtra("programId", selectedProgramId);
-                intent.putExtra("planName", selectedDevPlanName);
-                intent.putExtra("perfectionId", selectedPerfectionId);
-                intent.putExtra("behaviourId", selectedBehaviourId);
-                intent.putExtra("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
-
-                startActivity(intent);
-                overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
             }
         });
 
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -172,20 +196,20 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
         } else {
             Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
 
-            if (object != null) {
-                try {
-                    object.put("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                intent.putExtra("editedDevPlan", object.toString());
-            }
-
             intent.putExtra("programId", selectedProgramId);
             intent.putExtra("planName", selectedDevPlanName);
             intent.putExtra("perfectionId", selectedPerfectionId);
             intent.putExtra("behaviourId", selectedBehaviourId);
             intent.putExtra("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
+
+            if (getIntent().hasExtra("program"))
+                intent.putExtra("program", getIntent().getExtras().getString("program"));
+
+            if (getIntent().hasExtra("perfection"))
+                intent.putExtra("perfection", getIntent().getExtras().getString("perfection"));
+
+            if (getIntent().hasExtra("behavior"))
+                intent.putExtra("behavior", getIntent().getExtras().getString("behavior"));
 
             startActivity(intent);
             overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);

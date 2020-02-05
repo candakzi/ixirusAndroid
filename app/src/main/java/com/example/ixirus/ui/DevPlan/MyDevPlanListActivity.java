@@ -151,21 +151,6 @@ public class MyDevPlanListActivity extends AppCompatActivity {
                             try {
 
                                 JSONObject objectt = response.getJSONObject("data");
-//                                String programName = response.getJSONObject("data").getString("name");
-//                                Integer programId = response.getJSONObject("data").getInt("programId");
-//                                Integer behaviorId = response.getJSONObject("data").getInt("behaviorId");
-//                                Integer perfectionId = response.getJSONObject("data").getInt("perfectionId");
-//                                JSONArray actionTasks = response.getJSONObject("data").getJSONArray("actionTasks");
-//                                JSONArray sourceTasks = response.getJSONObject("data").getJSONArray("sourceTasks");
-//                                String benefit = response.getJSONObject("data").getString("benefit");
-//
-//                                Integer question1 = response.getJSONObject("data").getInt("question1");
-//                                Integer question2 = response.getJSONObject("data").getInt("question2");
-//                                Integer question3 = response.getJSONObject("data").getInt("question3");
-//                                Integer question4 = response.getJSONObject("data").getInt("question4");
-//                                Integer question5 = response.getJSONObject("data").getInt("question5");
-//                                Boolean managerCanFollow = response.getJSONObject("data").getBoolean("managerCanFollow");
-//                                Boolean lecturerCanFollow = response.getJSONObject("data").getBoolean("lecturerCanFollow");
                                 Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
                                 intent.putExtra("editedDevPlan",objectt.toString());
                                 intent.putExtra("fromEdit",true);

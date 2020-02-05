@@ -173,6 +173,15 @@ public class CreateDevPlanQuestionsSummary extends AppCompatActivity {
                     intent.putExtra("question5", getIntent().getExtras().getInt("question5"));
                     intent.putExtra("planName", planName);
 
+                    if (getIntent().hasExtra("program"))
+                        intent.putExtra("program", getIntent().getExtras().getString("program"));
+
+                    if (getIntent().hasExtra("perfection"))
+                        intent.putExtra("perfection", getIntent().getExtras().getString("perfection"));
+
+                    if (getIntent().hasExtra("behavior"))
+                        intent.putExtra("behavior", getIntent().getExtras().getString("behavior"));
+
                     startActivity(intent);
                 }
             }

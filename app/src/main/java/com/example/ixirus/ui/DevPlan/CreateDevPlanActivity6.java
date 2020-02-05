@@ -389,10 +389,6 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                             planName = extras.getString("planName");
 
                             Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity7.class);
-
-                            if (object != null)
-                                intent.putExtra("editedDevPlan", object.toString());
-
                             intent.putExtra("behaviourId", behaviourId);
                             intent.putExtra("perfectionId", perfectionId);
                             intent.putExtra("programId", programId);
@@ -404,23 +400,57 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
                             intent.putExtra("question5", question5);
                             intent.putExtra("planName", planName);
 
+                            if (getIntent().hasExtra("program"))
+                                intent.putExtra("program", getIntent().getExtras().getString("program"));
+
+                            if (getIntent().hasExtra("perfection"))
+                                intent.putExtra("perfection", getIntent().getExtras().getString("perfection"));
+
+                            if (getIntent().hasExtra("behavior"))
+                                intent.putExtra("behavior", getIntent().getExtras().getString("behavior"));
+
                             JSONArray array = new JSONArray();
                             ArrayList<Integer> list = new ArrayList<Integer>();
                             ArrayList<ListItemTasks> passedActionList = new ArrayList<ListItemTasks>();
 
-
                             for (int position = 0; position < finalAdapter.getCount(); position++) {
                                 ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
                                 String name = item.Name.split("-")[0].trim();
-                                String myFormatPosted = "MM/dd/yy";
+                                String myFormatPosted = "yyy/MM/dd";
                                 SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
                                 final String endDatePosted = sdfPosted.format(item.Date);
                                 int sourceId = item.SourceId;
                                 int id = item.Id;
-                                JSONObject obj = new JSONObject();
+
                                 list.add(id);
                                 passedActionList.add(item);
                             }
+
+                            JSONArray newArr = new JSONArray();
+                            try {
+                                for (int position = 0; position < finalAdapter.getCount(); position++) {
+                                    JSONObject actionTaskObject = new JSONObject();
+
+                                    ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
+                                    String name = item.Name.split("-")[0].trim();
+
+                                    actionTaskObject.put("id", item.Id);
+                                    actionTaskObject.put("name", name);
+                                    actionTaskObject.put("sourceId", null);
+                                    String myFormatPosted = "yyyy-MM-dd";
+                                    SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
+                                    final String endDatePosted = sdfPosted.format(item.Date);
+
+
+                                    actionTaskObject.put("endDate", endDatePosted);
+                                    newArr.put(actionTaskObject);
+
+                                }
+                                intent.putExtra("actionTasksObject", newArr.toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
                             intent.putExtra("actionTasks", list);
                             intent.putExtra("passedActionList", passedActionList);
 
