@@ -120,5 +120,10 @@
     <string name="preview_quiz">QUIZ</string>
     <string name="selected_helpful_sources">SELECTED HELPFUL SOURCES</string>
     <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="summary">Summary</string>
+    <string name="view">View</string>
+    <string name="cancel">Cancel</string>
+    <string name="update">Update</string>
 
 </resources>

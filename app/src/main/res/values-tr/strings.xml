@@ -121,4 +121,9 @@
     <string name="preview_quiz">QUİZ</string>
     <string name="selected_helpful_sources">SEÇİLİ YARDIMCI KAYNAKLAR</string>
     <string name="edit">Düzenle</string>
+    <string name="delete">Sil</string>
+    <string name="summary">Özet</string>
+    <string name="view">Görüntüle</string>
+    <string name="cancel">Vazgeç</string>
+    <string name="update">Güncelle</string>
 </resources>

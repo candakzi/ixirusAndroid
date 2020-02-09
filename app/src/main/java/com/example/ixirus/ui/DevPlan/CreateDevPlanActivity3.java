@@ -34,8 +34,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ixirus.ListAdapters.GenericListAdapter;
+import com.example.ixirus.ListAdapters.BehaviorListAdapter;
+import com.example.ixirus.ListAdapters.TaskListAdapter;
 import com.example.ixirus.ListItem;
+import com.example.ixirus.ListItemTasks;
 import com.example.ixirus.R;
 import com.example.ixirus.ui.BaseScreenActivity;
 
@@ -43,8 +45,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class CreateDevPlanActivity3 extends AppCompatActivity {
@@ -66,17 +70,15 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
         lv = findViewById(R.id.listView);
         lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         lv.setClickable(true);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                selectedItem = lv.getItemAtPosition(position);
-            }
-        });
+
 
         final EditText editText = findViewById(R.id.editTextNewBehaviour);
         final TextView tv = (TextView) findViewById(R.id.textView2);
         final ImageView refreshImage = (ImageView) findViewById(R.id.refreshIco);
         final Button nextButton = (Button) findViewById(R.id.button);
+        final Button addButton = findViewById(R.id.buttonAdd);
+        final Button cancelButton = findViewById(R.id.buttonCancel);
+        final Button updateButton = findViewById(R.id.buttonUpdate);
 
         final View activityRootView = findViewById(R.id.rootView);
         activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -206,6 +208,23 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
             }
         });
 
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                long viewId = arg1.getId();
+                selectedItem = lv.getItemAtPosition(position);
+                final String selectedId = Integer.toString(((ListItem) selectedItem).Id);
+                final String selectedText = ((ListItem) selectedItem).Name;
+
+                if (viewId == R.id.editImage) {
+                    addButton.setVisibility(View.GONE);
+                    cancelButton.setVisibility(View.VISIBLE);
+                    updateButton.setVisibility(View.VISIBLE);
+                    editText.setText(selectedText);
+                }
+            }
+        });
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,8 +251,7 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
                         }
                     }
                     intent.putExtra("editedDevPlan", object.toString());
-                }
-                else {
+                } else {
 
                     if (getIntent().hasExtra("program"))
                         intent.putExtra("program", getIntent().getExtras().getString("program"));
@@ -270,53 +288,115 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
             }
         });
 
-        editText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    final String currentText = editText.getText().toString().trim();
-                    if (currentText.matches(""))
-                        return false;
-                    else {
-                        StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/behavior", new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                addProgramm(savedToken, currentText);
-                                editText.getText().clear();
-                                findViewById(R.id.refreshIco).setVisibility(View.GONE);
-                                findViewById(R.id.progressBar2).setVisibility(View.GONE);
-                            }
-                        }, new Response.ErrorListener() {
+            public void onClick(View v) {
+                final String currentText = editText.getText().toString().trim();
+                if (currentText.matches(""))
+                    return;
+                else {
+                    StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/behavior", new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            addProgramm(savedToken, currentText);
+                            editText.getText().clear();
+                            findViewById(R.id.refreshIco).setVisibility(View.GONE);
+                            findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                        }
+                    }, new Response.ErrorListener() {
 
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                if (error.networkResponse.statusCode == 401) {
-                                    Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
-                                    startActivity(intent);
-                                } else
-                                    Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
-                            }
-                        }) {
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                Map<String, String> params = new HashMap<String, String>();
-                                params.put("Name", currentText);
-                                return params;
-                            }
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (error.networkResponse.statusCode == 401) {
+                                Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                startActivity(intent);
+                            } else
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Name", currentText);
+                            params.put("PerfectionId", Integer.toString(selectedPerfectionId));
 
-                            @Override
-                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                Map<String, String> headers = new HashMap<>();
-                                headers.put("Authorization", "Bearer " + savedToken);
-                                return headers;
-                            }
-                        };
+                            return params;
+                        }
 
-                        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
-                        queue.add(jsonObjRequest);
-                    }
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> headers = new HashMap<>();
+                            headers.put("Authorization", "Bearer " + savedToken);
+                            return headers;
+                        }
+                    };
+
+                    RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                    queue.add(jsonObjRequest);
                 }
-                return false;
+            }
+        });
+
+        updateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String currentText = editText.getText().toString().trim();
+                final int selectedBehaviorId = ((ListItem) selectedItem).Id;
+                if (currentText.matches(""))
+                    return;
+                else {
+                    StringRequest jsonObjRequest = new StringRequest(Request.Method.PUT, "https://ixirus.azurewebsites.net/api/behavior", new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            addProgramm(savedToken, currentText);
+                            editText.getText().clear();
+                            addButton.setVisibility(View.VISIBLE);
+                            cancelButton.setVisibility(View.GONE);
+                            updateButton.setVisibility(View.GONE);
+                            findViewById(R.id.refreshIco).setVisibility(View.GONE);
+                            findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (error.networkResponse.statusCode == 401) {
+                                Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                startActivity(intent);
+                            } else
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Name", currentText);
+                            params.put("Id", Integer.toString(selectedBehaviorId));
+
+                            return params;
+                        }
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> headers = new HashMap<>();
+                            headers.put("Authorization", "Bearer " + savedToken);
+                            return headers;
+                        }
+                    };
+
+                    RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                    queue.add(jsonObjRequest);
+                }
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText.getText().clear();
+                addButton.setVisibility(View.VISIBLE);
+                cancelButton.setVisibility(View.GONE);
+                updateButton.setVisibility(View.GONE);
             }
         });
 
@@ -324,7 +404,7 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
 
     public void loadListItem(final String savedToken, final String addedText, final boolean fromAddItem) {
         lv.setAdapter(null);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/behavior", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/behavior?perfectionId=" + selectedPerfectionId, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 ArrayList<ListItem> arr = new ArrayList<ListItem>();
@@ -337,7 +417,7 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
                         item.Name = obj.getString("name");
                         arr.add(item);
                     }
-                    final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(), arr);
+                    final BehaviorListAdapter adapter = new BehaviorListAdapter(getBaseContext(), arr);
                     lv.setAdapter(adapter);
                     if (fromAddItem) {
                         for (int position = 0; position < adapter.getCount(); position++)
@@ -396,7 +476,7 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
 
     public void loadListItemFromEdit(final String savedToken, final JSONObject object) {
         lv.setAdapter(null);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/behavior", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/behavior?perfectionId=" + selectedPerfectionId, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 ArrayList<ListItem> arr = new ArrayList<ListItem>();
@@ -409,7 +489,7 @@ public class CreateDevPlanActivity3 extends AppCompatActivity {
                         item.Name = obj.getString("name");
                         arr.add(item);
                     }
-                    final GenericListAdapter adapter = new GenericListAdapter(getBaseContext(), arr);
+                    final BehaviorListAdapter adapter = new BehaviorListAdapter(getBaseContext(), arr);
                     lv.setAdapter(adapter);
 
                     JSONObject behavior = object.getJSONObject("behavior");

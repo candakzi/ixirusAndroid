@@ -1,56 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center_vertical"
+        android:paddingStart="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-    android:layout_height="match_parent"
-    android:layout_alignParentBottom="true"
-    android:orientation="vertical" >
+    <Space
+        android:id="@+id/space1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnDelete"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintWidth_percent="0.05" />
 
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/delete_button"
+        android:enabled="true"
+        android:text="@string/delete"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/space2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/space1"
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintWidth_percent="0.18" />
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="10"
-            android:fontFamily="sans-serif"
-            android:gravity="center_vertical"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:textColor="@drawable/list_textcolor_selector"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+    <Space
+        android:id="@+id/space2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnEdit"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnDelete"
 
-        <ImageView
-            android:id="@+id/editImage"
-            android:layout_width="0dp"
-            android:layout_height="22dp"
-            android:layout_gravity="center"
-            android:layout_weight="2"
-            app:srcCompat="@mipmap/edit_button" />
-
-        <ImageView
-            android:id="@+id/deleteImage"
-            android:layout_width="0dp"
-            android:layout_height="22dp"
-            android:layout_gravity="center"
-            android:layout_weight="2"
-            app:srcCompat="@mipmap/delete_button" />
-
-        <View
-            android:id="@+id/view2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-
-            />
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintWidth_percent="0.01" />
 
 
-    </LinearLayout>
-</LinearLayout>
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+
+        android:background="@drawable/edit_button"
+        android:enabled="true"
+        android:text="@string/edit"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/space3"
+
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/space2"
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintWidth_percent="0.23" />
+
+    <Space
+        android:id="@+id/space3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnSummary"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnEdit"
+
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintWidth_percent="0.01" />
+
+
+    <Button
+        android:id="@+id/btnSummary"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+
+        android:background="@drawable/summary_button"
+        android:enabled="true"
+        android:text="@string/summary"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/space4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/space3"
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintWidth_percent="0.23" />
+
+    <Space
+        android:id="@+id/space4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnSummary"
+
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintWidth_percent="0.01" />
+
+    <Button
+        android:id="@+id/btnView"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+
+        android:background="@drawable/view_button"
+        android:enabled="true"
+        android:text="@string/view"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/space5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/space4"
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintWidth_percent="0.18" />
+
+    <Space
+        android:id="@+id/space5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnView"
+
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintWidth_percent="0.05" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="wrap_content"
+        android:layout_height="12dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnView" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

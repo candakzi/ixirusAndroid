@@ -89,14 +89,14 @@ public class MyDevPlanListActivity extends AppCompatActivity {
                 final Object selectedItem = lv.getItemAtPosition(position);
                 final String selectedId = Integer.toString(((ListItem) selectedItem).Id);
 
-                if (viewId == R.id.deleteImage) {
+                if (viewId == R.id.btnDelete) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MyDevPlanListActivity.this);
                     builder.setTitle(getString(R.string.dev_plan));
                     builder.setMessage(getString(R.string.are_you_sure));
 
                     builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            StringRequest jsonObjRequest = new StringRequest(Request.Method.DELETE, "https://ixirus.azurewebsites.net/api/developmentplan?devPlanId="+selectedId, new Response.Listener<String>() {
+                            StringRequest jsonObjRequest = new StringRequest(Request.Method.DELETE, "https://ixirus.azurewebsites.net/api/developmentplan?devPlanId=" + selectedId, new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
                                     loadListItem(savedToken);
@@ -140,7 +140,7 @@ public class MyDevPlanListActivity extends AppCompatActivity {
 
                     AlertDialog alert = builder.create();
                     alert.show();
-                } else if (viewId == R.id.editImage) {
+                } else if (viewId == R.id.btnEdit) {
 
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/developmentplan?devPlanId=" + selectedId, null, new Response.Listener<JSONObject>() {
                         @Override
@@ -152,8 +152,8 @@ public class MyDevPlanListActivity extends AppCompatActivity {
 
                                 JSONObject objectt = response.getJSONObject("data");
                                 Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
-                                intent.putExtra("editedDevPlan",objectt.toString());
-                                intent.putExtra("fromEdit",true);
+                                intent.putExtra("editedDevPlan", objectt.toString());
+                                intent.putExtra("fromEdit", true);
 
                                 startActivity(intent);
 
@@ -186,7 +186,51 @@ public class MyDevPlanListActivity extends AppCompatActivity {
 
                     RequestQueue queue = Volley.newRequestQueue(getBaseContext());
                     queue.add(request);
-                } else {
+                } else if (viewId == R.id.btnSummary) {
+
+
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/developmentplan?devPlanId=" + selectedId, null, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+
+                                JSONObject objectt = response.getJSONObject("data");
+                                Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
+                                intent.putExtra("editedDevPlan", objectt.toString());
+                                intent.putExtra("summary", true);
+                                intent.putExtra("fromEdit", true);
+                                startActivity(intent);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (error.networkResponse.statusCode == 401) {
+                                Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                                findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                                findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                            }
+                        }
+                    }) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> headers = new HashMap<>();
+                            headers.put("Authorization", "Bearer " + savedToken);
+                            return headers;
+                        }
+                    };
+
+                    RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                    queue.add(request);
+                } else if (viewId == R.id.btnView) {
                     Intent intent = new Intent(getBaseContext(), WaitingCompletedActionsActivity.class);
                     intent.putExtra("devPlanId", selectedId);
                     startActivity(intent);

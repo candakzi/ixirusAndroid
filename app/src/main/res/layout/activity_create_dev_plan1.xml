@@ -123,25 +123,6 @@
 
             </androidx.cardview.widget.CardView>
 
-            <EditText
-                android:id="@+id/editTextNewProgramme"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:alpha="0.8"
-                android:imeOptions="actionDone"
-                android:background="@color/dev_plan_button"
-                android:ems="10"
-                android:hint="@string/write_new_programm_hint"
-                android:inputType="textPersonName"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardViewList" />
-
             <TextView
                 android:id="@+id/textViewPlanName"
                 android:layout_width="fill_parent"
@@ -156,7 +137,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextNewProgramme" />
+                app:layout_constraintTop_toBottomOf="@+id/cardViewList" />
 
             <EditText
                 android:id="@+id/editTextPlanName"

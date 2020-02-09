@@ -73,7 +73,6 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
             }
         });
 
-        final EditText editText = findViewById(R.id.editTextNewPerfection);
         final TextView tv = (TextView) findViewById(R.id.textView2);
         final ImageView refreshImage = (ImageView) findViewById(R.id.refreshIco);
         final Button nextButton = (Button) findViewById(R.id.button);
@@ -273,58 +272,6 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
                 }
             }
         });
-
-        editText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    final String currentText = editText.getText().toString().trim();
-                    if (currentText.matches(""))
-                        return false;
-                    else {
-                        StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/perfection", new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                addProgramm(savedToken, currentText);
-                                editText.getText().clear();
-                                findViewById(R.id.refreshIco).setVisibility(View.GONE);
-                                findViewById(R.id.progressBar2).setVisibility(View.GONE);
-                            }
-                        }, new Response.ErrorListener() {
-
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                if (error.networkResponse.statusCode == 401) {
-                                    Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
-                                    startActivity(intent);
-                                } else {
-
-                                    Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }) {
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                Map<String, String> params = new HashMap<String, String>();
-                                params.put("Name", currentText);
-                                return params;
-                            }
-
-                            @Override
-                            public Map<String, String> getHeaders() throws AuthFailureError {
-                                Map<String, String> headers = new HashMap<>();
-                                headers.put("Authorization", "Bearer " + savedToken);
-                                return headers;
-                            }
-                        };
-
-                        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
-                        queue.add(jsonObjRequest);
-                    }
-                }
-                return false;
-            }
-        });
     }
 
     public void setItemSelected(View view) {
@@ -356,7 +303,7 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
 
     public void loadListItem(final String savedToken, final String addedText, final boolean fromAddItem) {
         lv.setAdapter(null);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/perfection", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/perfection?programId="+selectedProgramId, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 ArrayList<ListItem> arr = new ArrayList<ListItem>();
@@ -426,7 +373,7 @@ public class CreateDevPlanActivity2 extends AppCompatActivity {
 
     public void loadListItemFromEdit(final String savedToken, final int perfectionId) {
         lv.setAdapter(null);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/perfection", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/perfection?programId="+selectedProgramId, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 ArrayList<ListItem> arr = new ArrayList<ListItem>();

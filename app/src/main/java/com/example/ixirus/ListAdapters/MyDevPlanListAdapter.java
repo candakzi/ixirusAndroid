@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -61,25 +62,40 @@ public class MyDevPlanListAdapter extends BaseAdapter {
 
         holder = new ViewHolder();
         TextView text = (TextView) vi.findViewById(R.id.text);
-        ImageView editImage = (ImageView) vi.findViewById(R.id.editImage);
-        ImageView deleteImage = (ImageView) vi.findViewById(R.id.deleteImage);
+        Button editBtn = (Button) vi.findViewById(R.id.btnEdit);
+        Button deleteBtn = (Button) vi.findViewById(R.id.btnDelete);
+        Button summaryButton = (Button) vi.findViewById(R.id.btnSummary);
+        Button viewButton = (Button) vi.findViewById(R.id.btnView);
 
-        editImage.setImageResource(R.mipmap.edit_button);
-        deleteImage.setImageResource(R.mipmap.delete_button);
-
-        holder.deleteImage = deleteImage;
-        holder.editImage = editImage;
+        holder.deleteBtn = deleteBtn;
+        holder.editBtn = editBtn;
+        holder.summaryBtn = summaryButton;
+        holder.viewBtn = viewButton;
 
         text.setText(data.get(position).Name);
 
-        editImage.setOnClickListener(new View.OnClickListener() {
+        editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((ListView) parent).performItemClick(view, position, 0); // Let the event be handled in onItemClick()
             }
         });
 
-        deleteImage.setOnClickListener(new View.OnClickListener() {
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ListView) parent).performItemClick(view, position, 0); // Let the event be handled in onItemClick()
+            }
+        });
+
+        summaryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ListView) parent).performItemClick(view, position, 0); // Let the event be handled in onItemClick()
+            }
+        });
+
+        viewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((ListView) parent).performItemClick(view, position, 0); // Let the event be handled in onItemClick()
@@ -95,7 +111,10 @@ public class MyDevPlanListAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
-        public ImageView deleteImage;
-        public ImageView editImage;
+        public Button deleteBtn;
+        public Button editBtn;
+        public Button summaryBtn;
+        public Button viewBtn;
+
     }
 }

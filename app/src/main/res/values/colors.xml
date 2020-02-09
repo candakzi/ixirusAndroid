@@ -17,5 +17,11 @@
     <color name="edit_text_color">#E2DBE7</color>
     <color name="button_blue">#036FFF</color>
     <color name="button_grey">#A2A0A2</color>
+    <color name="button_delete">#FF332E</color>
+    <color name="button_edit">#51C1FD</color>
+    <color name="button_summary">#026BF9</color>
+    <color name="button_view">#FF645E</color>
+    <color name="button_cancel">#84838B</color>
+    <color name="button_update">#2FC151</color>
 
 </resources>

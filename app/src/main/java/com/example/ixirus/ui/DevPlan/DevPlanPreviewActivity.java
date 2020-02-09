@@ -38,6 +38,7 @@ import com.example.ixirus.ListItem;
 import com.example.ixirus.ListItemTasks;
 import com.example.ixirus.R;
 import com.example.ixirus.ui.BaseScreenActivity;
+import com.example.ixirus.ui.MainActivityWithoutFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,7 +89,7 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
         final Button sourcesButton = findViewById(R.id.buttonSourceStep);
         final Button managerButton = findViewById(R.id.buttonManager);
         final Button instructorButton = findViewById(R.id.buttonInstructor);
-
+        Button nextButton = (Button) findViewById(R.id.button);
 
         lv1 = findViewById(R.id.listView);
 
@@ -148,6 +149,20 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
             try {
                 if (!getIntent().hasExtra("fromEdit"))
                     imageView.setVisibility(View.GONE);
+
+                if(getIntent().hasExtra("summary")){
+                    devPlanButton.setVisibility(View.GONE);
+                    programButton.setVisibility(View.GONE);
+                    perfectionButton.setVisibility(View.GONE);
+                    behviorButton.setVisibility(View.GONE);
+                    benefitsButton.setVisibility(View.GONE);
+                    quizButton.setVisibility(View.GONE);
+                    actionsButton.setVisibility(View.GONE);
+                    sourcesButton.setVisibility(View.GONE);
+                    managerButton.setVisibility(View.GONE);
+                    instructorButton.setVisibility(View.GONE);
+                    nextButton.setVisibility(View.GONE);
+                }
 
                 if (getIntent().hasExtra("editedDevPlan")) {
                     object = new JSONObject(extras.getString("editedDevPlan"));
@@ -310,11 +325,13 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                Intent intent = new Intent(getBaseContext(), MyDevPlanListActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
             }
         });
 
-        Button nextButton = (Button) findViewById(R.id.button);
+
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -657,6 +674,12 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getBaseContext(), MyDevPlanListActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
+    }
     public void loadListItem(int index, ListView lv) {
         ArrayList<ListItem> arr = new ArrayList<ListItem>();
         String answer = index == 0 ? getResources().getString(R.string.answer_1) : index == 1 ? getResources().getString(R.string.answer_2) : getResources().getString(R.string.answer_3);
