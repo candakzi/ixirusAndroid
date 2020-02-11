@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -54,15 +55,29 @@ public class WaitingCompletedListAdapter extends BaseAdapter {
         if (vi == null)
             vi = inflater.inflate(R.layout.row_waiting_completed_actions_list, null);
         TextView text = (TextView) vi.findViewById(R.id.text);
-        CheckBox check = (CheckBox) vi.findViewById(R.id.check);
-        if(((ListView) parent).getTag().toString().equals("listViewWaiting"))
-            check.setChecked(false);
-        else
-            check.setChecked(true);
+        Button completedBtn = (Button) vi.findViewById(R.id.btnMarkCompleted);
+        Button unCompletedBtn = (Button) vi.findViewById(R.id.btnMarkUncompleted);
+
+        if(((ListView) parent).getTag().toString().equals("listViewWaiting")) {
+            completedBtn.setVisibility(View.VISIBLE);
+            unCompletedBtn.setVisibility(View.GONE);
+
+        }
+        else {
+            completedBtn.setVisibility(View.GONE);
+            unCompletedBtn.setVisibility(View.VISIBLE);
+        }
 
         text.setText(data.get(position).Name);
 
-        check.setOnClickListener(new View.OnClickListener() {
+        completedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ListView) parent).performItemClick(view, position, 0); // Let the event be handled in onItemClick()
+            }
+        });
+
+        unCompletedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((ListView) parent).performItemClick(view, position, 0); // Let the event be handled in onItemClick()

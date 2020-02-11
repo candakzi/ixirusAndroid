@@ -125,5 +125,14 @@
     <string name="view">View</string>
     <string name="cancel">Cancel</string>
     <string name="update">Update</string>
+    <string name="mark_completed">Mark Completed</string>
+    <string name="mark_uncompleted">Mark uncompleted</string>
+    <string name="rate">Rate</string>
+    <string name="experience_sharing">Experience Sharing</string>
+    <string name="ask_feedBack">Ask Feedback</string>
+    <string name="show_feedbacks">Show Feedbacks</string>
+    <string name="feedback_request_sent">Your feedback request has been sent!</string>
+    <string name="person_feedback">Person you want feedback from:</string>
+    <string name="message">Message</string>
 
 </resources>

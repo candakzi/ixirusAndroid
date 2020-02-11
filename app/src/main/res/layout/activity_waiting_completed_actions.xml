@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/white"
             android:gravity="center"
-            android:text="@string/menu_create_dev_plan"
+            android:text="@string/menu_development_plan"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/create_dev_plan_size"
 
@@ -65,10 +65,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.45" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.3" />
+
+
+
             <TextView
                 android:id="@+id/textViewWaiting"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="17dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="17dp"
@@ -79,6 +95,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -86,7 +103,7 @@
                 android:id="@+id/cardViewListWaiting"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.35"
+                app:layout_constraintHeight_percent="0.25"
                 android:layout_marginStart="16dp"
 
                 android:layout_marginEnd="16dp"
@@ -129,7 +146,7 @@
             <TextView
                 android:id="@+id/textViewCompleted"
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="17dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="17dp"
@@ -141,13 +158,13 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardViewListWaiting"/>
+                app:layout_constraintTop_toBottomOf="@id/cardViewListWaiting" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewListCompleted"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.35"
+                app:layout_constraintHeight_percent="0.25"
                 android:layout_marginStart="16dp"
 
                 android:layout_marginEnd="16dp"
@@ -188,7 +205,65 @@
             </androidx.cardview.widget.CardView>
 
 
+            <Button
+                android:id="@+id/askFeedBackButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/red_button"
+                android:text="@string/ask_feedBack"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@id/rateButton"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@id/guideline1" />
 
+            <Button
+                android:id="@+id/showFeedbacksButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/red_button"
+                android:text="@string/show_feedbacks"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toTopOf="@id/experienceSharingButton"
+                app:layout_constraintLeft_toRightOf="@id/guideline1"
+                app:layout_constraintRight_toRightOf="parent" />
+
+            <Button
+                android:id="@+id/rateButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/blue_button"
+                android:text="@string/rate"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="@id/guideline2" />
+
+            <Button
+                android:id="@+id/experienceSharingButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/update_button"
+                android:text="@string/experience_sharing"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/guideline2"
+                app:layout_constraintRight_toRightOf="parent" />
 
 
 

@@ -13,6 +13,7 @@ import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -51,6 +52,11 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_waiting_completed_actions);
 
         ImageView imageView = findViewById(R.id.buttonBack);
+        Button askFeedbackButton = findViewById(R.id.askFeedBackButton);
+        Button showFeedbacksButton = findViewById(R.id.showFeedbacksButton);
+        Button rateButton = findViewById(R.id.rateButton);
+        Button experienceSharingButton = findViewById(R.id.experienceSharingButton);
+
         getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan);
 
         Bundle extras = getIntent().getExtras();
@@ -69,7 +75,7 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
                 final Object selectedItem = waitingActionsList.getItemAtPosition(position);
                 final String selectedId = Integer.toString(((ListItem) selectedItem).Id);
 
-                if (viewId == R.id.check) {
+                if (viewId == R.id.btnMarkCompleted) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(WaitingCompletedActionsActivity.this);
                     builder.setTitle(getString(R.string.dev_plan));
                     builder.setMessage(getString(R.string.are_you_sure));
@@ -154,6 +160,15 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+
+        askFeedbackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), CreateFeedbackActivity.class);
+                intent.putExtra("devPlanId",devPlanId);
+                startActivity(intent);
             }
         });
 

@@ -126,4 +126,14 @@
     <string name="view">Görüntüle</string>
     <string name="cancel">Vazgeç</string>
     <string name="update">Güncelle</string>
+    <string name="mark_completed">Tamamlandı</string>
+    <string name="mark_uncompleted">Tamamlanmadı</string>
+    <string name="rate">Punla</string>
+    <string name="experience_sharing">Deneyim Paylaşımı</string>
+    <string name="ask_feedBack">Geri Bildirim Al</string>
+    <string name="show_feedbacks">Geri Bildirimleri Göster</string>
+    <string name="feedback_request_sent">Geri bildirim talebiniz iletildi!</string>
+    <string name="person_feedback">Geri bildirim talebinde bulunduğunuz kişi:</string>
+    <string name="message">Mesaj</string>
+
 </resources>
