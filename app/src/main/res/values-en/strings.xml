@@ -101,7 +101,7 @@
     <string name="action_step_delete">Remove Action</string>
     <string name="source_step_delete">Remove Source</string>
     <string name="add_source_step">Please Add Source</string>
-    <string name="behaviour_based">Behaviour Based</string>
+    <string name="behaviour_based">Perfection Based</string>
     <string name="all_sources">All Sources</string>
     <string name="preview">Preview</string>
     <string name="choose_source">Select Source</string>
@@ -133,5 +133,11 @@
     <string name="feedback_request_sent">Your feedback request has been sent!</string>
     <string name="person_feedback">Person you want feedback from:</string>
     <string name="message">Message</string>
+    <string name="feedbacks">Feedbacks</string>
+    <string name="notifications">Notifications</string>
+    <string name="rate1">How do you evaluate your performance in your current behavior?</string>
+    <string name="rate2">Interpret your change compared to your first assessment</string>
+    <string name="type_here">Type Here…</string>
+    <string name="rating_added">Your rate has been added!</string>
 
 </resources>

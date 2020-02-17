@@ -554,8 +554,8 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
     public void loadSourceListItem(final String savedToken, final ListView sourcesLv, int tabPosition) {
         sourcesLv.setAdapter(null);
         dialog.findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
-        int selectedBehaviourId = getIntent().getExtras().getInt("behaviourId");
-        String url = tabPosition == 0 ? "https://ixirus.azurewebsites.net/api/source?behaviorId=" + Integer.toString(selectedBehaviourId) : "https://ixirus.azurewebsites.net/api/source";
+        int selectedBehaviourId = getIntent().getExtras().getInt("perfectionId");
+        String url = tabPosition == 0 ? "https://ixirus.azurewebsites.net/api/source?perfectionId=" + Integer.toString(selectedBehaviourId) : "https://ixirus.azurewebsites.net/api/source";
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

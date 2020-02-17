@@ -12,10 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.DevPlan.CreateFeedbackActivity"></activity>
+        <activity android:name=".ui.DevPlan.NotificationsActivity"></activity>
+        <activity android:name=".ui.DevPlan.MessagesActivity" />
+        <activity android:name=".ui.DevPlan.FeedbackListActivity" />
+        <activity android:name=".ui.DevPlan.CreateFeedbackActivity" />
         <activity android:name=".ui.DevPlan.DevPlanPreviewActivity" />
         <activity android:name=".ui.DevPlan.CreateDevPlanQuestionsSummary" />
-        <activity android:name=".ui.DevPlan.WaitingCompletedActionsActivity" />
+        <activity
+            android:name=".ui.DevPlan.WaitingCompletedActionsActivity"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".ui.DevSource.DevSourceListActivity"
             android:hardwareAccelerated="true"

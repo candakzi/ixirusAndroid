@@ -23,5 +23,7 @@
     <color name="button_view">#FF645E</color>
     <color name="button_cancel">#84838B</color>
     <color name="button_update">#2FC151</color>
+    <color name="yellow">#F7C824</color>
 
+    F7C824
 </resources>

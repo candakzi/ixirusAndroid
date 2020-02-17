@@ -82,7 +82,7 @@
 
 
             <TextView
-                android:id="@+id/textViewWaiting"
+                android:id="@+id/textViewSummary"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_marginStart="17dp"
@@ -98,6 +98,24 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/textViewWaiting"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="17dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_vertical"
+                android:text="@string/waiting_actions"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewSummary" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewListWaiting"

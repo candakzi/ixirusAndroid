@@ -12,7 +12,9 @@ import android.widget.ListView;
 import com.example.ixirus.CustomListItem;
 import com.example.ixirus.ListAdapters.MainListAdapter;
 import com.example.ixirus.R;
+import com.example.ixirus.ui.DevPlan.MessagesActivity;
 import com.example.ixirus.ui.DevPlan.MyDevPlanListActivity;
+import com.example.ixirus.ui.DevPlan.NotificationsActivity;
 import com.example.ixirus.ui.DevSource.DevSourceListActivity;
 
 public class MainActivityWithoutFragment extends AppCompatActivity  {
@@ -32,17 +34,17 @@ public class MainActivityWithoutFragment extends AppCompatActivity  {
         CustomListItem item3 =  new CustomListItem();
         item3.Name = getString(R.string.menu_messages);
         item3.Drawable = ContextCompat.getDrawable(getApplicationContext(),R.mipmap.messages);
-        item3.Activity = new MyDevPlanListActivity();
+        item3.Activity = new MessagesActivity();
 
         CustomListItem item4 =  new CustomListItem();
-        item4.Name =  getString(R.string.menu_feedbacks);
+        item4.Name =  getString(R.string.notifications);
         item4.Drawable = ContextCompat.getDrawable(getApplicationContext(),R.mipmap.feedbacks);
-        item4.Activity = new MyDevPlanListActivity();
+        item4.Activity = new NotificationsActivity();
 
-        CustomListItem item5 =  new CustomListItem();
-        item5.Name = getString(R.string.menu_xperince_sharing);
-        item5.Drawable = ContextCompat.getDrawable(getApplicationContext(),R.mipmap.xperience_sharing);
-        item5.Activity = new MyDevPlanListActivity();
+//        CustomListItem item5 =  new CustomListItem();
+//        item5.Name = getString(R.string.menu_xperince_sharing);
+//        item5.Drawable = ContextCompat.getDrawable(getApplicationContext(),R.mipmap.xperience_sharing);
+//        item5.Activity = new MyDevPlanListActivity();
 
 
         CustomListItem item6 =  new CustomListItem();
@@ -50,7 +52,7 @@ public class MainActivityWithoutFragment extends AppCompatActivity  {
         item6.Drawable = ContextCompat.getDrawable(getApplicationContext(),R.mipmap.dev_sources);
         item6.Activity = new DevSourceListActivity();
 
-        CustomListItem[] cListItems  = new CustomListItem[]{item1,item3,item4,item5,item6};
+        CustomListItem[] cListItems  = new CustomListItem[]{item1,item3,item4,item6};
 
         lv.setAdapter(new MainListAdapter(this,cListItems));
 

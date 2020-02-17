@@ -104,7 +104,7 @@
     <string name="action_step_delete">Aksiyon Sil</string>
     <string name="source_step_delete">Remove Source</string>
     <string name="add_source_step">Kaynak Ekleyiniz</string>
-    <string name="behaviour_based">Davranış Bazlı</string>
+    <string name="behaviour_based">Yetkinlik Bazlı</string>
     <string name="all_sources">Tüm Kaynaklar</string>
     <string name="preview">Görüntüle</string>
     <string name="choose_source">Seç</string>
@@ -135,5 +135,11 @@
     <string name="feedback_request_sent">Geri bildirim talebiniz iletildi!</string>
     <string name="person_feedback">Geri bildirim talebinde bulunduğunuz kişi:</string>
     <string name="message">Mesaj</string>
+    <string name="feedbacks">Geri Bildirimler</string>
+    <string name="notifications">Bildirimler</string>
+    <string name="rate1">Mevcut davranışınızdaki performansınızı nasıl değerlendirirsiniz?</string>
+    <string name="rate2">İlk değerlendirmenize kıyasla değişiminizi yorumlayın</string>
+    <string name="type_here">Buraya yazın…</string>
+    <string name="rating_added">Yorumunuz ve puanlamanız eklenmiştir!</string>
 
 </resources>
