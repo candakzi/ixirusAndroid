@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.DevPlan.NotificationsActivity"></activity>
+        <activity android:name=".ui.Disc.DiscMainActivity"></activity>
+        <activity android:name=".ui.Disc.DiscQuestionsActivity" />
+        <activity android:name=".ui.DevPlan.NotificationsActivity" />
         <activity android:name=".ui.DevPlan.MessagesActivity" />
         <activity android:name=".ui.DevPlan.FeedbackListActivity" />
         <activity android:name=".ui.DevPlan.CreateFeedbackActivity" />

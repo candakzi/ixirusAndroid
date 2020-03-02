@@ -141,5 +141,19 @@
     <string name="rate2">İlk değerlendirmenize kıyasla değişiminizi yorumlayın</string>
     <string name="type_here">Buraya yazın…</string>
     <string name="rating_added">Yorumunuz ve puanlamanız eklenmiştir!</string>
-
+    <string name="menu_behavior_style">Davranış Eğilimim</string>
+    <string name="complete">Tamamla</string>
+    <string name="proper_behavior">Lütfen size uyan davranış stilini seçin</string>
+    <string name="disc_result">DISC Sonucu</string>
+    <string name="disc_result_shown_below">Davranış stiliniz aşağıdaki gibidir:</string>
+    <string name="agree">Katılıyorum</string>
+    <string name="disagree">Katılmıyorum</string>
+    <string name="other_colors">Diğer Renkler</string>
+    <string name="invite_others">DAVET ET</string>
+    <string name="retake_quiz">QUİZİ TEKRAR ÇÖZ</string>
+    <string name="invite">Davranış stilleri ile ilgili tavsiye edeceğiniz kişileri davet edin.</string>
+    <string name="retake">Quiz sonuçlarının size uymadığını düşünüyorsanız testi tekrar çözebilirsiniz.</string>
+    <string name="quiz_confirmation">Quiz Doğrulama</string>
+    <string name="quiz_confirmation_text">Quiz sonucu son yapılandan farklı sonuçlandı. Aşağıdaki değişikliği onaylıyor musunuz?</string>
+    <string name="confirm">Onayla</string>
 </resources>

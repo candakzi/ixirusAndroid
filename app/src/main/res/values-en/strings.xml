@@ -139,5 +139,19 @@
     <string name="rate2">Interpret your change compared to your first assessment</string>
     <string name="type_here">Type Here…</string>
     <string name="rating_added">Your rate has been added!</string>
-
+    <string name="menu_behavior_style">Behavior Style</string>
+    <string name="complete">Complete</string>
+    <string name="proper_behavior">Please select the most proper behavior style below</string>
+    <string name="disc_result">DISC Result</string>
+    <string name="disc_result_shown_below">Your behaviour style is shown below:</string>
+    <string name="agree">I agree</string>
+    <string name="disagree">I disagree</string>
+    <string name="other_colors">Other Colors</string>
+    <string name="invite_others">INVITE OTHERS</string>
+    <string name="retake_quiz">RE-TAKE THE QUIZ</string>
+    <string name="invite">Invite anyone you suggest to know about the behavior style.</string>
+    <string name="retake">You can take the quiz again if you think that the quiz results does not suit you.</string>
+    <string name="quiz_confirmation">Quiz Confirmation</string>
+    <string name="quiz_confirmation_text">Quiz has resulted different than the last time. Do you confirm the result change below?</string>
+    <string name="confirm">Confirm</string>
 </resources>

@@ -328,7 +328,10 @@ public class CreateDevPlanActivity6 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TaskListAdapter finalAdapter = (TaskListAdapter) lv.getAdapter();
-                if (finalAdapter.getCount() == 0) {
+                if (finalAdapter == null) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.add_action_step), Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (finalAdapter.getCount() == 0) {
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.add_action_step), Toast.LENGTH_SHORT).show();
                     return;
                 } else {
