@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:background="@android:color/white"
             android:gravity="center"
-            android:text="@string/menu_messages"
+            android:text="@string/notifications"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/create_dev_plan_size"
 

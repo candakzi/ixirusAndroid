@@ -40,7 +40,7 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text"
-        app:layout_constraintWidth_percent="0.50" />
+        app:layout_constraintWidth_percent="0.45" />
 
     <Button
         android:id="@+id/btnMarkUncompleted"
@@ -56,7 +56,23 @@
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text"
-        app:layout_constraintWidth_percent="0.50" />
+        app:layout_constraintWidth_percent="0.45" />
+
+    <Button
+        android:id="@+id/btnShowSource"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/blue_button"
+        android:enabled="true"
+        android:text="@string/preview"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintWidth_percent="0.45" />
 
     <View
         android:id="@+id/view3"

@@ -154,4 +154,11 @@
     <string name="quiz_confirmation">Quiz Confirmation</string>
     <string name="quiz_confirmation_text">Quiz has resulted different than the last time. Do you confirm the result change below?</string>
     <string name="confirm">Confirm</string>
+    <string name="network_error">Cannot connect to Internet…Please check your connection!</string>
+    <string name="server_error">Server error occurred!</string>
+    <string name="auth_failure_error">Cannot connect to Internet…Please check your connection!</string>
+    <string name="parse_error">Parse Error!</string>
+    <string name="no_connection_error">Cannot connect to Internet…Please check your connection!</string>
+    <string name="timeout_error">Connection TimeOut! Please check your internet connection.</string>
+
 </resources>

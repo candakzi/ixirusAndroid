@@ -99,6 +99,7 @@
         android:background="@android:color/transparent"
         android:gravity="center_vertical"
         android:paddingStart="15dp"
+        android:textSize="16sp"
         android:paddingEnd="15dp"
         android:text="@string/plase_answer_questions"
         android:textColor="@android:color/black"
@@ -136,7 +137,7 @@
 
                 android:text="@string/question_1"
                 android:textColor="@android:color/black"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -183,7 +184,7 @@
                 android:text="@string/question_2"
 
                 android:textColor="@android:color/black"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -226,7 +227,7 @@
                 android:paddingBottom="10dp"
                 android:text="@string/question_3"
                 android:textColor="@android:color/black"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -269,7 +270,7 @@
 
                 android:text="@string/question_4"
                 android:textColor="@android:color/black"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -312,7 +313,7 @@
 
                 android:text="@string/question_5"
                 android:textColor="@android:color/black"
-                android:textSize="17dp"
+                android:textSize="17sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

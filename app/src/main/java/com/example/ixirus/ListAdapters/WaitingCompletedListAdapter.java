@@ -12,17 +12,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.ixirus.ListItem;
+import com.example.ixirus.ListItemSources;
 import com.example.ixirus.R;
 
 import java.util.ArrayList;
 
 public class WaitingCompletedListAdapter extends BaseAdapter {
     Context context;
-    ArrayList<ListItem>  data ;
+    ArrayList<ListItemSources>  data ;
 
     private static LayoutInflater inflater = null;
 
-    public WaitingCompletedListAdapter(Context context, ArrayList<ListItem>  data) {
+    public WaitingCompletedListAdapter(Context context, ArrayList<ListItemSources>  data) {
         // TODO Auto-generated constructor stub
         this.context = context;
         this.data = data;
@@ -57,16 +58,21 @@ public class WaitingCompletedListAdapter extends BaseAdapter {
         TextView text = (TextView) vi.findViewById(R.id.text);
         Button completedBtn = (Button) vi.findViewById(R.id.btnMarkCompleted);
         Button unCompletedBtn = (Button) vi.findViewById(R.id.btnMarkUncompleted);
+        Button showSourceBtn = (Button) vi.findViewById(R.id.btnShowSource);
+
 
         if(((ListView) parent).getTag().toString().equals("listViewWaiting")) {
             completedBtn.setVisibility(View.VISIBLE);
             unCompletedBtn.setVisibility(View.GONE);
-
         }
         else {
             completedBtn.setVisibility(View.GONE);
             unCompletedBtn.setVisibility(View.VISIBLE);
         }
+        if(data.get(position).SourceType==-1)
+            showSourceBtn.setVisibility(View.GONE);
+        else
+            showSourceBtn.setVisibility(View.VISIBLE);
 
         text.setText(data.get(position).Name);
 
@@ -78,6 +84,13 @@ public class WaitingCompletedListAdapter extends BaseAdapter {
         });
 
         unCompletedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ListView) parent).performItemClick(view, position, 0); // Let the event be handled in onItemClick()
+            }
+        });
+
+        showSourceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((ListView) parent).performItemClick(view, position, 0); // Let the event be handled in onItemClick()

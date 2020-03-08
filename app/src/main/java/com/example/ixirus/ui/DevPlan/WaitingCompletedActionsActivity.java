@@ -9,11 +9,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,16 +27,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ixirus.ListAdapters.GenericListAdapter;
 import com.example.ixirus.ListAdapters.WaitingCompletedListAdapter;
-import com.example.ixirus.ListItem;
+import com.example.ixirus.ListItemSources;
 import com.example.ixirus.R;
 import com.example.ixirus.ui.BaseScreenActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -82,7 +89,8 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 long viewId = arg1.getId();
                 final Object selectedItem = waitingActionsList.getItemAtPosition(position);
-                final String selectedId = Integer.toString(((ListItem) selectedItem).Id);
+                final String selectedId = Integer.toString(((ListItemSources) selectedItem).Id);
+                final String selectedSourceId = Integer.toString(((ListItemSources) selectedItem).SourceType);
 
                 if (viewId == R.id.btnMarkCompleted) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(WaitingCompletedActionsActivity.this);
@@ -100,11 +108,21 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    if (error.networkResponse.statusCode == 401) {
+                                    if (error instanceof NetworkError) {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                                    } else if (error instanceof ServerError) {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                                    } else if (error instanceof ParseError) {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.parse_error), Toast.LENGTH_SHORT).show();
+                                    } else if (error instanceof NoConnectionError) {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                                    } else if (error instanceof TimeoutError) {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.timeout_error), Toast.LENGTH_SHORT).show();
+                                    } else if (error.networkResponse.statusCode == 401) {
                                         Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
                                         startActivity(intent);
                                     } else {
-                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }) {
@@ -136,6 +154,66 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
+                else if(viewId == R.id.btnShowSource)
+                {
+                    StringRequest jsonObjRequest = new StringRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/source?sourceId=" + selectedSourceId, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                           // loadListItems(savedToken, devPlanId);
+                            try {
+                                JSONObject obj = new JSONObject(response);
+                                String fileUrl = obj.getJSONObject("data").getString("fileUrl");
+
+                                String extension = MimeTypeMap.getFileExtensionFromUrl(fileUrl);
+                                String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+                                Intent mediaIntent = new Intent(Intent.ACTION_VIEW);
+                                mediaIntent.setDataAndType(Uri.parse(fileUrl), mimeType);
+                                if (mediaIntent.resolveActivity(getPackageManager()) != null) {
+                                    startActivity(mediaIntent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (error instanceof NetworkError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof ServerError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof ParseError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.parse_error), Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof NoConnectionError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof TimeoutError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.timeout_error), Toast.LENGTH_SHORT).show();
+                            } else if (error.networkResponse.statusCode == 401) {
+                                Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }) {
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> headers = new HashMap<>();
+                            headers.put("Authorization", "Bearer " + savedToken);
+                            return headers;
+                        }
+                    };
+
+                    RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                    queue.add(jsonObjRequest);
+
+                }
             }
         });
 
@@ -147,7 +225,8 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 long viewId = arg1.getId();
                 final Object selectedItem = completedActionsList.getItemAtPosition(position);
-                final String selectedId = Integer.toString(((ListItem) selectedItem).Id);
+                final String selectedId = Integer.toString(((ListItemSources) selectedItem).Id);
+                final String selectedSourceId = Integer.toString(((ListItemSources) selectedItem).SourceType);
 
                 if (viewId == R.id.btnMarkUncompleted) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(WaitingCompletedActionsActivity.this);
@@ -165,11 +244,21 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    if (error.networkResponse.statusCode == 401) {
+                                    if (error instanceof NetworkError) {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                                    } else if (error instanceof ServerError) {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                                    } else if (error instanceof ParseError) {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.parse_error), Toast.LENGTH_SHORT).show();
+                                    } else if (error instanceof NoConnectionError) {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                                    } else if (error instanceof TimeoutError) {
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.timeout_error), Toast.LENGTH_SHORT).show();
+                                    } else if (error.networkResponse.statusCode == 401) {
                                         Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
                                         startActivity(intent);
                                     } else {
-                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             }) {
@@ -199,10 +288,71 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
                     AlertDialog alert = builder.create();
                     alert.show();
                 }
+                else if(viewId == R.id.btnShowSource)
+                {
+                    StringRequest jsonObjRequest = new StringRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/source?sourceId=" + selectedSourceId, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // loadListItems(savedToken, devPlanId);
+                            try {
+                                JSONObject obj = new JSONObject(response);
+                                String fileUrl = obj.getJSONObject("data").getString("fileUrl");
+
+                                String extension = MimeTypeMap.getFileExtensionFromUrl(fileUrl);
+                                String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+                                Intent mediaIntent = new Intent(Intent.ACTION_VIEW);
+                                mediaIntent.setDataAndType(Uri.parse(fileUrl), mimeType);
+                                if (mediaIntent.resolveActivity(getPackageManager()) != null) {
+                                    startActivity(mediaIntent);
+                                }
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (error instanceof NetworkError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+
+                            } else if (error instanceof ServerError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof ParseError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.parse_error), Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof NoConnectionError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof TimeoutError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.timeout_error), Toast.LENGTH_SHORT).show();
+
+                            } else if (error.networkResponse.statusCode == 401) {
+                                Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }) {
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> headers = new HashMap<>();
+                            headers.put("Authorization", "Bearer " + savedToken);
+                            return headers;
+                        }
+                    };
+
+                    RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                    queue.add(jsonObjRequest);
+
+                }
             }
         });
 
-        final ImageView refreshImage = (ImageView) findViewById(R.id.refreshIco);
         final TextView tv = (TextView) findViewById(R.id.textView2);
 
         dialog = new BottomSheetDialog(WaitingCompletedActionsActivity.this);
@@ -306,11 +456,22 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        if (error.networkResponse.statusCode == 401) {
+                        if (error instanceof NetworkError) {
+                            Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof ServerError) {
+                            Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof ParseError) {
+                            Toast.makeText(getBaseContext(), getResources().getString(R.string.parse_error), Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof NoConnectionError) {
+                            Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof TimeoutError) {
+                            Toast.makeText(getBaseContext(), getResources().getString(R.string.timeout_error), Toast.LENGTH_SHORT).show();
+                        } else if (error.networkResponse.statusCode == 401) {
                             Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
                             startActivity(intent);
-                        } else
-                            Toast.makeText(getBaseContext(), getResources().getString(R.string.retry_add), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }) {
                     @Override
@@ -346,8 +507,8 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/task?devPlanId=" + devPlanId, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                ArrayList<ListItem> arrWaiting = new ArrayList<ListItem>();
-                ArrayList<ListItem> arrCompleted = new ArrayList<ListItem>();
+                ArrayList<ListItemSources> arrWaiting = new ArrayList<ListItemSources>();
+                ArrayList<ListItemSources> arrCompleted = new ArrayList<ListItemSources>();
 
                 try {
                     JSONArray programArrayWaiting = response.getJSONObject("data").getJSONArray("unCompletedTasks");
@@ -361,17 +522,30 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
 
                     for (int i = 0; i < programArrayWaiting.length(); i++) {
                         JSONObject obj = programArrayWaiting.getJSONObject(i);
-                        ListItem item = new ListItem();
+                        ListItemSources item = new ListItemSources();
                         item.Id = Integer.parseInt(obj.getString("id"));
                         item.Name = obj.getString("name");
+                        int sourceInt = -1;
+                        String sourceId = obj.getString("sourceId");
+                        if(!sourceId.equals("null"))
+                            sourceInt = Integer.parseInt(sourceId);
+                        item.SourceType = sourceInt;
+
                         arrWaiting.add(item);
                     }
 
                     for (int i = 0; i < programArrayCompleted.length(); i++) {
                         JSONObject obj = programArrayCompleted.getJSONObject(i);
-                        ListItem item = new ListItem();
+                        ListItemSources item = new ListItemSources();
                         item.Id = Integer.parseInt(obj.getString("id"));
                         item.Name = obj.getString("name");
+
+                        int sourceInt = -1;
+                        String sourceId = obj.getString("sourceId");
+                        if(!sourceId.equals("null"))
+                            sourceInt = Integer.parseInt(sourceId);
+                        item.SourceType = sourceInt;
+
                         arrCompleted.add(item);
                     }
 
@@ -407,13 +581,21 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error.networkResponse.statusCode == 401) {
+                if (error instanceof NetworkError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ParseError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.parse_error), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.timeout_error), Toast.LENGTH_SHORT).show();
+                } else if (error.networkResponse.statusCode == 401) {
                     Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
-                    findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
-                    findViewById(R.id.progressBar2).setVisibility(View.GONE);
                 }
             }
         }) {

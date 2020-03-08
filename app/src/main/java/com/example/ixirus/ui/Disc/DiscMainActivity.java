@@ -16,7 +16,9 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.ixirus.R;
+import com.example.ixirus.ui.DevPlan.CreateDevPlanActivity3;
 import com.example.ixirus.ui.DevPlan.MyDevPlanListActivity;
+import com.example.ixirus.ui.MainActivityWithoutFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -87,7 +89,9 @@ public class DiscMainActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                Intent intent = new Intent(getBaseContext(), MainActivityWithoutFragment.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
             }
         });
 
@@ -95,6 +99,26 @@ public class DiscMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), DiscQuestionsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        tvBehavStyle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), DiscDetailActivity.class);
+                intent.putExtra("DiscObject", object.toString());
+                intent.putExtra("Type", true);
+                startActivity(intent);
+            }
+        });
+
+        tvOtherColors.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), DiscDetailActivity.class);
+                intent.putExtra("DiscObject", object.toString());
+                intent.putExtra("Type", false);
                 startActivity(intent);
             }
         });

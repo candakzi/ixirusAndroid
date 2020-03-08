@@ -147,10 +147,10 @@ public class CreateDevPlanActivity4 extends AppCompatActivity {
 
 
         imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
-                if (object != null) {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity3.class);
+                        if (object != null) {
                     try {
                         object.put("benefit", ((EditText) findViewById(R.id.editTextBenefits)).getText().toString());
                     } catch (JSONException e) {

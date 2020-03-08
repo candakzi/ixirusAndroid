@@ -13,9 +13,14 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -97,8 +102,7 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
-                else {
+                } else {
                     Intent intent = new Intent(getBaseContext(), item.Activity.getClass());
                     startActivity(intent);
                 }
@@ -111,20 +115,19 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
         final String savedToken = sp.getString("Token", null);
         int langId = 0;
         String language = Locale.getDefault().getDisplayLanguage();
-        if(!language.equals("English"))
+        if (!language.equals("English"))
             langId = 1;
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/disc/existv2?lang="+langId, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/disc/existv2?lang=" + langId, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     JSONObject result = response.getJSONObject("data");
                     String discResult = result.getString("discResult");
-                    if (discResult.equals("null")){
+                    if (discResult.equals("null")) {
                         Intent intent = new Intent(getBaseContext(), DiscQuestionsActivity.class);
                         startActivity(intent);
-                    }
-                    else {
+                    } else {
                         passedDiscObject = result.toString();
                         Intent intent = new Intent(getBaseContext(), DiscMainActivity.class);
                         intent.putExtra("DiscObject", passedDiscObject);
@@ -141,12 +144,21 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error.networkResponse.statusCode == 401) {
+                if (error instanceof NetworkError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof AuthFailureError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.auth_failure_error), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ParseError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.parse_error), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.timeout_error), Toast.LENGTH_SHORT).show();
+                } else if (error.networkResponse.statusCode == 401) {
                     Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
                     startActivity(intent);
-                } else {
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
-                    findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
                 }
             }
         }) {
