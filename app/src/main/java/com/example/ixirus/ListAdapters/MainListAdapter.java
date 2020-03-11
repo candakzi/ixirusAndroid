@@ -70,19 +70,19 @@ public class MainListAdapter extends BaseAdapter {
         ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
 
-        TypedValue tv = new TypedValue();
-        int actionBarHeight = 0;
-        if (((Activity)context).getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-        {
-            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,((Activity)context).getResources().getDisplayMetrics());
-        }
-
-
-        int finalHeight = height-(actionBarHeight+100); /// 100 dplik uzunluk ekleniyor
-        
-        text.getLayoutParams().height = finalHeight/5;
-        image.getLayoutParams().height = finalHeight/5;
-        arrowImage.getLayoutParams().height = finalHeight/5;
+//        TypedValue tv = new TypedValue();
+//        int actionBarHeight = 0;
+//        if (((Activity)context).getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+//        {
+//            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,((Activity)context).getResources().getDisplayMetrics());
+//        }
+//
+//
+//        int finalHeight = height-(actionBarHeight+100); /// 100 dplik uzunluk ekleniyor
+//
+//        text.getLayoutParams().height = finalHeight/5;
+//        image.getLayoutParams().height = finalHeight/5;
+//        arrowImage.getLayoutParams().height = finalHeight/5;
 
         return vi;
     }

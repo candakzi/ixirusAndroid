@@ -61,6 +61,7 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
     private BottomSheetDialog dialog;
     private RatingBar rbar;
     private EditText editText;
+    private TextView summaryText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,7 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_waiting_completed_actions);
 
         ImageView imageView = findViewById(R.id.buttonBack);
+        summaryText= findViewById(R.id.textViewSummary);
         Button askFeedbackButton = findViewById(R.id.askFeedBackButton);
         Button showFeedbacksButton = findViewById(R.id.showFeedbacksButton);
         Button rateButton = findViewById(R.id.rateButton);
@@ -516,6 +518,7 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
                     String programName = response.getJSONObject("data").getString("programName");
                     String behaviorName = response.getJSONObject("data").getString("behaviorName");
                     String perfectionName = response.getJSONObject("data").getString("perfectionName");
+                    summaryText.setText(programName+" / "+behaviorName+" / "+perfectionName);
                     JSONObject rating = response.getJSONObject("data").getJSONObject("rating");
                     Integer point = rating.getInt("point");
                     String message = rating.getString("message");

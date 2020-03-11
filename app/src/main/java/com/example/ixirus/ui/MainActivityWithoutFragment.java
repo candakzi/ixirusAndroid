@@ -1,5 +1,6 @@
 package com.example.ixirus.ui;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -9,6 +10,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -60,6 +63,12 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
         item1.Name = getString(R.string.menu_development_plan);
         item1.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.development_plan);
         item1.Activity = new MyDevPlanListActivity();
+
+        ImageView imgView = new ImageView(this);
+        imgView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        imgView.setImageResource(R.mipmap.ixirus_logo);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(imgView);
 
         CustomListItem item11 = new CustomListItem();
         item11.Name = getString(R.string.menu_behavior_style);

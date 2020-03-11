@@ -162,6 +162,7 @@
     <string name="parse_error">Parse Error!</string>
     <string name="no_connection_error">Cannot connect to Internet…Please check your connection!</string>
     <string name="timeout_error">Connection TimeOut! Please check your internet connection.</string>
+    <string name="clear_selection">Clear Selection</string>
 
 
 </resources>

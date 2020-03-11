@@ -128,7 +128,7 @@
     <string name="update">Güncelle</string>
     <string name="mark_completed">Tamamlandı</string>
     <string name="mark_uncompleted">Tamamlanmadı</string>
-    <string name="rate">Punla</string>
+    <string name="rate">Puanla</string>
     <string name="experience_sharing">Deneyim Paylaşımı</string>
     <string name="ask_feedBack">Geri Bildirim Al</string>
     <string name="show_feedbacks">Geri Bildirimleri Göster</string>
@@ -162,5 +162,6 @@
     <string name="parse_error">Parse hatası!</string>
     <string name="no_connection_error">İnternet bağlantınızı kontrol ediniz!</string>
     <string name="timeout_error">Bağlantı zaman aşımına uğradı.</string>
+    <string name="clear_selection">Seçimi Temizle</string>
 
 </resources>
