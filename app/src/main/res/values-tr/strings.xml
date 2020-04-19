@@ -163,5 +163,7 @@
     <string name="no_connection_error">İnternet bağlantınızı kontrol ediniz!</string>
     <string name="timeout_error">Bağlantı zaman aşımına uğradı.</string>
     <string name="clear_selection">Seçimi Temizle</string>
+    <string name="fcm_message">Ixirus</string>
+    <string name="default_notification_channel_id">IxirusChannel</string>
 
 </resources>

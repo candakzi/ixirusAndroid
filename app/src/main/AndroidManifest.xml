@@ -12,10 +12,34 @@
         android:roundIcon="@mipmap/ixirus_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:stopWithTask="false">
+            <intent-filter>
+
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ixirus_logo_big" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+
         <activity android:name=".ui.Disc.DiscDetailActivity"></activity>
         <activity android:name=".ui.Disc.DiscMainActivity" />
         <activity android:name=".ui.Disc.DiscQuestionsActivity" />
-        <activity android:name=".ui.DevPlan.NotificationsActivity" />
+        <activity android:name=".ui.DevPlan.NotificationsActivity">
+            <intent-filter>
+                <action android:name="com.example.NOTIFICATION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
         <activity android:name=".ui.DevPlan.MessagesActivity" />
         <activity android:name=".ui.DevPlan.FeedbackListActivity" />
         <activity android:name=".ui.DevPlan.CreateFeedbackActivity" />

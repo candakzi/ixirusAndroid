@@ -1,5 +1,6 @@
 package com.example.ixirus.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -8,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -38,6 +40,10 @@ import com.example.ixirus.ui.DevPlan.NotificationsActivity;
 import com.example.ixirus.ui.DevSource.DevSourceListActivity;
 import com.example.ixirus.ui.Disc.DiscMainActivity;
 import com.example.ixirus.ui.Disc.DiscQuestionsActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -117,6 +123,26 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
                 }
             }
         });
+
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAG", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        Log.d("TAG", token);
+                        Toast.makeText(MainActivityWithoutFragment.this, token, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
     private void CheckDisc() throws JSONException {
