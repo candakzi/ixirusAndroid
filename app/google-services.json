@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "541019298658",
+    "firebase_url": "https://ixirus-1575197126014.firebaseio.com",
+    "project_id": "ixirus-1575197126014",
+    "storage_bucket": "ixirus-1575197126014.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:541019298658:android:c74f56b7a0d9ac4e92ea3b",
+        "android_client_info": {
+          "package_name": "com.example.ixirus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "541019298658-4k989c6i40ciqm2j7lvi42uurghqi1m5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1piQ3ZjsjUVprAMUwbW3g0CthtupIAWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "541019298658-4k989c6i40ciqm2j7lvi42uurghqi1m5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "541019298658-2s6q8mhphjrs01rkt3bouipo63ledr37.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.oec.bv.ixirus.ios.ixirus"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
