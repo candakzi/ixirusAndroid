@@ -123,26 +123,6 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
                 }
             }
         });
-
-
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("TAG", "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Log and toast
-                        Log.d("TAG", token);
-                        Toast.makeText(MainActivityWithoutFragment.this, token, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
     }
 
     private void CheckDisc() throws JSONException {
