@@ -122,6 +122,14 @@ public class DiscMainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        tvInvite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), DiscInviteActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

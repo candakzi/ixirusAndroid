@@ -51,6 +51,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class DevSourceListActivity extends AppCompatActivity {
@@ -178,7 +179,12 @@ public class DevSourceListActivity extends AppCompatActivity {
         if (item != null) {
             selectedId = ((ListItem) selectedItem).Id;
         }
-        String url = selectedId != -1 ? "https://ixirus.azurewebsites.net/api/source?perfectionId=" + Integer.toString(selectedId) : "https://ixirus.azurewebsites.net/api/source";
+        int langId = 0;
+        String language = Locale.getDefault().getDisplayLanguage();
+        if (!language.equals("English"))
+            langId = 1;
+
+        String url = selectedId != -1 ? "https://ixirus.azurewebsites.net/api/source?perfectionId=" + Integer.toString(selectedId)+"&lang="+langId : "https://ixirus.azurewebsites.net/api/source?lang="+langId;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

@@ -583,7 +583,11 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         sourcesLv.setAdapter(null);
         dialog.findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
         int selectedBehaviourId = getIntent().getExtras().getInt("perfectionId");
-        String url = tabPosition == 0 ? "https://ixirus.azurewebsites.net/api/source?perfectionId=" + Integer.toString(selectedBehaviourId) : "https://ixirus.azurewebsites.net/api/source";
+        int langId = 0;
+        String language = Locale.getDefault().getDisplayLanguage();
+        if (!language.equals("English"))
+            langId = 1;
+        String url = tabPosition == 0 ? "https://ixirus.azurewebsites.net/api/source?perfectionId=" + Integer.toString(selectedBehaviourId)+"&lang="+langId : "https://ixirus.azurewebsites.net/api/source?lang="+langId;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

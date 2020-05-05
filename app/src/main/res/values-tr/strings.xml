@@ -165,5 +165,9 @@
     <string name="clear_selection">Seçimi Temizle</string>
     <string name="fcm_message">Ixirus</string>
     <string name="default_notification_channel_id">IxirusChannel</string>
+    <string name="person_invite">Davet etmek istediğiniz kişi:</string>
+    <string name="person_email">Bu kişinin e-posta adresi:</string>
+    <string name="send_invitation">Daveti Gönder</string>
+    <string name="invite_request_sent">Davet isteğiniz gönderildi!</string>
 
 </resources>

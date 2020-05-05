@@ -1,12 +1,17 @@
 package com.example.ixirus.ui.Disc;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
@@ -116,7 +121,26 @@ public class DiscDetailActivity extends AppCompatActivity {
                 listDataHeader.add(title);
                 edmtDev = new ArrayList<>();
                 edmtDev.add(description);
-                listHash.put(listDataHeader.get(i), edmtDev);
+                String innerStr="";
+                if (obj.has("Children")) {
+                    for (int j = 1; j <= obj.getJSONArray("Children").length(); j++) {
+                        JSONObject innerObject = obj.getJSONArray("Children").getJSONObject(j - 1);
+                        String innerTitle = innerObject.getString("Title");
+
+                        SpannableStringBuilder str = new SpannableStringBuilder(innerTitle);
+                        str.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),0,innerTitle.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                        String boldTitle = "<b>"+innerTitle+"</b>";
+                        String innerDescription = innerObject.getString("Description");
+                        innerStr += "\n"+ str +"\n\n"+innerDescription+"\n";
+                    }
+                    edmtDev.add(innerStr);
+                    listHash.put(listDataHeader.get(i), edmtDev);
+                }
+                else
+                {
+                    listHash.put(listDataHeader.get(i), edmtDev);
+                }
             }
         } else {
             JSONObject otherDiscInfoObject = object.getJSONObject("otherDiscInfo");

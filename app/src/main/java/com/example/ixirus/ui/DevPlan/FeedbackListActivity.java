@@ -165,9 +165,4 @@ public class FeedbackListActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(getBaseContext());
         queue.add(request);
     }
-
-    public static float dpToPx(Context context, float valueInDp) {
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, valueInDp, metrics);
-    }
 }

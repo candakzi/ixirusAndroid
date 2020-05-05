@@ -240,7 +240,8 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
                             StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/taskcomplete?taskId=" + selectedId, new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    loadListItems(savedToken, devPlanId);
+
+                                  loadListItems(savedToken, devPlanId);
                                 }
                             }, new Response.ErrorListener() {
 
@@ -501,7 +502,8 @@ public class WaitingCompletedActionsActivity extends AppCompatActivity {
 
         float density = getResources().getDisplayMetrics().density;
         tv.setTextSize(9 * density);
-        loadListItems(savedToken, devPlanId);
+
+       loadListItems(savedToken, devPlanId);
     }
 
     public void loadListItems(final String savedToken, String devPlanId) {

@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -16,11 +17,14 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,15 +39,21 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ixirus.FeedbackListItem;
 import com.example.ixirus.ListAdapters.AnswersListAdapter;
+import com.example.ixirus.ListAdapters.FeedbackListAdapter;
 import com.example.ixirus.ListAdapters.TaskListAdapter;
 import com.example.ixirus.ListAdapters.TaskListAdapterPreview;
+import com.example.ixirus.ListAdapters.WaitingCompletedListAdapter;
 import com.example.ixirus.ListItem;
+import com.example.ixirus.ListItemSources;
 import com.example.ixirus.ListItemTasks;
 import com.example.ixirus.R;
 import com.example.ixirus.ui.BaseScreenActivity;
 import com.example.ixirus.ui.MainActivityWithoutFragment;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,6 +76,11 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
     private ListView lvAction;
     private ListView lvSource;
 
+    private BottomSheetDialog bsDialogRate;
+    private BottomSheetDialog bsDialogShowFeedbacks;
+
+    private RatingBar rbar;
+    private EditText editTextRate;
     private JSONObject object;
 
 
@@ -95,6 +110,11 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
         final Button managerButton = findViewById(R.id.buttonManager);
         final Button instructorButton = findViewById(R.id.buttonInstructor);
         Button nextButton = (Button) findViewById(R.id.button);
+
+        final Button buttonRate = findViewById(R.id.buttonRate);
+        final Button buttonShowFeedbacks = findViewById(R.id.buttonShowFeedbacks);
+        final Button buttonExperience = findViewById(R.id.buttonExperienceSharing);
+
 
         lv1 = findViewById(R.id.listView);
 
@@ -149,13 +169,141 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("LoginPrefs", Activity.MODE_PRIVATE);
         final String savedToken = sp.getString("Token", null);
 
+
+        buttonRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bsDialogRate.show();
+            }
+        });
+
+        buttonShowFeedbacks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bsDialogShowFeedbacks = new BottomSheetDialog(DevPlanPreviewActivity.this);
+                bsDialogShowFeedbacks.setContentView(R.layout.activity_feedback_list_popup);
+                //bsDialogShowFeedbacks.getWindow().setBackgroundDrawableResource(R.mipmap.background_development_plan);
+                bsDialogShowFeedbacks.show();
+                loadFeedbackListItems(savedToken);
+            }
+        });
+
+        bsDialogRate = new BottomSheetDialog(DevPlanPreviewActivity.this);
+        bsDialogRate.setContentView(R.layout.dialog_rate);
+
+
+
+        editTextRate = (EditText) bsDialogRate.findViewById(R.id.editText);
+        Button buttonbsRate = (Button) bsDialogRate.findViewById(R.id.button);
+        rbar = (RatingBar) bsDialogRate.findViewById(R.id.rating);
+        TextView txt1 = (TextView) bsDialogRate.findViewById(R.id.textView);
+        TextView txt2 = (TextView) bsDialogRate.findViewById(R.id.textView2);
+
+
+        txt1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = bsDialogRate.getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        });
+
+        txt2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = bsDialogRate.getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        });
+
+        rbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view = bsDialogRate.getCurrentFocus();
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        });
+
+        buttonbsRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    final int planId = object.getInt("id");
+                    final int ratingVal = (int) rbar.getRating();
+                    final String currentMesageText = editTextRate.getText().toString().trim();
+
+                    StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/rating", new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Toast.makeText(getBaseContext(), getResources().getString(R.string.rating_added), Toast.LENGTH_SHORT).show();
+                            bsDialogRate.dismiss();
+                        }
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (error instanceof NetworkError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof ServerError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof ParseError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.parse_error), Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof NoConnectionError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof TimeoutError) {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.timeout_error), Toast.LENGTH_SHORT).show();
+                            } else if (error.networkResponse.statusCode == 401) {
+                                Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("DevPlanId", Integer.toString(planId));
+                            params.put("Message", currentMesageText);
+                            params.put("Point", Integer.toString(ratingVal));
+
+                            return params;
+                        }
+
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> headers = new HashMap<>();
+                            headers.put("Authorization", "Bearer " + savedToken);
+                            return headers;
+                        }
+                    };
+
+                    RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                    queue.add(jsonObjRequest);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             try {
-                if (!getIntent().hasExtra("fromEdit"))
+                if (!getIntent().hasExtra("fromEdit")) {
                     imageView.setVisibility(View.GONE);
+                }
 
-                if(getIntent().hasExtra("summary")){
+                if (getIntent().hasExtra("summary")) {
                     devPlanButton.setVisibility(View.GONE);
                     programButton.setVisibility(View.GONE);
                     perfectionButton.setVisibility(View.GONE);
@@ -167,6 +315,12 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
                     managerButton.setVisibility(View.GONE);
                     instructorButton.setVisibility(View.GONE);
                     nextButton.setVisibility(View.GONE);
+                    String devPlanId = Integer.toString(new JSONObject(extras.getString("editedDevPlan")).getInt("id"));
+                    loadRateItems(savedToken, devPlanId);
+                } else {
+                    buttonRate.setVisibility(View.GONE);
+                    buttonShowFeedbacks.setVisibility(View.GONE);
+                    buttonExperience.setVisibility(View.GONE);
                 }
 
                 if (getIntent().hasExtra("editedDevPlan")) {
@@ -719,6 +873,7 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.nav_default_enter_anim, R.anim.nav_default_exit_anim);
     }
+
     public void loadListItem(int index, ListView lv) {
         ArrayList<ListItem> arr = new ArrayList<ListItem>();
         String answer = index == 0 ? getResources().getString(R.string.answer_1) : index == 1 ? getResources().getString(R.string.answer_2) : getResources().getString(R.string.answer_3);
@@ -831,4 +986,132 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
         lvSource.setAdapter(adapter);
     }
 
+    public void loadRateItems(final String savedToken, String devPlanId) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/task?devPlanId=" + devPlanId, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+
+                try {
+                    JSONObject rating = response.getJSONObject("data").getJSONObject("rating");
+                    Integer point = rating.getInt("point");
+                    String message = rating.getString("message");
+                    rbar.setRating((float) point);
+                    if (!message.equals("null"))
+                        editTextRate.setText(message);
+
+                } catch (JSONException e) {
+
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof NetworkError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ServerError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof ParseError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.parse_error), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof NoConnectionError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                } else if (error instanceof TimeoutError) {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.timeout_error), Toast.LENGTH_SHORT).show();
+                } else if (error.networkResponse.statusCode == 401) {
+                    Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + savedToken);
+                return headers;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+        queue.add(request);
+    }
+
+    public void loadFeedbackListItems(final String savedToken) {
+        final ListView lvFeedbacks =  bsDialogShowFeedbacks.findViewById(R.id.listView);
+        lvFeedbacks.setAdapter(null);
+        String devPlanId = null;
+        try {
+            devPlanId = object.getString("id");
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://ixirus.azurewebsites.net/api/feedback?devPlanId=" + devPlanId, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    ArrayList<FeedbackListItem> arr = new ArrayList<FeedbackListItem>();
+                    try {
+                        JSONArray programArray = response.getJSONArray("data");
+                        for (int i = 0; i < programArray.length(); i++) {
+                            JSONObject obj = programArray.getJSONObject(i);
+                            FeedbackListItem item = new FeedbackListItem();
+                            item.Email = obj.getString("email");
+                            item.Message = obj.getString("message").equals("null") ? "-" : obj.getString("message");
+                            item.Response = obj.getString("response").equals("null") ? "-" : obj.getString("response");
+
+                            arr.add(item);
+                        }
+                        final FeedbackListAdapter adapter = new FeedbackListAdapter(getBaseContext(), arr);
+                        lvFeedbacks.setAdapter(adapter);
+
+                       bsDialogShowFeedbacks.findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                    } catch (JSONException e) {
+                        Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                        bsDialogShowFeedbacks.findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                        bsDialogShowFeedbacks.findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (error instanceof NetworkError) {
+                        Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
+                        bsDialogShowFeedbacks.findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                        bsDialogShowFeedbacks.findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                    } else if (error instanceof ServerError) {
+                        Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                        bsDialogShowFeedbacks.findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                        bsDialogShowFeedbacks.findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                    } else if (error instanceof ParseError) {
+                        Toast.makeText(getBaseContext(), getResources().getString(R.string.parse_error), Toast.LENGTH_SHORT).show();
+                    } else if (error instanceof NoConnectionError) {
+                        Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                        bsDialogShowFeedbacks.findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                        bsDialogShowFeedbacks.findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                    } else if (error instanceof TimeoutError) {
+                        Toast.makeText(getBaseContext(), getResources().getString(R.string.timeout_error), Toast.LENGTH_SHORT).show();
+                        bsDialogShowFeedbacks.findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                        bsDialogShowFeedbacks.findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                    } else if (error.networkResponse.statusCode == 401) {
+                        Intent intent = new Intent(getBaseContext(), BaseScreenActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getBaseContext(), getResources().getString(R.string.click_list_ico), Toast.LENGTH_SHORT).show();
+                        bsDialogShowFeedbacks.findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                        bsDialogShowFeedbacks.findViewById(R.id.progressBar2).setVisibility(View.GONE);
+                    }
+                }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "Bearer " + savedToken);
+                    return headers;
+                }
+            };
+
+            RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+            queue.add(request);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

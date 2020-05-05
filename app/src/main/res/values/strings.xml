@@ -165,6 +165,10 @@
     <string name="clear_selection">Clear Selection</string>
     <string name="fcm_message">Ixirus</string>
     <string name="default_notification_channel_id">IxirusChannel</string>
+    <string name="person_invite">Person who you want to invite:</string>
+    <string name="person_email">Email address of this person:</string>
+    <string name="send_invitation">Send Invitation</string>
+    <string name="invite_request_sent">Your invite request has been sent!</string>
 
 
 </resources>
