@@ -94,11 +94,11 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
+                        findViewById(R.id.progressBar).setVisibility(View.GONE);
                         if (error instanceof NetworkError) {
                             Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof ServerError) {
-                            Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(), getResources().getString(R.string.login_error_toast), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof AuthFailureError) {
                             Toast.makeText(getBaseContext(), getResources().getString(R.string.auth_failure_error), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof ParseError) {

@@ -10,11 +10,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -40,6 +44,7 @@ import com.example.ixirus.ui.DevPlan.NotificationsActivity;
 import com.example.ixirus.ui.DevSource.DevSourceListActivity;
 import com.example.ixirus.ui.Disc.DiscMainActivity;
 import com.example.ixirus.ui.Disc.DiscQuestionsActivity;
+import com.example.ixirus.ui.Settings.SettingsActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -70,11 +75,18 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
         item1.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.development_plan);
         item1.Activity = new MyDevPlanListActivity();
 
-        ImageView imgView = new ImageView(this);
-        imgView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        imgView.setImageResource(R.mipmap.ixirus_logo);
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setCustomView(imgView);
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowTitleEnabled(false);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+
+        View mCustomView = mInflater.inflate(R.layout.action_bar, null);
+        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.text1);
+
+        ActionBar.LayoutParams layout = new ActionBar.LayoutParams(ActionBar.LayoutParams.FILL_PARENT, ActionBar.LayoutParams.FILL_PARENT);
+        mActionBar.setCustomView(mCustomView, layout);
+        mActionBar.setDisplayShowCustomEnabled(true);
+
 
         CustomListItem item11 = new CustomListItem();
         item11.Name = getString(R.string.menu_behavior_style);
@@ -85,10 +97,10 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
             item11.Activity = new DiscQuestionsActivity();
 
 
-        CustomListItem item3 = new CustomListItem();
-        item3.Name = getString(R.string.menu_messages);
-        item3.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.messages);
-        item3.Activity = new MessagesActivity();
+//        CustomListItem item3 = new CustomListItem();
+//        item3.Name = getString(R.string.menu_messages);
+//        item3.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.messages);
+//        item3.Activity = new MessagesActivity();
 
         CustomListItem item4 = new CustomListItem();
         item4.Name = getString(R.string.notifications);
@@ -100,7 +112,7 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
         item6.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.dev_sources);
         item6.Activity = new DevSourceListActivity();
 
-        CustomListItem[] cListItems = new CustomListItem[]{item1, item11, item3, item4, item6};
+        CustomListItem[] cListItems = new CustomListItem[]{item1, item11, item4, item6};
 
         lv.setAdapter(new MainListAdapter(this, cListItems));
 
@@ -123,6 +135,16 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
                 }
             }
         });
+
+
+        mTitleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void CheckDisc() throws JSONException {

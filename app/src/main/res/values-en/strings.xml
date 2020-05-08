@@ -167,6 +167,10 @@
     <string name="person_email">Email address of this person:</string>
     <string name="send_invitation">Send Invitation</string>
     <string name="invite_request_sent">Your invite request has been sent!</string>
-
-
+    <string name="settings">Settings</string>
+    <string name="reset_pass">Reset password</string>
+    <string name="gdpr">Gdpr</string>
+    <string name="logout">Logout</string>
+    <string name="forgot_pass_title">Operation successful</string>
+    <string name="forgot_pass_body">Password change request has been received. Please follow instructions on the e-mail we sent.</string>
 </resources>

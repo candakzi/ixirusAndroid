@@ -88,7 +88,12 @@ public class BaseScreenActivity extends Activity {
                             if (error instanceof NetworkError) {
                                 Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                             } else if (error instanceof ServerError) {
-                                Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                                Intent intentMain = new Intent(getBaseContext(), LoginActivity.class);
+                                intentMain.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                startActivity(intentMain);
+                                BaseScreenActivity.this.overridePendingTransition(0, 0);
+                                finish();
                             } else if (error instanceof AuthFailureError) {
                                 Toast.makeText(getBaseContext(), getResources().getString(R.string.auth_failure_error), Toast.LENGTH_SHORT).show();
                             } else if (error instanceof ParseError) {
@@ -183,7 +188,12 @@ public class BaseScreenActivity extends Activity {
                             if (error instanceof NetworkError) {
                                 Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                             } else if (error instanceof ServerError) {
-                                Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(getBaseContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                                Intent intentMain = new Intent(getBaseContext(), LoginActivity.class);
+                                intentMain.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                startActivity(intentMain);
+                                BaseScreenActivity.this.overridePendingTransition(0, 0);
+                                finish();
                             } else if (error instanceof AuthFailureError) {
                                 Toast.makeText(getBaseContext(), getResources().getString(R.string.auth_failure_error), Toast.LENGTH_SHORT).show();
                             } else if (error instanceof ParseError) {

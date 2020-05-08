@@ -169,5 +169,10 @@
     <string name="person_email">Bu kişinin e-posta adresi:</string>
     <string name="send_invitation">Daveti Gönder</string>
     <string name="invite_request_sent">Davet isteğiniz gönderildi!</string>
-
+    <string name="settings">Ayarlar</string>
+    <string name="reset_pass">Şifre Sıfırla</string>
+    <string name="gdpr">Gdpr</string>
+    <string name="logout">Çıkış</string>
+    <string name="forgot_pass_title">İşlem başarılı</string>
+    <string name="forgot_pass_body">Şifre değişikliği talebinizi aldık. Lütfen size gönderilen maildeki talimatları takip edin.</string>
 </resources>
