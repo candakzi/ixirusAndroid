@@ -173,4 +173,7 @@
     <string name="logout">Logout</string>
     <string name="forgot_pass_title">Operation successful</string>
     <string name="forgot_pass_body">Password change request has been received. Please follow instructions on the e-mail we sent.</string>
+    <string name="forgot_pass">Forgot password?</string>
+    <string name="reset_password">Reset Password</string>
+
 </resources>
