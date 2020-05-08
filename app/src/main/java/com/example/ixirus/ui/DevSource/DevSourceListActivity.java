@@ -34,6 +34,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ixirus.LanguageHelper;
 import com.example.ixirus.ListAdapters.DevSourceListAdapter;
 import com.example.ixirus.ListAdapters.GenericListAdapter;
 import com.example.ixirus.ListAdapters.SourceListAdapter;
@@ -260,6 +261,7 @@ public class DevSourceListActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + savedToken);
+                headers.put("langType", new LanguageHelper().getLanguage());
                 return headers;
             }
         };
@@ -324,6 +326,7 @@ public class DevSourceListActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + savedToken);
+                headers.put("langType", new LanguageHelper().getLanguage());
                 return headers;
             }
         };

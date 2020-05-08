@@ -3,6 +3,7 @@ package com.example.ixirus.ui.Settings;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -13,6 +14,8 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -49,6 +52,8 @@ import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    private WebView wv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +64,7 @@ public class SettingsActivity extends AppCompatActivity {
         Button resetPassButton = findViewById(R.id.resetPassButton);
         Button gpdrButton = findViewById(R.id.gdprButton);
         Button logoutButton = findViewById(R.id.logoutButton);
+        ConstraintLayout layout = findViewById(R.id.rootView);
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -192,28 +198,36 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        final BottomSheetDialog bsDialog = new BottomSheetDialog(SettingsActivity.this);
+        bsDialog.setContentView(R.layout.web_view_dialog);
+        bsDialog.setCancelable(false);
+        bsDialog.setCanceledOnTouchOutside(true);
+
+        wv = bsDialog.findViewById(R.id.WebView);
+        String pdf;
+        if (new LanguageHelper().getLanguage().equals("1"))
+            pdf = "https://ixirusblob.blob.core.windows.net/ixirus-files/f5fe200004b845d1a3207a46d942d499.pdf";
+        else
+            pdf = "https://ixirusblob.blob.core.windows.net/ixirus-files/193e164b4e084eed9dad07d94306bdac.pdf";
+
+        WebSettings settings = wv.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setSupportMultipleWindows(true);
+        settings.setBuiltInZoomControls(false);
+        wv.loadUrl("https://docs.google.com/gview?embedded=true&url=" + pdf);
+
         gpdrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                BottomSheetDialog bsDialog = new BottomSheetDialog(SettingsActivity.this);
-                bsDialog.setContentView(R.layout.web_view_dialog);
                 bsDialog.show();
 
-                final WebView wv = bsDialog.findViewById(R.id.WebView);
-                wv.getSettings().setJavaScriptEnabled(true);
-                String pdf;
-                if (new LanguageHelper().getLanguage().equals("1"))
-                    pdf = "https://ixirusblob.blob.core.windows.net/ixirus-files/f5fe200004b845d1a3207a46d942d499.pdf";
-                else
-                    pdf = "https://ixirusblob.blob.core.windows.net/ixirus-files/193e164b4e084eed9dad07d94306bdac.pdf";
+            }
+        });
 
-                WebSettings settings = wv.getSettings();
-                settings.setJavaScriptEnabled(true);
-                settings.setSupportMultipleWindows(true);
-                settings.setBuiltInZoomControls(true);
-                wv.loadUrl("https://docs.google.com/gview?embedded=true&url=" + pdf);
-
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bsDialog.hide();
             }
         });
 

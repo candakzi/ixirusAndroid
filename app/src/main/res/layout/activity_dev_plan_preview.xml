@@ -69,6 +69,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cardView">
 
+            <Button
+                android:id="@+id/buttonEdit"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="32dp"
+                android:background="@drawable/button_radius_rounded"
+                android:text="@string/edit"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
             <TextView
                 android:id="@+id/textViewDevPlanNameHeader"
                 android:layout_width="0dp"
@@ -82,7 +98,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/buttonEdit"
                 app:layout_constraintWidth_percent="0.8"
                 />
 

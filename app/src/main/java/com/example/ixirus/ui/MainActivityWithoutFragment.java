@@ -34,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ixirus.CustomListItem;
+import com.example.ixirus.LanguageHelper;
 import com.example.ixirus.ListAdapters.DiscQuestionsListAdapter;
 import com.example.ixirus.ListAdapters.MainListAdapter;
 import com.example.ixirus.ListItemDiscQuestions;
@@ -72,7 +73,7 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
 
         CustomListItem item1 = new CustomListItem();
         item1.Name = getString(R.string.menu_development_plan);
-        item1.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.development_plan);
+        item1.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.assignments);
         item1.Activity = new MyDevPlanListActivity();
 
         ActionBar mActionBar = getSupportActionBar();
@@ -90,7 +91,7 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
 
         CustomListItem item11 = new CustomListItem();
         item11.Name = getString(R.string.menu_behavior_style);
-        item11.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.xperience_sharing);
+        item11.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.messages);
         if (hasDisc)
             item11.Activity = new DiscMainActivity();
         else
@@ -104,12 +105,12 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
 
         CustomListItem item4 = new CustomListItem();
         item4.Name = getString(R.string.notifications);
-        item4.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.feedbacks);
+        item4.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.xperience_sharing);
         item4.Activity = new NotificationsActivity();
 
         CustomListItem item6 = new CustomListItem();
         item6.Name = getString(R.string.menu_dev_sources);
-        item6.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.dev_sources);
+        item6.Drawable = ContextCompat.getDrawable(getApplicationContext(), R.mipmap.feedbacks);
         item6.Activity = new DevSourceListActivity();
 
         CustomListItem[] cListItems = new CustomListItem[]{item1, item11, item4, item6};
@@ -203,6 +204,7 @@ public class MainActivityWithoutFragment extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + savedToken);
+                headers.put("langType", new LanguageHelper().getLanguage());
                 return headers;
             }
         };

@@ -32,6 +32,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ixirus.LanguageHelper;
 import com.example.ixirus.R;
 import com.example.ixirus.ui.BaseScreenActivity;
 
@@ -139,6 +140,7 @@ public class DiscInviteActivity extends AppCompatActivity {
                         public Map<String, String> getHeaders() throws AuthFailureError {
                             Map<String, String> headers = new HashMap<>();
                             headers.put("Authorization", "Bearer " + savedToken);
+                            headers.put("langType", new LanguageHelper().getLanguage());
                             return headers;
                         }
                     };

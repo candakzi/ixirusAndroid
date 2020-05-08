@@ -30,6 +30,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ixirus.LanguageHelper;
 import com.example.ixirus.ListAdapters.MessagesListAdapter;
 import com.example.ixirus.MessagesListItem;
 import com.example.ixirus.R;
@@ -177,6 +178,7 @@ public class NotificationsActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + savedToken);
+                headers.put("langType", new LanguageHelper().getLanguage());
                 return headers;
             }
         };

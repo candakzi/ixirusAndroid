@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center_vertical"
+        android:paddingStart="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="@drawable/delete_button"
+        android:enabled="true"
+        android:text="@string/delete"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/view3"
+        app:layout_constraintEnd_toStartOf="@+id/btnSummary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text"
+        app:layout_constraintWidth_percent="0.19" />
+
+
+    <Button
+        android:id="@+id/btnSummary"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="@drawable/summary_button"
+        android:enabled="true"
+        android:text="@string/summary"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/view3"
+        app:layout_constraintEnd_toStartOf="@+id/btnView"
+        app:layout_constraintStart_toEndOf="@+id/btnDelete"
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintWidth_percent="0.28" />
+
+    <Button
+        android:id="@+id/btnView"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="@drawable/view_button"
+        android:enabled="true"
+        android:text="@string/view"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/view3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnSummary"
+        app:layout_constraintTop_toBottomOf="@+id/text"
+        app:layout_constraintWidth_percent="0.46" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="wrap_content"
+        android:layout_height="12dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnView" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

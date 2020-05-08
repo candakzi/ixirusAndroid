@@ -144,6 +144,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + savedToken);
+                headers.put("langType", new LanguageHelper().getLanguage());
                 return headers;
             }
         };

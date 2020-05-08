@@ -58,28 +58,28 @@ public class MyDevPlanListAdapter extends BaseAdapter {
         ViewHolder holder;
         View vi = convertView;
         if (vi == null)
-            vi = inflater.inflate(R.layout.row_devplan_list, null);
+            vi = inflater.inflate(R.layout.row_devplan_list_test, null);
 
         holder = new ViewHolder();
         TextView text = (TextView) vi.findViewById(R.id.text);
-        Button editBtn = (Button) vi.findViewById(R.id.btnEdit);
+        //Button editBtn = (Button) vi.findViewById(R.id.btnEdit);
         Button deleteBtn = (Button) vi.findViewById(R.id.btnDelete);
         Button summaryButton = (Button) vi.findViewById(R.id.btnSummary);
         Button viewButton = (Button) vi.findViewById(R.id.btnView);
 
         holder.deleteBtn = deleteBtn;
-        holder.editBtn = editBtn;
+        //holder.editBtn = editBtn;
         holder.summaryBtn = summaryButton;
         holder.viewBtn = viewButton;
 
         text.setText(data.get(position).Name);
 
-        editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((ListView) parent).performItemClick(view, position, 0); // Let the event be handled in onItemClick()
-            }
-        });
+//        editBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ((ListView) parent).performItemClick(view, position, 0); // Let the event be handled in onItemClick()
+//            }
+//        });
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override

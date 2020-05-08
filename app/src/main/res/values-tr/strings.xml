@@ -14,7 +14,7 @@
     <string name="menu_my_assignments">Atananlar</string>
     <string name="menu_messages">Mesajlar</string>
     <string name="menu_xperince_sharing">Deneyim Paylaşımı</string>
-    <string name="menu_dev_sources">DevSource</string>
+    <string name="menu_dev_sources">Kaynaklar</string>
     <string name="menu_create_dev_plan">Gelişim Planı Oluştur</string>
     <string name="choose_programm">PROGRAM SEÇ</string>
     <string name="write_new_programm_hint">Yeni Program Yaz</string>
@@ -141,7 +141,7 @@
     <string name="rate2">İlk değerlendirmenize kıyasla değişiminizi yorumlayın</string>
     <string name="type_here">Buraya yazın…</string>
     <string name="rating_added">Yorumunuz ve puanlamanız eklenmiştir!</string>
-    <string name="menu_behavior_style">Davranış Eğilimim</string>
+    <string name="menu_behavior_style">Davranış Eğilimi</string>
     <string name="complete">Tamamla</string>
     <string name="proper_behavior">Lütfen size uyan davranış stilini seçin</string>
     <string name="disc_result">DISC Sonucu</string>

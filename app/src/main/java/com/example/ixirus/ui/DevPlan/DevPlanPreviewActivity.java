@@ -42,6 +42,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ixirus.FeedbackListItem;
+import com.example.ixirus.LanguageHelper;
 import com.example.ixirus.ListAdapters.AnswersListAdapter;
 import com.example.ixirus.ListAdapters.FeedbackListAdapter;
 import com.example.ixirus.ListAdapters.TaskListAdapter;
@@ -75,6 +76,7 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
     private ListView lv5;
     private ListView lvAction;
     private ListView lvSource;
+    private Button buttonEdit;
 
     private BottomSheetDialog bsDialogRate;
     private BottomSheetDialog bsDialogShowFeedbacks;
@@ -114,6 +116,8 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
         final Button buttonRate = findViewById(R.id.buttonRate);
         final Button buttonShowFeedbacks = findViewById(R.id.buttonShowFeedbacks);
         final Button buttonExperience = findViewById(R.id.buttonExperienceSharing);
+
+        final Button buttonEdit = findViewById(R.id.buttonEdit);
 
 
         lv1 = findViewById(R.id.listView);
@@ -283,6 +287,7 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
                         public Map<String, String> getHeaders() throws AuthFailureError {
                             Map<String, String> headers = new HashMap<>();
                             headers.put("Authorization", "Bearer " + savedToken);
+                            headers.put("langType", new LanguageHelper().getLanguage());
                             return headers;
                         }
                     };
@@ -315,12 +320,15 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
                     managerButton.setVisibility(View.GONE);
                     instructorButton.setVisibility(View.GONE);
                     nextButton.setVisibility(View.GONE);
+                    buttonEdit.setVisibility(View.VISIBLE);
                     String devPlanId = Integer.toString(new JSONObject(extras.getString("editedDevPlan")).getInt("id"));
                     loadRateItems(savedToken, devPlanId);
                 } else {
                     buttonRate.setVisibility(View.GONE);
                     buttonShowFeedbacks.setVisibility(View.GONE);
                     buttonExperience.setVisibility(View.GONE);
+                    buttonEdit.setVisibility(View.GONE);
+
                 }
 
                 if (getIntent().hasExtra("editedDevPlan")) {
@@ -490,6 +498,16 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
             }
         });
 
+        buttonEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
+                intent.putExtra("editedDevPlan", object.toString());
+                intent.putExtra("fromEdit", true);
+                startActivity(intent);
+            }
+        });
+
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -587,6 +605,7 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
                             public Map<String, String> getHeaders() throws AuthFailureError {
                                 Map<String, String> headers = new HashMap<>();
                                 headers.put("Authorization", "Bearer " + savedToken);
+                                headers.put("langType", new LanguageHelper().getLanguage());
                                 return headers;
                             }
 
@@ -697,6 +716,7 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
                             public Map<String, String> getHeaders() throws AuthFailureError {
                                 Map<String, String> headers = new HashMap<>();
                                 headers.put("Authorization", "Bearer " + savedToken);
+                                headers.put("langType", new LanguageHelper().getLanguage());
                                 return headers;
                             }
 
@@ -1029,6 +1049,7 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + savedToken);
+                headers.put("langType", new LanguageHelper().getLanguage());
                 return headers;
             }
         };
@@ -1104,6 +1125,7 @@ public class DevPlanPreviewActivity extends AppCompatActivity {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();
                     headers.put("Authorization", "Bearer " + savedToken);
+                    headers.put("langType", new LanguageHelper().getLanguage());
                     return headers;
                 }
             };

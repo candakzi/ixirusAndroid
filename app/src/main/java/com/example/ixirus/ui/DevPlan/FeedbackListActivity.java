@@ -34,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ixirus.FeedbackListItem;
+import com.example.ixirus.LanguageHelper;
 import com.example.ixirus.ListAdapters.FeedbackListAdapter;
 import com.example.ixirus.ListAdapters.MyDevPlanListAdapter;
 import com.example.ixirus.ListItem;
@@ -158,6 +159,7 @@ public class FeedbackListActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Authorization", "Bearer " + savedToken);
+                headers.put("langType", new LanguageHelper().getLanguage());
                 return headers;
             }
         };
