@@ -1,6 +1,7 @@
 package com.example.ixirus.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
@@ -9,8 +10,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -25,9 +29,12 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ixirus.LanguageHelper;
 import com.example.ixirus.ListItem;
 import com.example.ixirus.R;
 import com.example.ixirus.ui.DevPlan.CreateDevPlanActivity2;
+import com.example.ixirus.ui.Settings.SettingsActivity;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.json.JSONObject;
 
@@ -45,7 +52,8 @@ public class SignUpActivity extends AppCompatActivity implements TextWatcher {
     private EditText passwordEdit;
     private EditText companyCode;
     private Boolean lastState;
-
+    private TextView textViewGdpr;
+    private WebView wv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +63,48 @@ public class SignUpActivity extends AppCompatActivity implements TextWatcher {
         lastNameEdit = findViewById(R.id.lastName);
         passwordEdit = findViewById(R.id.password);
         companyCode = findViewById(R.id.companyCode);
-
+        textViewGdpr = findViewById(R.id.textViewGdpr);
         okButton = (Button) findViewById(R.id.signUp);
         emailEdit.addTextChangedListener(this);
         nameEdit.addTextChangedListener(this);
         lastNameEdit.addTextChangedListener(this);
         passwordEdit.addTextChangedListener(this);
+        ConstraintLayout layout = findViewById(R.id.rootView);
+
+
+        final BottomSheetDialog bsDialog = new BottomSheetDialog(SignUpActivity.this);
+        bsDialog.setContentView(R.layout.web_view_dialog);
+        bsDialog.setCancelable(false);
+        bsDialog.setCanceledOnTouchOutside(true);
+
+        wv = bsDialog.findViewById(R.id.WebView);
+        String pdf;
+        if (new LanguageHelper().getLanguage().equals("1"))
+            pdf = "https://ixirusblob.blob.core.windows.net/ixirus-files/f5fe200004b845d1a3207a46d942d499.pdf";
+        else
+            pdf = "https://ixirusblob.blob.core.windows.net/ixirus-files/193e164b4e084eed9dad07d94306bdac.pdf";
+
+        WebSettings settings = wv.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setSupportMultipleWindows(true);
+        settings.setBuiltInZoomControls(false);
+        wv.loadUrl("https://docs.google.com/gview?embedded=true&url=" + pdf);
+
+
+        textViewGdpr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bsDialog.show();
+            }
+        });
+
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bsDialog.hide();
+            }
+        });
+
 
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +120,7 @@ public class SignUpActivity extends AppCompatActivity implements TextWatcher {
                 StringRequest jsonObjRequest = new StringRequest(Request.Method.POST, "https://ixirus.azurewebsites.net/api/user/register", new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Toast.makeText(getBaseContext(), getResources().getString(R.string.login_credentials), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getBaseContext(), LoginActivity.class);
                         startActivity(intent);
                     }
@@ -83,8 +128,6 @@ public class SignUpActivity extends AppCompatActivity implements TextWatcher {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
-                        findViewById(R.id.refreshIco).setVisibility(View.VISIBLE);
                         if (error instanceof NetworkError) {
                             Toast.makeText(getBaseContext(), getResources().getString(R.string.network_error), Toast.LENGTH_SHORT).show();
                         } else if (error instanceof ServerError) {

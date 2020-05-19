@@ -177,6 +177,8 @@
     <string name="forgot_pass_body">Password change request has been received. Please follow instructions on the e-mail we sent.</string>
     <string name="forgot_pass">Forgot password?</string>
     <string name="reset_password">Reset Password</string>
+    <string name="login_credentials">Registration Successful! You can login with your credentials</string>
+    <string name="our_gdpr">You are agreeing with our GDPR by registering</string>
 
 
 </resources>
