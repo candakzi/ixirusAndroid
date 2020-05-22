@@ -40,7 +40,7 @@
         <activity android:name="com.oecbv.ixirus.ui.Disc.DiscQuestionsActivity" />
         <activity android:name="com.oecbv.ixirus.ui.DevPlan.NotificationsActivity">
             <intent-filter>
-            <action android:name="com.example.NOTIFICATION" />
+            <action android:name="com.oecbv.NOTIFICATION" />
 
             <category android:name="android.intent.category.DEFAULT" />
         </intent-filter>
