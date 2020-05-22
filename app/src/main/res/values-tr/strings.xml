@@ -179,5 +179,6 @@
     <string name="reset_password">Şifre Sıfırla</string>
     <string name="login_credentials">Kayıt başarılı! Bilgilerinizle giriş yapabilirsiniz.</string>
     <string name="our_gdpr">Kayıt olarak KVKK metnini kabul etmiş oluyorsunuz.</string>
+    <string name="disc_questions_text">Her grupta sizi en iyi tanımladığını düşündüğünüz seçenekleri işaretleyin</string>
 
 </resources>

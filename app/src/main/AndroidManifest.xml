@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ixirus">
+    package="com.oecbv.ixirus">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -12,12 +12,12 @@
         android:roundIcon="@mipmap/ixirus_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.ForgotPasswordActivity"></activity>
-        <activity android:name=".ui.Settings.SettingsActivity" />
-        <activity android:name=".ui.Disc.DiscInviteActivity" />
+        <activity android:name="com.oecbv.ixirus.ui.ForgotPasswordActivity"></activity>
+        <activity android:name="com.oecbv.ixirus.ui.Settings.SettingsActivity" />
+        <activity android:name="com.oecbv.ixirus.ui.Disc.DiscInviteActivity" />
 
         <service
-            android:name=".MyFirebaseMessagingService"
+            android:name="com.oecbv.ixirus.MyFirebaseMessagingService"
             android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -35,40 +35,40 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <activity android:name=".ui.Disc.DiscDetailActivity" />
-        <activity android:name=".ui.Disc.DiscMainActivity" />
-        <activity android:name=".ui.Disc.DiscQuestionsActivity" />
-        <activity android:name=".ui.DevPlan.NotificationsActivity">
+        <activity android:name="com.oecbv.ixirus.ui.Disc.DiscDetailActivity" />
+        <activity android:name="com.oecbv.ixirus.ui.Disc.DiscMainActivity" />
+        <activity android:name="com.oecbv.ixirus.ui.Disc.DiscQuestionsActivity" />
+        <activity android:name="com.oecbv.ixirus.ui.DevPlan.NotificationsActivity">
             <intent-filter>
-                <action android:name="com.example.NOTIFICATION" />
+            <action android:name="com.example.NOTIFICATION" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
         </activity>
-        <activity android:name=".ui.DevPlan.MessagesActivity" />
-        <activity android:name=".ui.DevPlan.FeedbackListActivity" />
-        <activity android:name=".ui.DevPlan.CreateFeedbackActivity" />
-        <activity android:name=".ui.DevPlan.DevPlanPreviewActivity" />
-        <activity android:name=".ui.DevPlan.CreateDevPlanQuestionsSummary" />
+        <activity android:name="com.oecbv.ixirus.ui.DevPlan.MessagesActivity" />
+        <activity android:name="com.oecbv.ixirus.ui.DevPlan.FeedbackListActivity" />
+        <activity android:name="com.oecbv.ixirus.ui.DevPlan.CreateFeedbackActivity" />
+        <activity android:name="com.oecbv.ixirus.ui.DevPlan.DevPlanPreviewActivity" />
+        <activity android:name="com.oecbv.ixirus.ui.DevPlan.CreateDevPlanQuestionsSummary" />
         <activity
-            android:name=".ui.DevPlan.WaitingCompletedActionsActivity"
+            android:name="com.oecbv.ixirus.ui.DevPlan.WaitingCompletedActionsActivity"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".ui.DevSource.DevSourceListActivity"
+            android:name="com.oecbv.ixirus.ui.DevSource.DevSourceListActivity"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="stateHidden|adjustResize|adjustPan" />
-        <activity android:name=".ui.DevPlan.CreateDevPlanActivity8" />
-        <activity android:name=".ui.DevPlan.CreateDevPlanActivity7" />
+        <activity android:name="com.oecbv.ixirus.ui.DevPlan.CreateDevPlanActivity8" />
+        <activity android:name="com.oecbv.ixirus.ui.DevPlan.CreateDevPlanActivity7" />
         <activity
-            android:name=".ui.DevPlan.CreateDevPlanActivity6"
+            android:name="com.oecbv.ixirus.ui.DevPlan.CreateDevPlanActivity6"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".ui.SignUpActivity"
+            android:name="com.oecbv.ixirus.ui.SignUpActivity"
             android:hardwareAccelerated="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
-            android:name=".ui.BaseScreenActivity"
+            android:name="com.oecbv.ixirus.ui.BaseScreenActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -76,30 +76,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.DevPlan.CreateDevPlanActivity5" />
+        <activity android:name="com.oecbv.ixirus.ui.DevPlan.CreateDevPlanActivity5" />
         <activity
-            android:name=".ui.DevPlan.CreateDevPlanActivity4"
+            android:name="com.oecbv.ixirus.ui.DevPlan.CreateDevPlanActivity4"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".ui.DevPlan.CreateDevPlanActivity3"
+            android:name="com.oecbv.ixirus.ui.DevPlan.CreateDevPlanActivity3"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity
-            android:name=".ui.DevPlan.CreateDevPlanActivity2"
+            android:name="com.oecbv.ixirus.ui.DevPlan.CreateDevPlanActivity2"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
-        <activity android:name=".ui.DevPlan.MyDevPlanListActivity" />
+        <activity android:name="com.oecbv.ixirus.ui.DevPlan.MyDevPlanListActivity" />
         <activity
-            android:name=".ui.DevPlan.CreateDevPlanActivity1"
+            android:name="com.oecbv.ixirus.ui.DevPlan.CreateDevPlanActivity1"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
-        <activity android:name=".ui.MainActivityWithoutFragment" />
+        <activity android:name="com.oecbv.ixirus.ui.MainActivityWithoutFragment" />
         <activity
-            android:name=".ui.LoginActivity"
+            android:name="com.oecbv.ixirus.ui.LoginActivity"
             android:hardwareAccelerated="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.oecbv.ixirus.ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

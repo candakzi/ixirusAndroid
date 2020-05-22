@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:541019298658:android:c74f56b7a0d9ac4e92ea3b",
         "android_client_info": {
-          "package_name": "com.example.ixirus"
+          "package_name": "com.oecbv.ixirus"
         }
       },
       "oauth_client": [
@@ -35,7 +35,7 @@
               "client_id": "541019298658-2s6q8mhphjrs01rkt3bouipo63ledr37.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.oec.bv.ixirus.ios.ixirus"
+                "bundle_id": "com.example.ixirus.ios.ixirus"
               }
             }
           ]

@@ -13,7 +13,7 @@
     <string name="menu_my_assignments">My Assignments</string>
     <string name="menu_messages">Messages</string>
     <string name="menu_xperince_sharing">Xperience Sharing</string>
-    <string name="menu_dev_sources">DevSource</string>
+    <string name="menu_dev_sources">Resources</string>
     <string name="menu_create_dev_plan">Create Dev Plan</string>
 
     <string name="choose_programm">CHOOSE PROGRAMME</string>
@@ -179,6 +179,7 @@
     <string name="reset_password">Reset Password</string>
     <string name="login_credentials">Registration Successful! You can login with your credentials</string>
     <string name="our_gdpr">You are agreeing with our GDPR by registering</string>
+    <string name="disc_questions_text">Select the option you think that describes you the best in each group</string>
 
 
 </resources>
