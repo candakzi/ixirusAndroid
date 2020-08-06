@@ -26,6 +26,7 @@
     <color name="button_cancel">#84838B</color>
     <color name="button_update">#2FC151</color>
     <color name="button_green">#75a41d</color>
+    <color name="black_text">#FF000000</color>
 
     <color name="yellow">#F7C824</color>
 

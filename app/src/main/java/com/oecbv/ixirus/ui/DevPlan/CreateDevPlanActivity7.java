@@ -320,141 +320,135 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 TaskListAdapter finalAdapter = (TaskListAdapter) lv.getAdapter();
-                if (finalAdapter.getCount() == 0) {
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.add_source_step), Toast.LENGTH_SHORT).show();
-                    return;
-                } else {
-                    Bundle extras = getIntent().getExtras();
-                    int programId;
-                    int perfectionId;
-                    int behaviourId;
-                    String benefit;
-                    int question1;
-                    int question2;
-                    int question3;
-                    int question4;
-                    int question5;
-                    String planName;
-                    final ArrayList<Integer> actionTasks;
 
-                    if (extras != null) {
-                        if (object != null) {
-                            Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
-                            try {
-                                JSONArray newArr = new JSONArray();
+                Bundle extras = getIntent().getExtras();
+                int programId;
+                int perfectionId;
+                int behaviourId;
+                String benefit;
+                int question1;
+                int question2;
+                int question3;
+                int question4;
+                int question5;
+                String planName;
+                final ArrayList<Integer> actionTasks;
 
-                                for (int position = 0; position < finalAdapter.getCount(); position++) {
-                                    JSONObject sourceTaskObject = new JSONObject();
-                                    ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
+                if (extras != null) {
+                    if (object != null) {
+                        Intent intent = new Intent(getBaseContext(), DevPlanPreviewActivity.class);
+                        try {
+                            JSONArray newArr = new JSONArray();
 
-                                    if(item.SourceId==0)//Bu aksiyon adımı elemanıdır taşınmaz
-                                        continue;
-
-                                    String name = item.Name.split("-")[0].trim();
-                                    sourceTaskObject.put("id", item.Id);
-                                    sourceTaskObject.put("name", name);
-                                    sourceTaskObject.put("sourceId", item.SourceId);
-                                    String myFormatPosted = "yyyy-MM-dd";
-                                    SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
-                                    final String endDatePosted = sdfPosted.format(item.Date);
-                                    sourceTaskObject.put("endDate", endDatePosted);
-                                    newArr.put(sourceTaskObject);
-                                }
-                                object.put("sourceTasks", newArr);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            if (getIntent().hasExtra("fromEdit"))
-                                intent.putExtra("fromEdit", true);
-
-                            intent.putExtra("editedDevPlan", object.toString());
-                            startActivity(intent);
-
-                        } else {
-                            programId = extras.getInt("programId");
-                            perfectionId = extras.getInt("perfectionId");
-                            behaviourId = extras.getInt("behaviourId");
-                            benefit = extras.getString("benefit");
-                            question1 = extras.getInt("question1");
-                            question2 = extras.getInt("question2");
-                            question3 = extras.getInt("question3");
-                            question4 = extras.getInt("question4");
-                            question5 = extras.getInt("question5");
-                            planName = extras.getString("planName");
-                            actionTasks = extras.getIntegerArrayList("actionTasks");
-
-                            Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity8.class);
-
-                            intent.putExtra("behaviourId", behaviourId);
-                            intent.putExtra("perfectionId", perfectionId);
-                            intent.putExtra("programId", programId);
-                            intent.putExtra("benefit", benefit);
-                            intent.putExtra("question1", question1);
-                            intent.putExtra("question2", question2);
-                            intent.putExtra("question3", question3);
-                            intent.putExtra("question4", question4);
-                            intent.putExtra("question5", question5);
-                            intent.putExtra("actionTasks", actionTasks);
-                            intent.putExtra("planName", planName);
-
-                            if (getIntent().hasExtra("actionTasksObject"))
-                                intent.putExtra("actionTasksObject", getIntent().getExtras().getString("actionTasksObject"));
-
-                            if (getIntent().hasExtra("program"))
-                                intent.putExtra("program", getIntent().getExtras().getString("program"));
-
-                            if (getIntent().hasExtra("perfection"))
-                                intent.putExtra("perfection", getIntent().getExtras().getString("perfection"));
-
-                            if (getIntent().hasExtra("behavior"))
-                                intent.putExtra("behavior", getIntent().getExtras().getString("behavior"));
-
-                            JSONArray array = new JSONArray();
-                            ArrayList<Integer> list = new ArrayList<Integer>();
                             for (int position = 0; position < finalAdapter.getCount(); position++) {
+                                JSONObject sourceTaskObject = new JSONObject();
                                 ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
-                                if (item.SourceId == 0)
+
+                                if (item.SourceId == 0)//Bu aksiyon adımı elemanıdır taşınmaz
                                     continue;
-                                int id = item.Id;
-                                list.add(id);
+
+                                String name = item.Name.split("-")[0].trim();
+                                sourceTaskObject.put("id", item.Id);
+                                sourceTaskObject.put("name", name);
+                                sourceTaskObject.put("sourceId", item.SourceId);
+                                String myFormatPosted = "yyyy-MM-dd";
+                                SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
+                                final String endDatePosted = sdfPosted.format(item.Date);
+                                sourceTaskObject.put("endDate", endDatePosted);
+                                newArr.put(sourceTaskObject);
                             }
-                            if (list.toArray().length == 0)
-                                Toast.makeText(getBaseContext(), getResources().getString(R.string.add_source_step), Toast.LENGTH_SHORT).show();
-                            else {
+                            object.put("sourceTasks", newArr);
 
-                                JSONArray newArr = new JSONArray();
-                                try {
-                                    for (int position = 0; position < finalAdapter.getCount(); position++) {
-                                        JSONObject sourceTasksObject = new JSONObject();
-
-                                        ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
-                                        String name = item.Name.split("-")[0].trim();
-
-                                        if(item.SourceId==0)//Bu aksiyon adımı elemanıdır taşınmaz
-                                            continue;
-
-                                        sourceTasksObject.put("id", item.Id);
-                                        sourceTasksObject.put("name", name);
-                                        sourceTasksObject.put("sourceId", item.SourceId);
-                                        String myFormatPosted = "yyyy-MM-dd";
-                                        SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
-                                        final String endDatePosted = sdfPosted.format(item.Date);
-
-                                        sourceTasksObject.put("endDate", endDatePosted);
-                                        newArr.put(sourceTasksObject);
-                                    }
-                                    intent.putExtra("sourceTasksObject", newArr.toString());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-
-                                intent.putExtra("sourceTasks", list);
-                                startActivity(intent);
-                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
+                        if (getIntent().hasExtra("fromEdit"))
+                            intent.putExtra("fromEdit", true);
+
+                        intent.putExtra("editedDevPlan", object.toString());
+                        startActivity(intent);
+
+                    } else {
+                        programId = extras.getInt("programId");
+                        perfectionId = extras.getInt("perfectionId");
+                        behaviourId = extras.getInt("behaviourId");
+                        benefit = extras.getString("benefit");
+                        question1 = extras.getInt("question1");
+                        question2 = extras.getInt("question2");
+                        question3 = extras.getInt("question3");
+                        question4 = extras.getInt("question4");
+                        question5 = extras.getInt("question5");
+                        planName = extras.getString("planName");
+                        actionTasks = extras.getIntegerArrayList("actionTasks");
+
+                        Intent intent = new Intent(getBaseContext(), CreateDevPlanActivity8.class);
+
+                        intent.putExtra("behaviourId", behaviourId);
+                        intent.putExtra("perfectionId", perfectionId);
+                        intent.putExtra("programId", programId);
+                        intent.putExtra("benefit", benefit);
+                        intent.putExtra("question1", question1);
+                        intent.putExtra("question2", question2);
+                        intent.putExtra("question3", question3);
+                        intent.putExtra("question4", question4);
+                        intent.putExtra("question5", question5);
+                        intent.putExtra("actionTasks", actionTasks);
+                        intent.putExtra("planName", planName);
+
+                        if (getIntent().hasExtra("actionTasksObject"))
+                            intent.putExtra("actionTasksObject", getIntent().getExtras().getString("actionTasksObject"));
+
+                        if (getIntent().hasExtra("program"))
+                            intent.putExtra("program", getIntent().getExtras().getString("program"));
+
+                        if (getIntent().hasExtra("perfection"))
+                            intent.putExtra("perfection", getIntent().getExtras().getString("perfection"));
+
+                        if (getIntent().hasExtra("behavior"))
+                            intent.putExtra("behavior", getIntent().getExtras().getString("behavior"));
+
+                        JSONArray array = new JSONArray();
+                        ArrayList<Integer> list = new ArrayList<Integer>();
+                        for (int position = 0; position < finalAdapter.getCount(); position++) {
+                            ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
+                            if (item.SourceId == 0)
+                                continue;
+                            int id = item.Id;
+                            list.add(id);
+                        }
+
+                        JSONArray newArr = new JSONArray();
+                        try {
+                            for (int position = 0; position < finalAdapter.getCount(); position++) {
+                                JSONObject sourceTasksObject = new JSONObject();
+
+                                ListItemTasks item = (ListItemTasks) lv.getItemAtPosition(position);
+                                String name = item.Name.split("-")[0].trim();
+
+                                if (item.SourceId == 0)//Bu aksiyon adımı elemanıdır taşınmaz
+                                    continue;
+
+                                sourceTasksObject.put("id", item.Id);
+                                sourceTasksObject.put("name", name);
+                                sourceTasksObject.put("sourceId", item.SourceId);
+                                String myFormatPosted = "yyyy-MM-dd";
+                                SimpleDateFormat sdfPosted = new SimpleDateFormat(myFormatPosted, Locale.US);
+                                final String endDatePosted = sdfPosted.format(item.Date);
+
+                                sourceTasksObject.put("endDate", endDatePosted);
+                                newArr.put(sourceTasksObject);
+                            }
+                            intent.putExtra("sourceTasksObject", newArr.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        intent.putExtra("sourceTasks", list);
+                        startActivity(intent);
+
                     }
                 }
+
             }
         });
 
@@ -585,7 +579,7 @@ public class CreateDevPlanActivity7 extends AppCompatActivity {
         String language = Locale.getDefault().getDisplayLanguage();
         if (!language.equals("English"))
             langId = 1;
-        String url = tabPosition == 0 ? "https://ixirus.azurewebsites.net/api/source?perfectionId=" + Integer.toString(selectedBehaviourId)+"&lang="+langId : "https://ixirus.azurewebsites.net/api/source?lang="+langId;
+        String url = tabPosition == 0 ? "https://ixirus.azurewebsites.net/api/source?perfectionId=" + Integer.toString(selectedBehaviourId) + "&lang=" + langId : "https://ixirus.azurewebsites.net/api/source?lang=" + langId;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

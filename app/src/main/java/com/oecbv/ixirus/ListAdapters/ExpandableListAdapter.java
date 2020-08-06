@@ -83,8 +83,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView txtListChild = (TextView)view.findViewById(R.id.lblListItem);
+        txtListChild.setPadding(40, 10, 40, 10);
         //txtListChild.setText(Html.fromHtml(childText));
-        txtListChild.setText(childText.replace("\\n", System.getProperty("line.separator")));
+        txtListChild.setText(childText);
         return view;
     }
 

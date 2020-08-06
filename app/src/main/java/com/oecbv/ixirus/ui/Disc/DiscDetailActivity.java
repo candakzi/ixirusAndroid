@@ -127,7 +127,7 @@ public class DiscDetailActivity extends AppCompatActivity {
 
                         String boldTitle = "<b>"+innerTitle+"</b>";
                         String innerDescription = innerObject.getString("Description");
-                        innerStr += "\n"+ str +"\n\n"+innerDescription+"\n";
+                        //innerStr += "\n"+ str +"\n\n"+innerDescription+"\n";
                     }
                     edmtDev.add(innerStr);
                     listHash.put(listDataHeader.get(i), edmtDev);
@@ -156,7 +156,6 @@ public class DiscDetailActivity extends AppCompatActivity {
                     String description = obj.getString("Description");
                     listDataHeader.add(title);
                     edmtDev = new ArrayList<>();
-                    edmtDev.add(description);
                     listHash.put(listDataHeader.get(i), edmtDev);
                 }
         }
