@@ -156,6 +156,7 @@ public class DiscDetailActivity extends AppCompatActivity {
                     String description = obj.getString("Description");
                     listDataHeader.add(title);
                     edmtDev = new ArrayList<>();
+                    edmtDev.add(description);
                     listHash.put(listDataHeader.get(i), edmtDev);
                 }
         }
